@@ -11,7 +11,7 @@
 \author{Team \#16, Lines Per Minute (lpm) \\
 Jay Mody - modyj - 400195508\\
 Jessica Lim - limj31 - 400173669\\
-Maanav Dalal - dalalm1 - 40017811508\\
+Maanav Dalal - dalalm1 - 400178115\\
 }
 
 \date{January 28th, 2021}
@@ -27,8 +27,6 @@ Maanav Dalal - dalalm1 - 40017811508\\
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 \today & Jay/Jessica/Maanav & Initial document write-up. Completed.\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -45,7 +43,7 @@ We propose Lines Per Minute (\textit{lpm}), a python package built upon \textit{
 
 \section*{Description \& Issues}
 
-The main issue \texit{lpm} will tackle is the addition of code snippets as an option to make the experience more tailored for developers. \textit{lpm} will utilize various code snippets from open source software from a variety of programming languages to provide this functionality.
+The main issue \texit{lpm} will tackle is the addition of code snippets as an option to make the experience more tailored for developers. \textit{lpm} will utilize various code snippets from open source software from a variety of programming languages to provide this functionality. \\
 
 In addition, the existing \textit{wpm} package misses a few core components of a well-architected software project. For example, despite the inclusion of a testing framework, there are no unit tests present. As we have learned, testing is an essential part of a software project to ensure it is working as expected. Since there is a lack of testing throughout the project, we as users and developers are unable to know how well the software works, or test if new changes break the existing functionality. Specifically, we'd like to introduce testing for different versions of Python and tests to ensure the accuracy of various stats, including words per minute, lines per minute, and error rates. \\
 
@@ -59,35 +57,7 @@ The clients (or users) are the primary stakeholders. The clients are individuals
 Other stakeholders include PyPI (The Python Package Index) who will be distributing our package, GitLab who is hosting our source code, and the authors of the open source projects that the code snippets are taken from.
 
 \subsection*{Software Environment}
-The original \textit{wpm} package is written in plain python (with no additional dependencies). The package is managed and distributed via pip. Given a valid python and pip installation, \textit{wpm} can be installed via:
-
-\begin{lstlisting}[language=bash]
-$ pip install wpm
-\end{lstlisting}
-The \textit{wpm} interface is accessed and delivered as a CLI (command-line interface), which can be run via:
-\begin{lstlisting}[language=bash]
-$ wpm
-\end{lstlisting}
-We plan to use the same technologies to redevelop, build-upon, and deliver Lines-Per-Minute. The \textit{lpm} package should be accessed and delivered in a similar way
-\begin{lstlisting}[language=bash]
-$ pip install lpm
-$ lpm
-\end{lstlisting}
-
-% \subsection*{TODO}
-% \begin{itemize}
-
-%     \textitem A clear concise description of the issues that need to be addressed by your team
-%     \textitem What problem are you trying to solve?
-%     \textitem Not how you are going to solve the problem
-%     \textitem Why is this an important problem?
-%     \textitem What is the context of the problem you are solving?
-%     \begin{itemize}
-%         \textitem Who are the stakeholders?
-%         \textitem What is the environment for the software?
-%     \end{itemize}
-% \end{itemize}
-
+The original \textit{wpm} package is written in plain python (with no additional dependencies). The package is managed and distributed via pip/PyPI. The \textit{wpm} interface is accessed and delivered as a CLI (command-line interface). We plan to use the same technologies to redevelop, build-upon, and deliver Lines-Per-Minute. The \textit{lpm} package should be accessed and delivered in a similar way.
 \newpage
 
 \end{document}
