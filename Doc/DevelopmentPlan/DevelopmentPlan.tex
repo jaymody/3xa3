@@ -1,21 +1,23 @@
 \documentclass{article}
 
-\usepackage{booktabs}
+\usepackage[a4paper,margin=1in,footskip=0.25in]{geometry}
+\usepackage{indentfirst}
+\usepackage{xcolor}
 \usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\title{\textbf{SE 3XA3: Development Plan}}
 
-\title{SE 3XA3: Development Plan\\Title of Project}
-
-\author{Team \#, Team Name
-		\\ Student 1 name and macid
-		\\ Student 2 name and macid
-		\\ Student 3 name and macid
+\author{Team \#16, Lines Per Minute (lpm) \\
+Jay Mody - modyj - 400195508\\
+Jessica Lim - limj31 - 400173669\\
+Maanav Dalal - dalalm1 - 400178115\\
 }
 
-\date{}
-
-\input{../Comments}
-
 \begin{document}
+
+\maketitle
 
 \begin{table}[hp]
 \caption{Revision History} \label{TblRevisionHistory}
@@ -23,37 +25,120 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+February 3, 2021 & Jay/Jessica/Maanav & Initial document write-up. \\
+\today & Jay/Jessica/Maanav & Gantt Chart, Document completed. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \newpage
 
-\maketitle
-
-Put your introductory blurb here.
-
 \section{Team Meeting Plan}
+\subsection*{Meeting Details}
+Team meetings will take place during Lab sections after our assigned work has been completed. As a buffer, we have also added
+an hour before our Thursday tutorial, in case Tutorial assignments take up the entirety of the 2 hours. Weekend meetings may be scheduled as needed. Meetings will occur within our designated group teams chat (Lab2Groups3xa3 $\rightarrow$ Group16). All members must be punctual to group meetings.
+\begin{itemize}
+    \item Tuesdays 2:30pm to 4:30pm
+    \item Thursdays: 6:00pm to 9:00pm
+\end{itemize}
+Secondary meetings will be held on the following days, whenever required:
+\begin{itemize}
+    \item Thursdays: 3:30pm to 5:30pm
+    \item Sunday: 1:00pm to 3:00pm
+\end{itemize}
+
+\subsection*{Agenda / Roles}
+An informal agenda for the meeting will be discussed prior to the meeting, and officially drafted by group member and chair \textbf{Maanav Dalal}, to ensure group meetings are productive and succinct. For a given meeting, the agenda will follow \textbf{Scrum} guidelines to ensure focused work. This includes covering blockers, what we completed between our last meeting and the current one, goals for the next sprint, and a member-by-member recount of their current progress and confidence in meeting upcoming sprint goals.
 
 \section{Team Communication Plan}
+\noindent Primary Communication Platform (for team members): Facebook Messenger Chat \\
+
+\noindent Secondary Communication platform \& TA contact: A Teams chat (Lab2Groups3xa3 $\rightarrow$ Group16) will be used for TA communication \& questions. \\
+
+\noindent GitLab will be used for committing code, reviewing code, creating tasks via submitting issues, and resolving tasks via submitting pull requests. (See \hyperref[sec:git]{Section 4} for more details)
 
 \section{Team Member Roles}
 
+\noindent \textbf{Jay Mody}: Technology expert (Python / pip / package creation), Typist, Code Tester \\
+\textbf{Maanav Dalal}: LaTeXpert, CLI design expert, Typist, Code Tester \\
+\textbf{Jessica Lim}: Git expert, Documentation expert, Typist, Code Tester
+
 \section{Git Workflow Plan}
+\label{sec:git}
+We will be using the Gitlab platform to organize tasks.
+
+\begin{itemize}
+\item All major features and goals for our project will be considered \textbf{Milestones}. Milestones will be documented on Gitlab as \textbf{Epics}.
+\item Milestones will be broken down into tasks. These will documented on our Gitlab board as \textbf{Stories}.
+\item Any \textbf{Story} that requires coding or documentation work will have one associated \textbf{Issue} in the repository.
+    \begin{itemize}
+    \item Only one individual will be assigned to each issue (other members may help, but the assignee is the primary individual that will be working on the issue)
+    \item Every single Issue must have an associated \textbf{Branch} and \textbf{Pull Request}
+    \item These issues may include several sub tasks that will be documented as a checklist.
+    \end{itemize}
+\item The \textbf{Main} branch will only be used for merging pull requests into
+    \begin{itemize}
+    \item All code changes will be made on a separate branch, titled based on the issue the branch will address (e.g. fix\_symbol\_bug)
+    \item Pull Requests must have the approval of at least one other member before they can be completed.
+    \end{itemize}
+\item \textbf{Pull requests} will be created for each \textbf{Issue}
+    \begin{itemize}
+    \item A \textbf{Pull request} should only have one associated \textbf{Issue} and \textbf{Story}
+    \item Completed Pull Requests will result in the associated Story being removed from the board
+    \item Completed Pull Requests will result in the associated Issue to be completed
+    \end{itemize}
+\end{itemize}
 
 \section{Proof of Concept Demonstration Plan}
 
+\noindent First, we will demonstrate the ability to install the package via (given a valid python and pip installation):
+
+\begin{lstlisting}
+$ pip install lpm
+\end{lstlisting}
+
+\noindent From there, we will launch the application CLI via:
+
+\begin{lstlisting}
+$ lpm
+\end{lstlisting}
+
+\noindent As a minimal POC demo, a single code snippet will be outputed when the CLI tool is started. The user will have the opportunity to type the code snippet, which will be regurgated by the program once they finish. For now, the user's input will not be compared with the code snippet. We just want to demonstrate the ability of the program to fetch the user's input.
+
 \section{Technology}
+
+\noindent \textbf{Programming Languages:} Python (project must work with Python2, Python3, and PyPy)
+
+\noindent \textbf{Makefile:} For defining commands for devops (run linting, run formatting, run tests, etc ...)
+
+\noindent \textbf{Package Manager:} \href{https://pypi.org/project/pip/}{\color{blue}{pip}}
+
+\noindent \textbf{Package Distributor:} \href{https://pypi.org/}{\color{blue}{PyPI}}
+
+\noindent \textbf{Version Control:} Git
+
+\noindent \textbf{Repository Hosting:} Gitlab
 
 \section{Coding Style}
 
+\noindent \textbf{Coding Style}: \href{https://www.python.org/dev/peps/pep-0008/}{\color{blue}{pep8}}
+
+\noindent \textbf{Documentation Style}: \href{https://numpydoc.readthedocs.io/en/latest/}{\color{blue}{numpydoc}}
+
+\noindent \textbf{Code Formatting}: \href{https://black.readthedocs.io/en/stable/}{\color{blue}{black}} code formatter, which conforms to pep8.
+
+\noindent \textbf{Coding Philosophy}: \href{https://www.python.org/dev/peps/pep-0020/}{\color{blue}{The Zen of Python (pep20)}}
+
+\noindent \textbf{Code Linting}: \href{https://www.pylint.org/}{\color{blue}{pylint}}
+
+\noindent \textbf{Versioning}: \href{https://semver.org/}{\color{blue}{Semantic Versioning 2.0}}
+
 \section{Project Schedule}
 
-Provide a pointer to your Gantt Chart.
+Our Gantt Chart can be found \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/tree/master/ProjectSchedule}{\color{blue}{here}}. All tasks must be completed in line with the milestone deadlines shown on the Gantt chart. The chart will be updated as further tasks and project requirements are added.
 
 \section{Project Review}
+
+This section will be completed after revision 1
 
 \end{document}
