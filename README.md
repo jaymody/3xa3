@@ -1,10 +1,10 @@
 # Project Name
 
-Team Name: ?
+Team Name: Lines Per Minute (lpm)
 
-Team Members: ?, ?, ?
+Team Members: Jay Mody, Jessica Lim, Maanav Dalal
 
-This project is a reimplementation of ...
+This project is a reimplementation of [github.com/cslarsen/wpm](https://github.com/cslarsen/wpm).
 
 The folders and files for this project are as follows:
 
