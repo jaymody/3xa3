@@ -7,17 +7,19 @@ from setuptools import setup
 
 
 def get_version():
-    """Reads current lpm version from disk."""
     filename = os.path.join(os.path.dirname(__file__), "lpm", "__init__.py")
     var = runpy.run_path(filename)
     return var["__version__"]
 
 
-_VERSION = get_version()
+def get_long_description():
+    with open("README.md") as fi:
+        return fi.read()
+
 
 setup(
     name="lpm",
-    version=_VERSION,
+    version=get_version(),
     entry_points={
         "console_scripts": ["lpm=lpm.__main__:main"],
     },
@@ -30,7 +32,8 @@ setup(
     include_package_data=True,
     url="https://gitlab.cas.mcmaster.ca/modyj/3xa3.git",
     license="https://www.gnu.org/licenses/agpl-3.0.html",
-    long_description=open("README.md").read(),
+    long_description=get_long_description(),
+    long_description_content_type="text/markdown",
     install_requires=["setuptools"],
     zip_safe=True,
     test_suite="tests",

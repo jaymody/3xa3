@@ -1,4 +1,4 @@
-# Project Name
+# Lines Per Minute
 
 Team Name: Lines Per Minute (lpm)
 
@@ -28,7 +28,17 @@ Install editable package:
 pip install -e .
 ```
 
-The folders and files for this project are as follows:
+Upload to [PyPI](https://pypi.org/project/lpm/0.0.1/):
+1. Update version in `lpm/__init__.py`
+2. Update requirements-dev.txt if needed
+3. Update setup.py if needed
+4. Run tests to assure everything is working
+5. `python -m build`
+6. `python -m twine upload dist/*`
 
-Doc - Documentation for the project
-Code - Implementation
+
+The folders and files for this project are as follows:
+`lpm`: Contains source code for project.
+`lpm/__main__.py`: Entry point for lpm.
+`tests`: Folder containing tests.
+`setup.py`: Python package setup.
