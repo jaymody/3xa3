@@ -6,6 +6,16 @@ Team Members: Jay Mody, Jessica Lim, Maanav Dalal
 
 This project is a reimplementation of [github.com/cslarsen/wpm](https://github.com/cslarsen/wpm).
 
+## Install
+```
+pip install lpm
+```
+
+## Run
+```
+lpm
+```
+
 ## Dev Setup
 
 Install dev dependencies:
