@@ -66,11 +66,11 @@ March 4, 2021 & Jay/Jessica/Maanav & Finish sections 1, 4, 5 and 6 \\
 
 \subsection{Purpose}
 
-The purpose of this document is to the testing plan for Lines Per Minute. This document with outline the tests that will be implemented for the software program lpm. It also will provide traceability and mapping to the requirements outlined in the SRS document. This document will act as an testing outline to ensure that the software product meets all predetermined requirements.
+The purpose of this document is to outline the testing plan for the software program Lines Per Minute. It contains a detailed list of tests that can be traced to the requirements outlined in the SRS document.
 
 \subsection{Scope}
 
-This document outlines tests to ensure the functional and non-functional requirements for lpm are met. Automated, dynamic, static and manual tests are all outlined in this document. This document outlines the frameworks that will be used for testing. It also provides Unit Tests and an outline of testing for the Proof-of-concept.
+This document describes automated, dynamic, static and manual tests to ensure the functional and non-functional requirements for lpm are met. This documents objective is to provide a plan for catching bugs early in the development stage and to verify that the requirements of the software are met. As such, test plans for code coverage, unit testing, and integration testing are provided.
 
 \subsection{Acronyms, Abbreviations, and Symbols}
 
@@ -119,7 +119,7 @@ This document outlines tests to ensure the functional and non-functional require
 
 \subsection{Overview of Document}
 
-This document will outline the Testing Plan for lpm, which is a software program adapted from wpm. The test plan will describe how the functional and non-functional requirements will be satisfied using the PyTest framework and manual tests.
+The document starts with an overview of the testing approach, testing tools, and testing schedule for the project. It then provides a detailed list of tests along with a traceability matrix to map requirements to specific tests. We also provide a test plan for the proof of concept build, comparisons to existing implementations, as well as a description of the unit testing approach.
 
 \section{Plan}
 
@@ -137,6 +137,7 @@ The team will be using automated testing by employing GitLab's CI/CD Pipelines. 
     \item Linting using Pylint for static analysis
     \item Code formatting using the black code formatter.
     \item Dynamic testing of our code using pytest.
+    \item Code coverage reporting using PyPI coverage.
 \end{enumerate}
 
 Through this automated procedure, it is ensured that any new commits made will conform to our code requirements and the developers are immediately informed about any breaking changes. We have decided that this is the optimal approach to testing as Pylint, black, and pytest are popular libraries for linting, code formatting, and testing respectively. As such, there is a lot of support for these libraries and them being frequently used speaks to their clear benefits in development.
@@ -147,7 +148,7 @@ Pytest will be be main testing tool for this project. Pytest test modules will b
 \subsection{Testing Schedule}
 
 See Gantt Chart with the updated testing plan at the following \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/tree/master/ProjectSchedule}{link}.
-Also, feel free to see the \textbf{testplanGantt.png} image at the same location for the snippet of the gantt chart directly relating to the test plan. 
+Also, feel free to see the \textbf{testplanGantt.png} image at the same location for the snippet of the gantt chart directly relating to the test plan.
 
 \section{System Test Description}
 
