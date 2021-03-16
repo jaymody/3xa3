@@ -20,10 +20,12 @@ class Config:
 
     @staticmethod
     def load():
+        """[summary]"""
         pass
 
     @staticmethod
     def reset():
+        """[summary]"""
         pass
 
 

@@ -1,5 +1,18 @@
 class Game:
     def __init__(self, config, snippets, screen, stats):
+        """[summary]
+
+        Parameters
+        ----------
+        config : [type]
+            [description]
+        snippets : [type]
+            [description]
+        screen : [type]
+            [description]
+        stats : [type]
+            [description]
+        """
         self.config = config
         self.snippets = snippets
         self.screen = screen
@@ -7,6 +20,7 @@ class Game:
         self.state = 0
 
     def run(self):
+        """[summary]"""
         # state = 0 for browsing, 1 for typing, 2 for done, 3 for resize, -1 for quit
         while True:
             self.screen.render(self)
@@ -35,13 +49,23 @@ class Game:
             #     pass
 
     def handle_state(self, key):
+        """[summary]
+
+        Parameters
+        ----------
+        key : [type]
+            [description]
+        """
         pass
 
     def typing(self):
+        """[summary]"""
         pass
 
     def done(self):
+        """[summary]"""
         pass
 
     def browsing(self):
+        """[summary]"""
         pass
