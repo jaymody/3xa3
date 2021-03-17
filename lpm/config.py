@@ -13,13 +13,10 @@ class Config:
     """App configuration loaded from CONFIG_PATH."""
 
     INIT = False
-    """Flag that stores if the config has been loaded."""
+    "Flag that stores if the config has been loaded."
 
     CONFIG_PATH = None
     "Path to configuration file."
-
-    TAB_SPACES = None
-    "Number of spaces in a tab."
 
     COLOR = None
     "Highlight color, used for stats header color."
@@ -34,7 +31,7 @@ class Config:
     "Color of snippet information text (author, title, etc...)."
 
     COLOR_TEXT = None
-    """Color of snippet text."""
+    "Color of snippet text."
 
     COLOR_CORRECT = None
     "Color of snippet text that was correctly typed."
