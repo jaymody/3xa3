@@ -38,6 +38,12 @@ Install editable package:
 pip install -e .
 ```
 
+Create documentation:
+```
+cd docs
+make clean && make html && make latexpdf
+```
+
 Upload to [PyPI](https://pypi.org/project/lpm/0.0.1/):
 1. Update version in `lpm/__init__.py`
 2. Update requirements-dev.txt if needed
