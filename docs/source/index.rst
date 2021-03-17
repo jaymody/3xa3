@@ -8,11 +8,6 @@ Lines Per Minute (lpm) is a command-line typing practice tool made for programme
 ``pip install lpm``
 
 
-Usage
------
-Put output of ``lpm --help`` here.
-
-
 Module Interface Specification
 ------------------------------
 
