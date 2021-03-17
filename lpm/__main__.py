@@ -1,4 +1,4 @@
-"""Main entry point for Lines-Per-Minute.
+"""Main entrypoint for Lines-Per-Minute.
 
 Use `lpm -h` for help.
 """

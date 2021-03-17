@@ -20,7 +20,7 @@ class Game:
         self.state = 0
 
     def run(self):
-        """[summary]"""
+        """Main method for the game. Handles logic for user input."""
         # state = 0 for browsing, 1 for typing, 2 for done, 3 for resize, -1 for quit
         while True:
             self.screen.render(self)
@@ -59,13 +59,13 @@ class Game:
         pass
 
     def typing(self):
-        """[summary]"""
+        """Handles interaction while user is typing characters in gameplay."""
         pass
 
     def done(self):
-        """[summary]"""
+        """Handles the user having finished playing lpm"""
         pass
 
     def browsing(self):
-        """[summary]"""
+        """Handles user browsing through multiple code snippets."""
         pass

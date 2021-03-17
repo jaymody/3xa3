@@ -118,21 +118,23 @@ class Stats:
 
     @classmethod
     def load(cls, filename):
-        """[summary]
+        """Loads stats from the provided stats JSON file.
 
         Parameters
         ----------
-        filename : [type]
-            [description]
+        filename : str
+            A direct path to the filename to load stats from. lpm_stats.json
+            by default.
         """
         pass
 
     def save(self, filename):
-        """[summary]
+        """Saves current statistics to the specified JSON file.
 
         Parameters
         ----------
-        filename : [type]
-            [description]
+        filename : str
+            A direct path to the filename to save stats to. lpm_stats.json
+            by default.
         """
         pass

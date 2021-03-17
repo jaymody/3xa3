@@ -1,5 +1,15 @@
 DEFAULT_CONFIG = {}
 
+"""Module for loading user config
+
+This module interfaces with config.json, the configuration file that users will
+modify if they want to edit the settings of lpm. Editable settings include:
+- Color
+- Amount of spaces per 'tab' inputted
+- Maximum lines or characters for a given snippet
+
+"""
+
 
 class Config:
     INIT = False
@@ -20,12 +30,12 @@ class Config:
 
     @staticmethod
     def load():
-        """[summary]"""
+        """Loads the configuration file from config.json."""
         pass
 
     @staticmethod
     def reset():
-        """[summary]"""
+        """Resets the configuration file using the DEFAULT_CONFIG constant."""
         pass
 
 

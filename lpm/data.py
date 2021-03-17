@@ -12,12 +12,13 @@ class Snippets:
 
     @classmethod
     def load(cls, filename):
-        """[summary]
+        """Loads snippets from specified filename
 
         Parameters
         ----------
-        filename : [type]
-            [description]
+        filename : str
+            A direct path to the filename to load snippets from. snippets.json
+            by default.
         """
         pass
 
@@ -26,24 +27,24 @@ class Snippets:
         pass
 
     def __getitem__(self, index):
-        """[summary]
+        """Loads the code snippet corresponding to the requested index
 
         Parameters
         ----------
-        index : [type]
-            [description]
+        index : int
+            Index of the requested code snippet.
         """
         pass
 
     def next_entry(self):
-        """[summary]"""
+        """Loads the next entry in the randomized list of code snippets."""
         # self.index += 1
         # self.index = self.index % len(self)
         # return self[self.index]
         pass
 
     def prev_entry(self):
-        """[summary]"""
+        """Loads the previous entry in the randomized list of code snippets."""
         # self.index -= 1
         # self.index = self.index % len(self)
         # return self[self.index]
@@ -56,16 +57,16 @@ class Snippet:
 
         Parameters
         ----------
-        snippet_id : [type]
-            [description]
-        lines : [type]
-            [description]
-        url : [type]
-            [description]
-        author : [type]
-            [description]
-        language : [type]
-            [description]
+        snippet_id : int
+            Unique ID for each code snippet.
+        lines : int
+            Number of lines for the snippet.
+        url : str
+            A link to the source of the code snippet.
+        author : str
+            The author of the code snippet.
+        language : str
+            The programming language in which the code snippet is written.
         """
         self.snippet_id = snippet_id
         self.lines = lines

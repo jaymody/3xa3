@@ -27,19 +27,20 @@ class Screen:
         pass
 
     def resize(self):
-        """[summary]"""
+        """Resizes game interface based on current user terminal size."""
         pass
 
     def render(self, game):
-        """[summary]
+        """Renders the header and snippet such that the user can play the game.
 
         Parameters
         ----------
-        game : [type]
-            [description]
+        game : Game
+            The game object is used to render the relevant snippet, statistics,
+            and user state.
         """
         pass
 
     def update_snippet(self):
-        """[summary]"""
+        """Updates the snippet if the user chooses to view another snippet."""
         pass
