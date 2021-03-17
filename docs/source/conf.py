@@ -9,20 +9,24 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../../"))
 
 
 # -- Project information -----------------------------------------------------
+
+import lpm  # pylint: disable=import-error
+
 
 project = "lpm"
 copyright = "2021, Jay Mody, Jessica Lim, Maanav Dalal"
 author = "Jay Mody, Jessica Lim, Maanav Dalal"
 
 # The full version, including alpha/beta/rc tags
-release = "0.0.3"
+release = lpm.__version__
 
 
 # -- General configuration ---------------------------------------------------
