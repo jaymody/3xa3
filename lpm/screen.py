@@ -1,3 +1,6 @@
+"""Module for command-line IO."""
+
+
 class Screen:
     # ESCAPE_KEY
     # BACKSPACE_KEY
@@ -6,22 +9,19 @@ class Screen:
     # RIGHT_KEY
     # RESIZE_KEY
 
-    def __init__(self, something):
-        """Initializes typing screen for user 
+    def __init__(self):
+        """Screen object used for command-line IO."""
 
-        Parameters
-        ----------
-        something : [type]
-            [description]
-        """
-        self.something = something
+        # set colors from config
+        # initialize curses screen stuff
+        pass
 
     def get_key(self):
-        """Gets the most recently pressed key
+        """Gets the most recently pressed key.
 
         Returns
         -------
-        str | int
+        str or int
             Returns the integer value for a special key, otherwise str value.
         """
         pass
@@ -31,7 +31,7 @@ class Screen:
         pass
 
     def render(self, game):
-        """Renders the header and snippet such that the user can play the game.
+        """Renders the typing interface with the most up to date information.
 
         Parameters
         ----------
@@ -39,8 +39,6 @@ class Screen:
             The game object is used to render the relevant snippet, statistics,
             and user state.
         """
-        pass
-
-    def update_snippet(self):
-        """Updates the snippet if the user chooses to view another snippet."""
+        # will probably need to use a bunch of helper functions to make this
+        # function not big and ugly
         pass

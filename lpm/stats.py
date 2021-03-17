@@ -1,3 +1,6 @@
+"""Module for tracking and computing lpm statistics."""
+
+
 def lines_per_minute(num_lines, elapsed):
     """Calculates lines per minute.
 
@@ -71,37 +74,57 @@ def accuracy(correct, wrong):
 
 
 class Stat:
-    def __init__(self, num_lines=0, num_chars=0, num_correct=0, num_wrong=0, elapsed=0):
-        """Stats for a single snippet.
+    def __init__(self, start_time, end_time=None):
+        """Statistics for a single snippet attempt.
 
         Parameters
         ----------
-        num_lines : int, optional
-            [description], by default 0
-        num_chars : int, optional
-            [description], by default 0
-        num_correct : int, optional
-            [description], by default 0
-        num_wrong : int, optional
-            [description], by default 0
-        elapsed : int, optional
-            [description], by default 0
+        start_time : datetime
+            Datetime object for when attempt was started.
+        end_time : datetime, optional
+            Datetime object for when attempt was completed.
         """
-        self.num_lines = num_lines
-        self.num_chars = num_chars
-        self.num_correct = num_correct
-        self.num_wrong = num_wrong
-        self.elapsed = elapsed
+        self.start_time = start_time
+        self.end_time = end_time
+        self.num_lines = 0
+        self.num_chars = 0
+        self.num_correct = 0
+        self.num_wrong = 0
+
+    @property
+    def elapsed(self):
+        """Elapsed time in seconds since stat was started."""
+        pass
+
+    @property
+    def lpm(self):
+        """Lines per minute."""
+        pass
+
+    @property
+    def wpm(self):
+        """Words per minute."""
+        pass
+
+    @property
+    def cpm(self):
+        """Characters per minute."""
+        pass
+
+    @property
+    def acc(self):
+        """Accuracy."""
+        pass
 
 
 class Stats:
-    def __init__(self, stats, current=None):
+    def __init__(self, stats):
         """Data object for user statistics.
 
         Parameters
         ----------
         stats : dict datetime.datime -> Stat
-            A history of user snippet statistics stored in a dictionary that 
+            A history of user snippet statistics stored in a dictionary that
             maps a datetime to a Stat object.
         """
         self.stats = stats
@@ -112,7 +135,7 @@ class Stats:
         Parameters
         ----------
         stat : Stat
-            Stat for the current 
+            Stat for the current
         """
         pass
 
@@ -123,8 +146,7 @@ class Stats:
         Parameters
         ----------
         filename : str
-            A direct path to the filename to load stats from. lpm_stats.json
-            by default.
+            File path to load stats from.
         """
         pass
 
@@ -134,7 +156,6 @@ class Stats:
         Parameters
         ----------
         filename : str
-            A direct path to the filename to save stats to. lpm_stats.json
-            by default.
+            File path to save stats to.
         """
         pass

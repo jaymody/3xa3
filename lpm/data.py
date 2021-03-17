@@ -1,11 +1,14 @@
+"""Module that specifies data structures, namely Snippet and Snippets."""
+
+
 class Snippets:
     def __init__(self, snippets):
-        """[summary]
+        """Stores database of code snippets.
 
         Parameters
         ----------
-        snippets : [type]
-            [description]
+        snippets : list[Snippet]
+            A list of Snippet objects.
         """
         self.snippets = snippets
         self.index = 0
@@ -19,15 +22,20 @@ class Snippets:
         filename : str
             A direct path to the filename to load snippets from. snippets.json
             by default.
+
+        Returns
+        -------
+        Snippets
+            Returns Snippets object loaded from filename.
         """
         pass
 
     def __len__(self):
-        """[summary]"""
+        """Returns number of snippets."""
         pass
 
     def __getitem__(self, index):
-        """Loads the code snippet corresponding to the requested index
+        """Loads the code snippet corresponding to the requested index.
 
         Parameters
         ----------
@@ -36,15 +44,19 @@ class Snippets:
         """
         pass
 
+    def shuffle(self):
+        """Shuffle the list of snippets."""
+        pass
+
     def next_entry(self):
-        """Loads the next entry in the randomized list of code snippets."""
+        """Returns the next entry in the list of code snippets."""
         # self.index += 1
         # self.index = self.index % len(self)
         # return self[self.index]
         pass
 
     def prev_entry(self):
-        """Loads the previous entry in the randomized list of code snippets."""
+        """Returns the previous entry in the list of code snippets."""
         # self.index -= 1
         # self.index = self.index % len(self)
         # return self[self.index]

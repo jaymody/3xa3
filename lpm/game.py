@@ -1,43 +1,43 @@
+"""Module that contains main logic for lpm typing game."""
+
+
 class Game:
-    def __init__(self, config, snippets, screen, stats):
+    def __init__(self, snippets, screen, stats):
         """[summary]
 
         Parameters
         ----------
-        config : [type]
-            [description]
-        snippets : [type]
-            [description]
-        screen : [type]
-            [description]
-        stats : [type]
-            [description]
+        snippets : Snippets
+            Snippets object containing database of code snippets.
+        screen : Screen
+            Screen object that handles command-line IO.
+        stats : Stats
+            Stats object that tracks user statistics.
         """
-        self.config = config
         self.snippets = snippets
         self.screen = screen
         self.stats = stats
+        self.current_stat = None
         self.state = 0
 
     def run(self):
-        """Main method for the game. Handles logic for user input."""
-        # state = 0 for browsing, 1 for typing, 2 for done, 3 for resize, -1 for quit
+        """Main loop logic for typing game."""
         while True:
             self.screen.render(self)
             key = self.screen.get_key()
-            state = self.handle_state(key)
+            self.state = self.get_state(key)
 
             # # only do rendering stuff here
             # if state == 0:
-            #     # reading user input
-            #     self.typing()
-            # elif state == 1:
-            #     # show stats for this snippet
-            #     self.done()
-            # elif state == 2:
             #     # user is browsing
             #     # must exit using ctrl + c
             #     self.browsing()
+            # if state == 1:
+            #     # reading user input
+            #     self.typing()
+            # elif state == 2:
+            #     # show stats for this snippet
+            #     self.done()
             # elif state == 3:
             #     # resize screen
             #     self.screen.resize()
@@ -48,24 +48,36 @@ class Game:
             #     # panic??????!!!
             #     pass
 
-    def handle_state(self, key):
-        """[summary]
+    def get_state(self, key):
+        """Get the state of the game.
+
+        This should return one of the following values:
+            0 if the user is in browse mode
+            1 if the user is currently typing (ie attempting a code snippet)
+            2 if the user had completed a code snippet (similar to browse mode)
+            3 if the user is resizing the window
+            -1 if the user is attempting to exit the game
 
         Parameters
         ----------
-        key : [type]
-            [description]
+        key : str or int
+            Most recent key pressed by the user.
+
+        Returns
+        -------
+        int
+            Current state of the game.
         """
         pass
 
     def typing(self):
-        """Handles interaction while user is typing characters in gameplay."""
+        """Handles interaction during the typing (gameplay) state."""
         pass
 
     def done(self):
-        """Handles the user having finished playing lpm"""
+        """Handles interaction during done state."""
         pass
 
     def browsing(self):
-        """Handles user browsing through multiple code snippets."""
+        """Handles interactio during the browsing state."""
         pass
