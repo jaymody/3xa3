@@ -3,17 +3,19 @@ Lines Per Minute Documentation
 
 Lines Per Minute (lpm) is a command-line typing practice tool made for programmers. Inspired by `github.com/cslarsen/wpm <link https://github.com/cslarsen/wpm>`_.
 
-Installation
-------------
+**Installation:**
+
 ``pip install lpm``
 
-Run
----
-``lpm``
+
+Usage
+-----
+Put output of ``lpm --help`` here.
 
 
-Table of Contents
------------------
+Module Interface Specification
+------------------------------
+
 .. toctree::
     :maxdepth: 3
 
@@ -21,8 +23,10 @@ Table of Contents
     API reference <_autosummary/lpm>
 
 
-Indices and Tables
-------------------
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. only:: html
+
+    Indices and Tables
+    ------------------
+    * :ref:`genindex`
+    * :ref:`modindex`
+    * :ref:`search`
