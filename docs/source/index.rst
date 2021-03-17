@@ -1,20 +1,28 @@
-.. lpm documentation master file, created by
-   sphinx-quickstart on Wed Mar 17 13:55:04 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Lines Per Minute Documentation
+==============================
 
-Welcome to lpm's documentation!
-===============================
+Lines Per Minute (lpm) is a command-line typing practice tool made for programmers. Inspired by `github.com/cslarsen/wpm <link https://github.com/cslarsen/wpm>`_.
 
+Installation
+------------
+``pip install lpm``
+
+Run
+---
+``lpm``
+
+
+Table of Contents
+-----------------
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 3
+
+    Home page <self>
+    API reference <_autosummary/lpm>
 
 
-
-Indices and tables
-==================
-
+Indices and Tables
+------------------
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
