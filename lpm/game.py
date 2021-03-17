@@ -3,7 +3,7 @@
 
 class Game:
     def __init__(self, snippets, screen, stats):
-        """[summary]
+        """Game object that runs the lpm typing game.
 
         Parameters
         ----------

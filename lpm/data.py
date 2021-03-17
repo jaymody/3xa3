@@ -65,7 +65,7 @@ class Snippets:
 
 class Snippet:
     def __init__(self, snippet_id, lines, url, author, language):
-        """[summary]
+        """Data for a single code snippet.
 
         Parameters
         ----------
@@ -88,11 +88,11 @@ class Snippet:
 
     @classmethod
     def from_dict(cls, d):
-        """[summary]
+        """Build Snippet object from a dictionary.
 
         Parameters
         ----------
-        d : [type]
-            [description]
+        d : dict
+            Dictionary containing snippet data.
         """
         pass
