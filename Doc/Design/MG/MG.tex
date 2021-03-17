@@ -65,19 +65,22 @@ March 17, 2021 & Jay/Jessica/Maanav & Tracability Matrix, Complete MG, Complete 
 \end{tabularx}
 \end{table}
 
-\newpage 
+\newpage
 
 \tableofcontents
 \listoftables
 \listoffigures
 
+
+
 \newpage
+
 
 \section{Introduction}
 
 The goal of the lpm package is to provide a typing tool specialized for code through the command line. The lpm package is based upon the package wpm, and allows for unique simplified interfacing.
 
-The purpose of this document is show a decomposition of the modules that will be used to implement lpm. This document will outline the overall high-level architecture of the program. The architecture is decomposed into several modules to highlight the importance of information hiding. 
+The purpose of this document is show a decomposition of the modules that will be used to implement lpm. This document will outline the overall high-level architecture of the program. The architecture is decomposed into several modules to highlight the importance of information hiding.
 
 The document outlines how separation of changes is achieved, as well as the link back to the software requirements. The document outlines anticipated and unlikely changes to ensure information hiding (Section \ref{SecChange}). It also includes a module hierarchy that breaks down a modules (Section \ref{SecMH}), and a decomposition that specifies the secrets of hardware, behavior and software decision modules (Section \ref{SecMD}). All modules are linked too the software specifications via a tractability matrix (Section \ref{SecTM}). The Use Hierarchy diagram can be references for a visual representation (Section \ref{SecUse}).
 
@@ -167,7 +170,7 @@ The following items include potential anticipated changes. These changes mostly 
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
-The following items describe features of our overall architecture model that will be unlikely to change. These mostly involve interactions between 
+The following items describe features of our overall architecture model that will be unlikely to change. These mostly involve interactions between
 
 % The module design should be as general as possible. However, a general system is
 % more complex. Sometimes this complexity is not necessary. Fixing some design
@@ -177,10 +180,10 @@ The following items describe features of our overall architecture model that wil
 %decisions will be changed.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{acHardware}:] The number of modules and how they interact, will likely be consistent
-\item[\refstepcounter{ucnum} \uctheucnum \label{acSt}:] The statistics being calculated and the statistics functions will likely not change 
-\item [\refstepcounter{ucnum} \uctheucnum \label{acD}:] The data structures for the different information types will likely stay consistent
-\item [\refstepcounter{ucnum} \uctheucnum \label{acEnt}:] The entry point for the CLI application will be consistent
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucHardware}:] The number of modules and how they interact, will likely be consistent
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucSt}:] The statistics being calculated and the statistics functions will likely not change
+\item [\refstepcounter{ucnum} \uctheucnum \label{ucD}:] The data structures for the different information types will likely stay consistent
+\item [\refstepcounter{ucnum} \uctheucnum \label{ucEnt}:] The entry point for the CLI application will be consistent
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -440,7 +443,7 @@ In this section, the uses hierarchy between the modules is provided. The overall
 
 See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/tree/master/ProjectSchedule}{link}: \\
 
-A snippet of the relevant portion of the Gantt chart can be found below: 
+A snippet of the relevant portion of the Gantt chart can be found below:
 \begin{figure}[!htbp]
 \centering
 \includegraphics[scale=0.5]{MG_Gantt.png}
