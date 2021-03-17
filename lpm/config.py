@@ -2,7 +2,7 @@
 
 This module handles app configurations that can be modified by the user. The
 configuration is loaded from CONFIG_PATH, which the user may edit via:
-    `lpm --settings`
+`lpm --settings`
 """
 
 DEFAULT_CONFIG = {}
@@ -61,6 +61,6 @@ class Config:
 
 # loads the Config file if it hasn't been loaded yet
 # this runs when config is imported
-if not Config.init:
+if not Config.INIT:
     Config.load()
-    Config.init = True
+    Config.INIT = True
