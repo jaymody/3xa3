@@ -21,7 +21,7 @@ setup(
     name="lpm",
     version=get_version(),
     entry_points={
-        "console_scripts": ["lpm=lpm.__main__:main"],
+        "console_scripts": ["lpm=lpm.__main__:cli"],
     },
     description="Command line application for practicing coding speed.",
     author="Jay Mody, Jessica Lim, Maanav Dalal",
