@@ -1,6 +1,42 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
 
 
+class Snippet:
+    def __init__(self, snippet_id, lines, url, author, language):
+        """Data for a single code snippet.
+
+        Parameters
+        ----------
+        snippet_id : int
+            Unique ID for each code snippet.
+        lines : list[str]
+            Text lines in the code snippet.
+        url : str
+            A link to the source of the code snippet (ie full url to github
+            source file with lines permalinked)
+        author : str
+            The author of the code snippet (ie pallets/flask).
+        language : str
+            The programming language in which the code snippet is written.
+        """
+        self.snippet_id = snippet_id
+        self.lines = lines
+        self.url = url
+        self.author = author
+        self.language = language
+
+    @classmethod
+    def from_dict(cls, d):
+        """Build Snippet object from a dictionary.
+
+        Parameters
+        ----------
+        d : dict
+            Dictionary containing snippet data.
+        """
+        pass
+
+
 class Snippets:
     def __init__(self, snippets):
         """Stores database of code snippets.
@@ -14,7 +50,7 @@ class Snippets:
         self.index = 0
 
     @classmethod
-    def load(cls, filename):
+    def load(cls, filename, languages):
         """Loads snippets from specified filename
 
         Parameters
@@ -28,6 +64,12 @@ class Snippets:
         Snippets
             Returns Snippets object loaded from filename.
         """
+        # set(languages)
+        # snippets = []
+        # for k, values in json.items():
+        #     if k in languages:
+        #         snippets += [v.from_dict(v) v in values]
+        # return cls(snippets)
         pass
 
     def __len__(self):
@@ -63,36 +105,37 @@ class Snippets:
         pass
 
 
-class Snippet:
-    def __init__(self, snippet_id, lines, url, author, language):
-        """Data for a single code snippet.
-
-        Parameters
-        ----------
-        snippet_id : int
-            Unique ID for each code snippet.
-        lines : int
-            Number of lines for the snippet.
-        url : str
-            A link to the source of the code snippet.
-        author : str
-            The author of the code snippet.
-        language : str
-            The programming language in which the code snippet is written.
-        """
-        self.snippet_id = snippet_id
-        self.lines = lines
-        self.url = url
-        self.author = author
-        self.language = language
-
-    @classmethod
-    def from_dict(cls, d):
-        """Build Snippet object from a dictionary.
-
-        Parameters
-        ----------
-        d : dict
-            Dictionary containing snippet data.
-        """
-        pass
+# {
+#     "python": [
+#         {
+#             "snippet_id": 0,
+#             "lines": ["print('hello')", "print('hi')"],
+#             "url": "github.com",
+#             "author": "jay",
+#             "language": "python",
+#         },
+#         {
+#             "snippet_id": 0,
+#             "lines": ["print('hello')", "print('hi')"],
+#             "url": "github.com",
+#             "author": "jay",
+#             "language": "python",
+#         },
+#     ],
+#     "java": [
+#         {
+#             "snippet_id": 0,
+#             "lines": ["print('hello')", "print('hi')"],
+#             "url": "github.com",
+#             "author": "jay",
+#             "language": "python",
+#         },
+#         {
+#             "snippet_id": 0,
+#             "lines": ["print('hello')", "print('hi')"],
+#             "url": "github.com",
+#             "author": "jay",
+#             "language": "python",
+#         },
+#     ],
+# }

@@ -10,7 +10,14 @@ DEFAULT_CONFIG = {}
 
 
 class Config:
-    """App configuration loaded from CONFIG_PATH."""
+    """App configuration loaded from CONFIG_PATH.
+
+    Examples
+    --------
+    from Config import Config
+
+    Config.BACKGROUND_COLOR
+    """
 
     INIT = False
     "Flag that stores if the config has been loaded."
@@ -45,14 +52,25 @@ class Config:
     MAX_CHARS = None
     "Max number of characters allowed per line in a snippet."
 
+    STATS_PATH = None
+    "Path to stats file."
+
+    SNIPPETS_PATH = None
+    "Path to snippets file."
+
     @staticmethod
     def load():
         """Loads the configuration file from CONFIG_PATH."""
+        # reset if file does not exist
+        #
+        # if config_path is invalid json or some field is missing
+        # report error to user (ask them to verify or ask them to lpm --reset)
         pass
 
     @staticmethod
     def reset():
         """Resets the configuration file to DEFAULT_CONFIG."""
+        # write DEFAULT_CONFIG to CONFIG_PATH
         pass
 
 

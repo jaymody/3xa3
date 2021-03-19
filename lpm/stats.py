@@ -94,6 +94,10 @@ class Stat:
     @property
     def elapsed(self):
         """Elapsed time in seconds since stat was started."""
+        # if end_time is None:
+        #     return current_time - self.start_time
+        # else:
+        #     return end_time - start_time
         pass
 
     @property
@@ -104,6 +108,7 @@ class Stat:
     @property
     def wpm(self):
         """Words per minute."""
+        # return words_per_minute(self.num_chars, self.elapsed)
         pass
 
     @property
@@ -137,6 +142,8 @@ class Stats:
         stat : Stat
             Stat for the current
         """
+        # catch error here if Stat is invalid
+        # (ie values are 0 or end_time/start_time is None)
         pass
 
     @classmethod
