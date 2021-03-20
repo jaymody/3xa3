@@ -1,6 +1,9 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
 
 
+DEFAULT = ["python", "java", "javascript"]
+
+
 class Snippet:
     def __init__(self, snippet_id, lines, url, author, language):
         """Data for a single code snippet.
@@ -34,7 +37,9 @@ class Snippet:
         d : dict
             Dictionary containing snippet data.
         """
-        pass
+        return Snippet(
+            d["snippet_id"], d["lines"], d["url"], d["author"], d["language"]
+        )
 
 
 class Snippets:
@@ -74,7 +79,7 @@ class Snippets:
 
     def __len__(self):
         """Returns number of snippets."""
-        pass
+        return len(self.snippets)
 
     def __getitem__(self, index):
         """Loads the code snippet corresponding to the requested index.
@@ -84,7 +89,10 @@ class Snippets:
         index : int
             Index of the requested code snippet.
         """
-        pass
+        try:
+            return self.snippets[index]
+        except IndexError:
+            return None
 
     def shuffle(self):
         """Shuffle the list of snippets."""
@@ -99,43 +107,29 @@ class Snippets:
 
     def prev_entry(self):
         """Returns the previous entry in the list of code snippets."""
-        # self.index -= 1
-        # self.index = self.index % len(self)
-        # return self[self.index]
-        pass
+        self.index -= 1
+        self.index = self.index % len(self)
+        return self[self.index]
 
+    @classmethod
+    def load(cls, filename, languages=DEFAULT):
+        """Loads snippets from specified filename
 
-# {
-#     "python": [
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#     ],
-#     "java": [
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#     ],
-# }
+        Parameters
+        ----------
+        filename : str
+            A direct path to the filename to load snippets from. snippets.json
+            by default.
+
+        Returns
+        -------
+        Snippets
+            Returns Snippets object loaded from filename.
+        """
+        with open(filename) as fi:
+            data = json.load(fi)
+        snippets = []
+        for lang, values in data.items():
+            if lang in languages:
+                snippets += values
+        return cls(snippets)
