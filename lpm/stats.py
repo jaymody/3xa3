@@ -1,5 +1,10 @@
 """Module for tracking and computing lpm statistics."""
 
+import copy
+import json
+
+from datetime import datetime
+
 
 def lines_per_minute(num_lines, elapsed):
     """Calculates lines per minute.
@@ -16,7 +21,7 @@ def lines_per_minute(num_lines, elapsed):
     double
         Number of lines per minute a user is typing.
     """
-    pass
+    return 60 * num_lines / elapsed
 
 
 def words_per_minute(num_chars, elapsed):
@@ -34,7 +39,7 @@ def words_per_minute(num_chars, elapsed):
     double
         Number of words per minute a user is typing.
     """
-    pass
+    return 60 * (num_chars / 5.6) / elapsed
 
 
 def characters_per_minute(num_chars, elapsed):
@@ -52,7 +57,7 @@ def characters_per_minute(num_chars, elapsed):
     double
         Number of characters per minute a user is typing.
     """
-    pass
+    return 60 * num_chars / elapsed
 
 
 def accuracy(correct, wrong):
@@ -70,11 +75,13 @@ def accuracy(correct, wrong):
     double
         The user's fractional accuracy for the given accuracy
     """
-    pass
+    return correct / (correct + wrong)
 
 
 class Stat:
-    def __init__(self, start_time, end_time=None):
+    TIME_STR_FMT = "%Y-%m-%d %H:%M:%S.%f"
+
+    def __init__(self, start_time=None, end_time=None):
         """Statistics for a single snippet attempt.
 
         Parameters
@@ -91,35 +98,80 @@ class Stat:
         self.num_correct = 0
         self.num_wrong = 0
 
+    def start(self):
+        """Set start_time to the current time (ie the code snippet attempt has started)."""
+        self.start_time = datetime.now()
+
+    def stop(self):
+        """Set end_time to the current time (ie the code snippet attempt is done)."""
+        self.end_time = datetime.now()
+
     @property
     def elapsed(self):
         """Elapsed time in seconds since stat was started."""
-        # if end_time is None:
-        #     return current_time - self.start_time
-        # else:
-        #     return end_time - start_time
-        pass
+        if self.end_time is None:
+            return (datetime.now() - self.start_time).total_seconds()
+        return (self.end_time - self.start_time).total_seconds()
 
     @property
     def lpm(self):
         """Lines per minute."""
-        pass
+        if self.start_time is None:
+            return None
+        return lines_per_minute(self.num_lines, self.elapsed)
 
     @property
     def wpm(self):
         """Words per minute."""
-        # return words_per_minute(self.num_chars, self.elapsed)
-        pass
+        if self.start_time is None:
+            return None
+        return words_per_minute(self.num_chars, self.elapsed)
 
     @property
     def cpm(self):
         """Characters per minute."""
-        pass
+        if self.start_time is None:
+            return None
+        return characters_per_minute(self.num_chars, self.elapsed)
 
     @property
     def acc(self):
         """Accuracy."""
-        pass
+        if self.start_time is None:
+            return None
+        return accuracy(self.num_correct, self.num_wrong)
+
+    @classmethod
+    def from_dict(cls, d):
+        """Create Stat object from dict."""
+        stat = cls()
+        for k, v in d.items():
+            setattr(stat, k, v)
+        stat.start_time = datetime.strptime(stat.start_time, cls.TIME_STR_FMT)
+        stat.end_time = datetime.strptime(stat.end_time, cls.TIME_STR_FMT)
+        return stat
+
+    def to_dict(self):
+        """Send to dict."""
+        d = copy.deepcopy(self.__dict__)
+        d["start_time"] = d["start_time"].strftime(self.TIME_STR_FMT)
+        d["end_time"] = d["end_time"].strftime(self.TIME_STR_FMT)
+        return d
+
+    def __eq__(self, other):
+        """Check two Stat objects are equal.
+
+        Parameter
+        ---------
+        other : Stat
+            Other Stat object to check equality of.
+
+        Returns
+        -------
+        bool
+            Whether self is equivalent to other.
+        """
+        return self.__dict__ == other.__dict__
 
 
 class Stats:
@@ -128,9 +180,8 @@ class Stats:
 
         Parameters
         ----------
-        stats : dict datetime.datime -> Stat
-            A history of user snippet statistics stored in a dictionary that
-            maps a datetime to a Stat object.
+        stats : list[datetime]
+            A history of user snippet statistics in chronological order.
         """
         self.stats = stats
 
@@ -140,22 +191,31 @@ class Stats:
         Parameters
         ----------
         stat : Stat
-            Stat for the current
+            Stat object to store to the history.
         """
-        # catch error here if Stat is invalid
-        # (ie values are 0 or end_time/start_time is None)
-        pass
+        if stat.end_time is None:
+            raise ValueError("stat must be completed before adding to history")
+        if self.stats and stat.end_time < self.stats[-1].end_time:
+            raise ValueError("stat must occur after the last entry in the history")
+        self.stats.append(stat)
 
     @classmethod
     def load(cls, filename):
-        """Loads stats from the provided stats JSON file.
+        """Loads stats from the stats JSON file.
 
         Parameters
         ----------
         filename : str
-            File path to load stats from.
+            File path to loads stats from.
+
+        Returns
+        -------
+        Stats
+            Stats object loaded from json.
         """
-        pass
+        with open(filename) as fi:
+            stats = [Stat.from_dict(d) for d in json.load(fi)]
+        return cls(stats)
 
     def save(self, filename):
         """Saves current statistics to the specified JSON file.
@@ -165,4 +225,39 @@ class Stats:
         filename : str
             File path to save stats to.
         """
-        pass
+        with open(filename, "w") as fo:
+            json.dump([stat.to_dict() for stat in self.stats], fo, indent=2)
+
+    def __getitem__(self, index):
+        """Get Stat by index.
+
+        Parameters
+        ----------
+        index : int
+            Index of entry.
+
+        Returns
+        -------
+        Stat
+            Stat object stored at that index.
+        """
+        return self.stats[index]
+
+    def __len__(self):
+        """Get length of Stats."""
+        return len(self.stats)
+
+    def __eq__(self, other):
+        """Check two Stats objects are equal.
+
+        Parameter
+        ---------
+        other : Stats
+            Other Stats object to check equality of.
+
+        Returns
+        -------
+        bool
+            Whether self is equivalent to other.
+        """
+        return self.stats == other.stats
