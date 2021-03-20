@@ -5,7 +5,24 @@ configuration is loaded from CONFIG_PATH, which the user may edit via:
 `lpm --settings`
 """
 
-DEFAULT_CONFIG = {}
+import os
+import json
+
+DEFAULT_CONFIG = {
+    "CONFIG_PATH": "~/.lpmconfig.json",
+    "COLOR": "#5f85c0",
+    "COLOR_BACKGROUND": "#121212",
+    "COLOR_STATS": "#77abfc",
+    "COLOR_INFO": "#77abfc",
+    "COLOR_TEXT": "#5f85c0",
+    "COLOR_CORRECT": "#9effb6",
+    "COLOR_INCORRECT": "#da5a58",
+    "MAX_LINES": 16,
+    "MAX_CHARS": 80,
+    "STATS_PATH": "~/.lpmstats.json",
+    "SNIPPET_PATH": "~/.lpmsnippets.json",
+}
+
 """Stores the default configuration for lpm."""
 
 
@@ -22,40 +39,40 @@ class Config:
     INIT = False
     "Flag that stores if the config has been loaded."
 
-    CONFIG_PATH = None
+    CONFIG_PATH = os.path.expanduser("~/.lpmconfig.json")
     "Path to configuration file."
 
-    COLOR = None
+    COLOR = DEFAULT_CONFIG["COLOR"]
     "Highlight color, used for stats header color."
 
-    COLOR_BACKGROUND = None
+    COLOR_BACKGROUND = DEFAULT_CONFIG["COLOR_BACKGROUND"]
     "Background color."
 
-    COLOR_STATS = None
+    COLOR_STATS = DEFAULT_CONFIG["COLOR_STATS"]
     "Color of stats text."
 
-    COLOR_INFO = None
+    COLOR_INFO = DEFAULT_CONFIG["COLOR_INFO"]
     "Color of snippet information text (author, title, etc...)."
 
-    COLOR_TEXT = None
+    COLOR_TEXT = DEFAULT_CONFIG["COLOR_TEXT"]
     "Color of snippet text."
 
-    COLOR_CORRECT = None
+    COLOR_CORRECT = DEFAULT_CONFIG["COLOR_CORRECT"]
     "Color of snippet text that was correctly typed."
 
-    COLOR_INCORRECT = None
+    COLOR_INCORRECT = DEFAULT_CONFIG["COLOR_INCORRECT"]
     "Color of snippet text that was incorrectly typed."
 
-    MAX_LINES = None
+    MAX_LINES = DEFAULT_CONFIG["MAX_LINES"]
     "Max lines allowed per snippet."
 
-    MAX_CHARS = None
+    MAX_CHARS = DEFAULT_CONFIG["MAX_CHARS"]
     "Max number of characters allowed per line in a snippet."
 
-    STATS_PATH = None
+    STATS_PATH = DEFAULT_CONFIG["STATS_PATH"]
     "Path to stats file."
 
-    SNIPPETS_PATH = None
+    SNIPPETS_PATH = DEFAULT_CONFIG["SNIPPET_PATH"]
     "Path to snippets file."
 
     @staticmethod
@@ -65,13 +82,20 @@ class Config:
         #
         # if config_path is invalid json or some field is missing
         # report error to user (ask them to verify or ask them to lpm --reset)
-        pass
+        if not (os.path.exists(Config.CONFIG_PATH)):
+            Config.reset()
+        else:
+            with open(Config.CONFIG_PATH) as fi:
+                data = json.load(fi)
+                for k, v in data.items():
+                    if k in DEFAULT_CONFIG and k != "CONFIG_PATH":
+                        setattr(Config, k, v)
 
     @staticmethod
     def reset():
         """Resets the configuration file to DEFAULT_CONFIG."""
-        # write DEFAULT_CONFIG to CONFIG_PATH
-        pass
+        with open(Config.CONFIG_PATH, "w") as fo:
+            fo.write(json.dumps(DEFAULT_CONFIG))
 
 
 # loads the Config file if it hasn't been loaded yet
