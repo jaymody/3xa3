@@ -175,6 +175,9 @@ class Stat:
         """
         return self.__dict__ == other.__dict__
 
+    def __str__(self):
+        return f"{self.elapsed:.2f}s  {self.cpm:.2f} cpm  {self.wpm:.2f} wpm  {self.lpm:.2f} lpm  {self.acc*100:.2f}% acc"
+
 
 class Stats:
     def __init__(self, stats):
