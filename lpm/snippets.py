@@ -1,5 +1,6 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
-
+import json
+import random
 
 class Snippet:
     def __init__(self, snippet_id, lines, url, author, language):
@@ -34,8 +35,7 @@ class Snippet:
         d : dict
             Dictionary containing snippet data.
         """
-        pass
-
+        return Snippet(d["snippet_id"], d["lines"], d["url"], d["author"], d["language"])
 
 class Snippets:
     def __init__(self, snippets):
@@ -48,6 +48,39 @@ class Snippets:
         """
         self.snippets = snippets
         self.index = 0
+
+    def __len__(self):
+        """Returns number of snippets."""
+        return(len(self.snippets))
+
+    def __getitem__(self, index):
+        """Loads the code snippet corresponding to the requested index.
+
+        Parameters
+        ----------
+        index : int
+            Index of the requested code snippet.
+        """
+        try:
+            return self.snippets[index]
+        except:
+            raise Exception("Out of index error")
+
+    def shuffle(self):
+        """Shuffle the list of snippets."""
+        random.shuffle(self.snippets)
+
+    def next_entry(self):
+        """Returns the next entry in the list of code snippets."""
+        self.index += 1
+        self.index = self.index % len(self)
+        return self[self.index]
+
+    def prev_entry(self):
+        """Returns the previous entry in the list of code snippets."""
+        self.index -= 1
+        self.index = self.index % len(self)
+        return self[self.index]
 
     @classmethod
     def load(cls, filename, languages):
@@ -64,78 +97,11 @@ class Snippets:
         Snippets
             Returns Snippets object loaded from filename.
         """
-        # set(languages)
-        # snippets = []
-        # for k, values in json.items():
-        #     if k in languages:
-        #         snippets += [v.from_dict(v) v in values]
-        # return cls(snippets)
-        pass
+        with open(filename) as fi:
+            data = json.load(fi)
+        snippets = []
+        for lang, values in data.items():
+            if lang in languages:
+                snippets += values
+        return cls(snippets)
 
-    def __len__(self):
-        """Returns number of snippets."""
-        pass
-
-    def __getitem__(self, index):
-        """Loads the code snippet corresponding to the requested index.
-
-        Parameters
-        ----------
-        index : int
-            Index of the requested code snippet.
-        """
-        pass
-
-    def shuffle(self):
-        """Shuffle the list of snippets."""
-        pass
-
-    def next_entry(self):
-        """Returns the next entry in the list of code snippets."""
-        # self.index += 1
-        # self.index = self.index % len(self)
-        # return self[self.index]
-        pass
-
-    def prev_entry(self):
-        """Returns the previous entry in the list of code snippets."""
-        # self.index -= 1
-        # self.index = self.index % len(self)
-        # return self[self.index]
-        pass
-
-
-# {
-#     "python": [
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#     ],
-#     "java": [
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#         {
-#             "snippet_id": 0,
-#             "lines": ["print('hello')", "print('hi')"],
-#             "url": "github.com",
-#             "author": "jay",
-#             "language": "python",
-#         },
-#     ],
-# }
