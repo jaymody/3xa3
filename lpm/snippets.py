@@ -1,5 +1,6 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
-
+import json
+import random
 
 DEFAULT = ["python", "java", "javascript"]
 
@@ -54,29 +55,6 @@ class Snippets:
         self.snippets = snippets
         self.index = 0
 
-    @classmethod
-    def load(cls, filename, languages):
-        """Loads snippets from specified filename
-
-        Parameters
-        ----------
-        filename : str
-            A direct path to the filename to load snippets from. snippets.json
-            by default.
-
-        Returns
-        -------
-        Snippets
-            Returns Snippets object loaded from filename.
-        """
-        # set(languages)
-        # snippets = []
-        # for k, values in json.items():
-        #     if k in languages:
-        #         snippets += [v.from_dict(v) v in values]
-        # return cls(snippets)
-        pass
-
     def __len__(self):
         """Returns number of snippets."""
         return len(self.snippets)
@@ -96,14 +74,13 @@ class Snippets:
 
     def shuffle(self):
         """Shuffle the list of snippets."""
-        pass
+        random.shuffle(self.snippets)
 
     def next_entry(self):
         """Returns the next entry in the list of code snippets."""
-        # self.index += 1
-        # self.index = self.index % len(self)
-        # return self[self.index]
-        pass
+        self.index += 1
+        self.index = self.index % len(self)
+        return self[self.index]
 
     def prev_entry(self):
         """Returns the previous entry in the list of code snippets."""
