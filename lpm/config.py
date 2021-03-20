@@ -20,6 +20,8 @@ DEFAULT_CONFIG = {
     "STATS_PATH": "~/.lpmstats.json",
     "SNIPPET_PATH": "~/.lpmsnippets.json",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
+    "MAX_LINES": 16,
+    "MAX_COLS": 80,
 }
 
 """Stores the default configuration for lpm."""
@@ -70,6 +72,12 @@ class Config:
 
     DEFAULT_LANGS = DEFAULT_CONFIG["DEFAULT_LANGS"]
     "Code snippet programming languages to load lpm with by default."
+
+    MAX_LINES = DEFAULT_CONFIG["MAX_LINES"]
+    """Max lines allowed for a code snippet."""
+
+    MAX_COLS = DEFAULT_CONFIG["MAX_COLS"]
+    """Max cols allowed for a code snippet."""
 
     @staticmethod
     def load():
