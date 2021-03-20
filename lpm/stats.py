@@ -117,28 +117,30 @@ class Stat:
     def lpm(self):
         """Lines per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return lines_per_minute(self.num_lines, self.elapsed)
 
     @property
     def wpm(self):
         """Words per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return words_per_minute(self.num_chars, self.elapsed)
 
     @property
     def cpm(self):
         """Characters per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return characters_per_minute(self.num_chars, self.elapsed)
 
     @property
     def acc(self):
         """Accuracy."""
         if self.start_time is None:
-            return None
+            return 0
+        if not self.num_correct + self.num_wrong > 0:
+            return 0
         return accuracy(self.num_correct, self.num_wrong)
 
     @classmethod
