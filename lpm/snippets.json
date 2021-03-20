@@ -1,0 +1,34 @@
+{
+    "python": [
+        {
+            "snippet_id": 0,
+            "lines": ["for i in range(20)", "time += 1"],
+            "url": "github.com",
+            "author": "jay",
+            "language": "python"
+        },
+        {
+            "snippet_id": 1,
+            "lines": ["print('hello')", "print('hi')"],
+            "url": "github.com",
+            "author": "jess",
+            "language": "python"
+        }
+    ],
+    "java": [
+        {
+            "snippet_id": 2,
+            "lines": ["print('hello')", "print('hi')"],
+            "url": "github.com",
+            "author": "jay",
+            "language": "java"
+        },
+        {
+            "snippet_id": 3,
+            "lines": ["print('hello')", "print('hi')"],
+            "url": "github.com",
+            "author": "jay",
+            "language": "java"
+        }
+    ]
+}
