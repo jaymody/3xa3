@@ -89,26 +89,14 @@ class Screen:
         self.window.timeout(window_timeout)
         self.window.bkgd(" ", self.colors["background"])
 
-        # TODO: this is not very good, we should deal with this some other way
-        self.cheight = 0
-        self.first_key = True
-        self.quote = ""
-        self.quote_author = ""
-        self.quote_columns = 0
-        self.quote_coords = tuple()
-        self.quote_height = 0
-        self.quote_id = 0
-        self.quote_lengths = tuple()
-        self.quote_title = ""
-
         # check that terminal is sufficiently large
         # TODO: add this to config? maybe we shouldn't let resize even do this?
         if self.lines < Config.MAX_LINES:
             curses.endwin()
-            raise IOError("wpm requires at least %d lines in your display" % min_lines)
+            raise IOError("lpm requires at least %d lines in your display" % min_lines)
         if self.columns < Config.MAX_COLS:
             curses.endwin()
-            raise IOError("wpm requires at least %d columns in your display" % min_cols)
+            raise IOError("lpm requires at least %d columns in your display" % min_cols)
 
     def setup_colors(self):
         for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"]):
