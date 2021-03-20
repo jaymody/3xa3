@@ -1,8 +1,8 @@
 from lpm.snippets import Snippets, Snippet
+from lpm.config import Config
 
 TEST_JSON = "tests/data/snippets.json"
 LPM_JSON = "lpm/snippets.json"
-LANGUAGES = ["python", "java", "javascript"]
 MIN_NUM_SNIPPET = 20
 MAX_LINE_LENGTH = 30
 MAX_CHARACTER_LENGTH = 88
@@ -117,7 +117,7 @@ def test_from_dict():
 
 
 def test_min_snippets_per_lang():
-    for lang in LANGUAGES:
+    for lang in Config.DEFAULT_LANGS:
         assert len(Snippets.load(LPM_JSON, lang)) >= MIN_NUM_SNIPPET
 
 

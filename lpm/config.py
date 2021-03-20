@@ -17,10 +17,9 @@ DEFAULT_CONFIG = {
     "COLOR_TEXT": "#5f85c0",
     "COLOR_CORRECT": "#9effb6",
     "COLOR_INCORRECT": "#da5a58",
-    "MAX_LINES": 16,
-    "MAX_CHARS": 80,
     "STATS_PATH": "~/.lpmstats.json",
     "SNIPPET_PATH": "~/.lpmsnippets.json",
+    "DEFAULT_LANGS": ["python", "java", "javascript"],
 }
 
 """Stores the default configuration for lpm."""
@@ -63,17 +62,14 @@ class Config:
     COLOR_INCORRECT = DEFAULT_CONFIG["COLOR_INCORRECT"]
     "Color of snippet text that was incorrectly typed."
 
-    MAX_LINES = DEFAULT_CONFIG["MAX_LINES"]
-    "Max lines allowed per snippet."
-
-    MAX_CHARS = DEFAULT_CONFIG["MAX_CHARS"]
-    "Max number of characters allowed per line in a snippet."
-
     STATS_PATH = DEFAULT_CONFIG["STATS_PATH"]
     "Path to stats file."
 
     SNIPPETS_PATH = DEFAULT_CONFIG["SNIPPET_PATH"]
     "Path to snippets file."
+
+    DEFAULT_LANGS = DEFAULT_CONFIG["DEFAULT_LANGS"]
+    "Code snippet programming languages to load lpm with by default."
 
     @staticmethod
     def load():

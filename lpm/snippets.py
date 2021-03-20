@@ -2,7 +2,7 @@
 import json
 import random
 
-DEFAULT = ["python", "java", "javascript"]
+from .config import Config
 
 
 class Snippet:
@@ -89,7 +89,7 @@ class Snippets:
         return self[self.index]
 
     @classmethod
-    def load(cls, filename, languages=DEFAULT):
+    def load(cls, filename, languages=Config.DEFAULT_LANGS):
         """Loads snippets from specified filename
 
         Parameters
@@ -97,6 +97,9 @@ class Snippets:
         filename : str
             A direct path to the filename to load snippets from. snippets.json
             by default.
+
+        languages : list[str]
+            List of string of languages to load snippets of.
 
         Returns
         -------
