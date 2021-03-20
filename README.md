@@ -23,6 +23,11 @@ Install dev dependencies:
 pip install -r requirements-dev.txt
 ```
 
+Run tests:
+```
+pytest tests
+```
+
 Code formatting:
 ```
 black setup.py lpm/*.py
