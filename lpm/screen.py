@@ -4,6 +4,9 @@ import sys
 import curses
 import locale
 
+from .config import Config
+from .stats import Stat
+
 
 # TODO: move this to config
 # tuples represent a (fg, bg) pair
@@ -55,8 +58,11 @@ class Screen:
         # TODO: move this to config?
         esc_delay = 15  # 15ms
         window_timeout = 20  # 20ms
-        min_lines = 12  # min number of lines in terminal required for screen to work
-        min_cols = 20  # min number of columns in terminal required for screen to work
+
+        # min number of lines in terminal required for screen to work
+        min_lines = Config.MAX_LINES + 6
+        # min number of columns in terminal required for screen to work
+        min_cols = Config.MAX_COLS
 
         # set esc delay to 15 ms
         os.environ.setdefault("ESCDELAY", esc_delay)
@@ -97,10 +103,10 @@ class Screen:
 
         # check that terminal is sufficiently large
         # TODO: add this to config? maybe we shouldn't let resize even do this?
-        if self.lines < min_lines:
+        if self.lines < Config.MAX_LINES:
             curses.endwin()
             raise IOError("wpm requires at least %d lines in your display" % min_lines)
-        if self.columns < min_cols:
+        if self.columns < Config.MAX_COLS:
             curses.endwin()
             raise IOError("wpm requires at least %d columns in your display" % min_cols)
 
@@ -203,6 +209,118 @@ class Screen:
             The game object is used to render the relevant snippet, statistics,
             and user state.
         """
-        # will probably need to use a bunch of helper functions to make this
-        # function not big and ugly
-        pass
+        # render stats
+        if game.current_stat:
+            self.window.addstr(0, 0, game.current_stat, self.colors["correct"])
+        else:
+            self.window.addstr(0, 0, Stat(), self.colors["correct"])
+
+        # render author/title
+        snip = game.snippets.current_entry()
+        self.window.addstr(2, 0, snip.author, self.colors["author"])
+
+        # render lines
+        for i, line in enumerate(snip.lines):
+            self.window.addstr(4 + i, 0, line, self.colors["prompt"])
+
+        # render final score
+        if game.current_stat and game.current_stat.end_time is not None:
+            self.window.addstr(
+                Config.MAX_LINES + 6, 0, game.current_stat, self.colors["score"]
+            )
+
+    # def addstr(self, x_pos, y_pos, text, color=None):
+    #     """Wraps call around curses.window.addsr."""
+    #     if self.lines > y_pos >= 0:
+    #         if x_pos >= 0 and (x_pos + len(text)) < self.columns:
+    #             self.window.addstr(y_pos, x_pos, text, color)
+
+    # def chgat(self, x_pos, y_pos, length, color):
+    #     """Wraps call around curses.window.chgat."""
+    #     if self.lines > y_pos >= 0:
+    #         if x_pos >= 0 and (x_pos + length) <= self.columns:
+    #             self.window.chgat(y_pos, x_pos, length, color)
+
+    # def set_cursor(self, x_pos, y_pos):
+    #     """Sets cursor position."""
+    #     if (y_pos < self.lines) and (x_pos < self.columns):
+    #         self.window.move(y_pos, x_pos)
+
+    # def right_column(self, y_pos, x_pos, width, text):
+    #     """Writes text to screen in columns."""
+    #     lengths = self._word_wrap(text, width)
+
+    #     for cur_y, length in enumerate(lengths, y_pos):
+    #         self.addstr(
+    #             x_pos - length,
+    #             cur_y,
+    #             text[:length].encode(self.encoding),
+    #             self.colors["author"],
+    #         )
+    #         text = text[1 + length :]
+
+    #     return len(lengths)
+
+    # def update_quote(self, color):
+    #     """Renders complete quote on screen."""
+    #     quote = self.quote[:]
+    #     for y_pos, length in enumerate(self.quote_lengths, 2):
+    #         self.addstr(0, y_pos, quote[:length].encode(self.encoding), color)
+    #         quote = quote[1 + length :]
+
+    # def update_author(self):
+    #     """Renders author on screen."""
+    #     author = u"— %s, %s" % (self.quote_author, self.quote_title)
+    #     self.cheight = 4 + self.quote_height
+    #     self.cheight += self.right_column(
+    #         self.cheight - 1, self.quote_columns - 10, self.quote_columns // 2, author
+    #     )
+
+    # def update_header(self, text):
+    #     """Renders top-bar header."""
+    #     self.addstr(0, 0, text, Screen.COLOR_STATUS)
+    #     self.chgat(0, 0, self.columns, Screen.COLOR_STATUS)
+    #     # self.window.chgat(0, 0, self.columns, Screen.COLOR_STATUS)
+
+    # @staticmethod
+    # def _word_wrap(text, width):
+    #     """Returns lengths of lines that can be printed without wrapping."""
+    #     lengths = []
+    #     while len(text) > width:
+    #         try:
+    #             end = text[: width + 1].rindex(" ")
+    #         except ValueError:
+    #             break
+
+    #         # We can't divide the input nicely, so just display it as-is
+    #         if end == -1:
+    #             return [len(text)]
+
+    #         lengths.append(end)
+    #         text = text[end + 1 :]
+
+    #     if text:
+    #         lengths.append(len(text))
+
+    #     return lengths
+
+    # @staticmethod
+    # def _screen_coords(lengths, position):
+    #     """Translates quote offset into screen coordinates.
+
+    #     Args:
+    #         lengths: List of line lengths for the word-wrapped quote.
+    #         position: Offset into the quote that we want to translate to screen
+    #                     coordinates.
+
+    #     Returns:
+    #         Tuple containing X and Y screen coordinates.
+    #     """
+    #     y_position = 0
+
+    #     for y_position, line_length in enumerate(lengths):
+    #         if position <= line_length:
+    #             break
+    #         position -= line_length + 1
+
+    #     return position, y_position
