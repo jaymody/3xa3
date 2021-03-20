@@ -54,6 +54,7 @@ class Snippets:
         """
         self.snippets = snippets
         self.index = 0
+        self.shuffle()
 
     def __len__(self):
         """Returns number of snippets."""
@@ -75,6 +76,10 @@ class Snippets:
     def shuffle(self):
         """Shuffle the list of snippets."""
         random.shuffle(self.snippets)
+
+    def current_entry(self):
+        """Get current entry"""
+        return Snippet.from_dict(self[self.index])
 
     def next_entry(self):
         """Returns the next entry in the list of code snippets."""

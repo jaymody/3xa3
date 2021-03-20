@@ -42,11 +42,26 @@ JAVA_DICT = [
 """ Unit tests for the Snippets.py module"""
 
 
+def test_from_dict():
+    d = PYTHON_DICT
+    s = Snippet.from_dict(d[1])
+    assert s.snippet_id == d[1]["snippet_id"]
+    assert s.lines == d[1]["lines"]
+    assert s.url == d[1]["url"]
+    assert s.author == d[1]["author"]
+    assert s.language == d[1]["language"]
+
+
 def test_load_python():
     d = Snippets.load(TEST_JSON, ["python"])
     assert len(d) == len(PYTHON_DICT)
-    for i in range(len(PYTHON_DICT)):
-        assert d[i] == PYTHON_DICT[i]
+    for i in range(len(d)):
+        match = False
+        for j in range(len(PYTHON_DICT)):
+            if match == True:
+                break
+            else:
+                match = d[i] == Snippet.from_dict(PYTHON_DICT[j])
 
 
 def test_load_all():
@@ -62,7 +77,7 @@ def test_init_Snippets():
     s = Snippets(d)
     assert s.index == 0
     for i in range(len(d)):
-        assert s.snippets[i] == d[i]
+        assert s.snippets[i] in d
 
 
 def test_len():
@@ -91,26 +106,6 @@ def test_prev():
     assert s.index == 1
     s.prev_entry()
     assert s.index == 0
-
-
-def test_init_snippet():
-    d = Snippets(Snippets.load(TEST_JSON, ["python"]))[0]
-    s = Snippet(d["snippet_id"], d["lines"], d["url"], d["author"], d["language"])
-    assert s.snippet_id == d["snippet_id"]
-    assert s.lines == d["lines"]
-    assert s.url == d["url"]
-    assert s.author == d["author"]
-    assert s.language == d["language"]
-
-
-def test_from_dict():
-    d = Snippets(Snippets.load(TEST_JSON, ["python"]))
-    s = Snippet.from_dict(d[1])
-    assert s.snippet_id == d[1]["snippet_id"]
-    assert s.lines == d[1]["lines"]
-    assert s.url == d[1]["url"]
-    assert s.author == d[1]["author"]
-    assert s.language == d[1]["language"]
 
 
 """ Tests to check if code snippets are valid"""
