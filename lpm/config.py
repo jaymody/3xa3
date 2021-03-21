@@ -99,7 +99,7 @@ class Config:
     def reset():
         """Resets the configuration file to DEFAULT_CONFIG."""
         with open(Config.CONFIG_PATH, "w") as fo:
-            fo.write(json.dumps(DEFAULT_CONFIG))
+            fo.write(json.dumps(DEFAULT_CONFIG, indent=4))
 
 
 # loads the Config file if it hasn't been loaded yet
