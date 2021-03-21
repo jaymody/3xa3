@@ -103,6 +103,7 @@ class Game:
         current_snippet = self.snippets.getItem(current_entry)
         current_line = current_snippet.lines[self.current_position[0]]
         current_char = current_line[self.current_position[1]]
+
         if key == None:
             pass
         elif key == Screen.KEY_ENTER:  # Go to next line
@@ -132,10 +133,12 @@ class Game:
             self.current_position[1] += 1
 
     def start_snippet(self):
+        """Start snippet"""
         self.current_stat = Stat()
         self.current_stat.start()
 
     def finished_snippet(self):
+        """Finished Snippet"""
         self.current_stat.stop()
         self.stats.update(self.current_stat)
 
@@ -153,6 +156,7 @@ class Game:
         self.reset()
 
     def save_game(self):
+        """Save game"""
         self.stats.save(Config.STATS_PATH)
 
     def reset(self):

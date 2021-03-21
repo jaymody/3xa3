@@ -20,7 +20,7 @@ DEFAULT_CONFIG = {
     "STATS_PATH": "~/.lpmstats.json",
     "SNIPPET_PATH": "~/.lpmsnippets.json",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
-    "MAX_LINES": 16,
+    "MAX_LINES": 32,
     "MAX_COLS": 80,
 }
 
