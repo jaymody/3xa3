@@ -99,9 +99,10 @@ class Screen:
             raise IOError("lpm requires at least %d columns in your display" % min_cols)
 
     def setup_colors(self):
-        for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"]):
-            curses.init_pair(i, *v)
-            self.colors[k] = curses.color_pair(i)
+        for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"].items()):
+            logger.debug("%s, %s, %s, %s", i + 1, k, *v)
+            curses.init_pair(i + 1, *v)
+            self.colors[k] = curses.color_pair(i + 1)
 
         # make certain colors more visible
         if not "xterm256colors":
