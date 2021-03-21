@@ -187,6 +187,13 @@ class Screen:
     def clear(self):
         self.window.clear()
 
+    def deinit(self):
+        """Deinitializes curses."""
+        curses.nocbreak()
+        self.screen.keypad(False)
+        curses.echo()
+        curses.endwin()
+
     def resize(self):
         """Resizes game interface based on current user terminal size."""
         pass

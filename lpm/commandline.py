@@ -25,17 +25,9 @@ def stats():
 def start():
     """Starts the lpm typing interface."""
     snippets = Snippets.load(Config.SNIPPETS_PATH)
-    screen = Screen()
     statistics = Stats.load(Config.STATS_PATH)
-    game = Game(snippets, screen, statistics)
-    try:
+    with Game(snippets, statistics) as game:
         game.run()
-
-        # technically, this line should never be reached
-        statistics.save(Config.STATS_PATH)
-    except KeyboardInterrupt:
-        # save stats, clear screen or something, quit game
-        statistics.save(Config.STATS_PATH)
 
 
 def settings():

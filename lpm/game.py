@@ -6,7 +6,7 @@ from .config import Config
 
 
 class Game:
-    def __init__(self, snippets, screen, stats):
+    def __init__(self, snippets, stats):
         """Game object that runs the lpm typing game.
 
         Parameters
@@ -19,11 +19,21 @@ class Game:
             Stats object that tracks user statistics.
         """
         self.snippets = snippets
-        self.screen = screen
+        self.screen = None
         self.stats = stats
         self.current_stat = None
         self.current_position = [0, 0]
         self.state = 0
+
+    def __enter__(self):
+        self.screen = Screen()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type == KeyboardInterrupt:
+            self.stats.save(Config.STATS_PATH)
+            return True
+        self.screen.deinit()
 
     def run(self):
         """Main loop logic for typing game."""
