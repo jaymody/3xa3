@@ -47,18 +47,9 @@ class Snippets:
         """Returns number of snippets."""
         return len(self.snippets)
 
-    def __getitem__(self, index):
-        """Loads the code snippet corresponding to the requested index.
-
-        Parameters
-        ----------
-        index : int
-            Index of the requested code snippet.
-        """
-        try:
-            return self.snippets[index]
-        except IndexError:
-            return None
+    def __iter__(self):
+        for s in self.snippets:
+            yield s
 
     def shuffle(self):
         """Shuffle the list of snippets."""
@@ -66,19 +57,19 @@ class Snippets:
 
     def current_snippet(self):
         """Get current entry"""
-        return self[self.index]
+        return self.snippets[self.index]
 
     def next_snippet(self):
         """Returns the next entry in the list of code snippets."""
         self.index += 1
         self.index = self.index % len(self)
-        return self[self.index]
+        return self.snippets[self.index]
 
     def prev_snippet(self):
         """Returns the previous entry in the list of code snippets."""
         self.index -= 1
         self.index = self.index % len(self)
-        return self[self.index]
+        return self.snippets[self.index]
 
     @staticmethod
     def load(filename, languages=Config.DEFAULT_LANGS):
