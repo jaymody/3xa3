@@ -28,8 +28,6 @@ def test_Stat():
     assert stat.lpm == pytest.approx(expected_lpm, 0.01)
     assert stat.acc == pytest.approx(expected_acc, 0.01)
 
-    assert stat == Stat.from_dict(stat.to_dict())
-
 
 def test_Stats():
     from datetime import datetime
@@ -72,7 +70,7 @@ def test_Stats():
     with pytest.raises(ValueError):
         stats.update(stat1)
 
-    filename = "tests/data/stats.json"
+    filename = "tests/data/stats.pickle"
     stats.save(filename)
     assert stats == stats.load(filename)
     os.remove(filename)
