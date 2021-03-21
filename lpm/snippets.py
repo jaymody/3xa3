@@ -1,6 +1,6 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
-import json
 import random
+import pickle
 
 from .config import Config
 
@@ -28,19 +28,6 @@ class Snippet:
         self.url = url
         self.author = author
         self.language = language
-
-    @classmethod
-    def from_dict(cls, d):
-        """Build Snippet object from a dictionary.
-
-        Parameters
-        ----------
-        d : dict
-            Dictionary containing snippet data.
-        """
-        return Snippet(
-            d["snippet_id"], d["lines"], d["url"], d["author"], d["language"]
-        )
 
 
 class Snippets:
@@ -77,31 +64,30 @@ class Snippets:
         """Shuffle the list of snippets."""
         random.shuffle(self.snippets)
 
-    def current_entry(self):
+    def current_snippet(self):
         """Get current entry"""
-        return Snippet.from_dict(self[self.index])
+        return self[self.index]
 
-    def next_entry(self):
+    def next_snippet(self):
         """Returns the next entry in the list of code snippets."""
         self.index += 1
         self.index = self.index % len(self)
         return self[self.index]
 
-    def prev_entry(self):
+    def prev_snippet(self):
         """Returns the previous entry in the list of code snippets."""
         self.index -= 1
         self.index = self.index % len(self)
         return self[self.index]
 
-    @classmethod
-    def load(cls, filename, languages=Config.DEFAULT_LANGS):
-        """Loads snippets from specified filename
+    @staticmethod
+    def load(filename, languages=Config.DEFAULT_LANGS):
+        """Loads snippets from specified filename.
 
         Parameters
         ----------
         filename : str
-            A direct path to the filename to load snippets from. snippets.json
-            by default.
+            A direct path to the filename to load snippets from.
 
         languages : list[str]
             List of string of languages to load snippets of.
@@ -111,10 +97,21 @@ class Snippets:
         Snippets
             Returns Snippets object loaded from filename.
         """
-        with open(filename) as fi:
-            data = json.load(fi)
-        snippets = []
-        for lang, values in data.items():
-            if lang in languages:
-                snippets += values
-        return cls(snippets)
+        languages = set(languages)
+
+        with open(filename, "rb") as fi:
+            snippets = pickle.load(fi)
+
+        snippets.snippets = [s for s in snippets.snippets if s.language in languages]
+        return snippets
+
+    def save(self, filename):
+        """Saves current statistics to the specified pickle file.
+
+        Parameters
+        ----------
+        filename : str
+            File path to save stats to.
+        """
+        with open(filename, "wb") as fo:
+            pickle.dump(self, fo)
