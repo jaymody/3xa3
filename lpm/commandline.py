@@ -25,7 +25,11 @@ def stats():
 def start():
     """Starts the lpm typing interface."""
     snippets = Snippets.load(Config.SNIPPETS_PATH)
-    statistics = Stats.load(Config.STATS_PATH)
+
+    if not os.path.exists(Config.STATS_PATH):
+        statistics = Stats([])
+    else:
+        statistics = Stats.load(Config.STATS_PATH)
     with Game(snippets, statistics) as game:
         game.run()
 
@@ -67,11 +71,10 @@ def cli():
     if args.stats:
         stats()
     elif args.version:
-        print(f"Current version: {__version__}")
+        print(__version__)
     elif args.reset:
         reset()
     elif args.settings:
         settings()
     else:
-        # panik
-        pass
+        start()
