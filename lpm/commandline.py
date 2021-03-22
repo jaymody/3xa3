@@ -31,6 +31,7 @@ def start():
         print("... downloading snippets ...")
 
         snippets = Snippets.from_urls(_github_permalink)
+        snippets.save(Config.SNIPPETS_PATH)
     else:
 
         snippets = Snippets.load(Config.SNIPPETS_PATH)
