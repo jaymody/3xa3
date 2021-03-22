@@ -106,6 +106,8 @@ class Stat:
     @property
     def elapsed(self):
         """Elapsed time in seconds since stat was started."""
+        if self.start_time is None:
+            return 0
         if self.end_time is None:
             return (datetime.now() - self.start_time).total_seconds()
         return (self.end_time - self.start_time).total_seconds()

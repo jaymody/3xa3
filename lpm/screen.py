@@ -3,10 +3,18 @@ import os
 import sys
 import curses
 import locale
+import logging
 
 from .config import Config
 from .stats import Stat
 
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler("debug.log", "w+")
+formatter = logging.Formatter("[%(asctime)s] %(levelname)s:%(name)s: %(message)s")
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 # TODO: move this to config
 # tuples represent a (fg, bg) pair
@@ -51,7 +59,7 @@ class Screen:
     KEY_RIGHT = curses.KEY_RIGHT
     KEY_RESIZE = curses.KEY_RESIZE
     KEY_ENTER = curses.KEY_ENTER
-    KEY_ESCAPE = curses.ascii.ESC  # not sure if this will work
+    # KEY_ESCAPE = curses.ascii.ESC  # not sure if this will work
 
     def __init__(self):
         """Screen object used for command-line IO."""
@@ -65,7 +73,7 @@ class Screen:
         min_cols = Config.MAX_COLS
 
         # set esc delay to 15 ms
-        os.environ.setdefault("ESCDELAY", esc_delay)
+        os.environ.setdefault("ESCDELAY", str(esc_delay))
 
         # use the preferred system encoding
         locale.setlocale(locale.LC_ALL, "")
@@ -99,17 +107,17 @@ class Screen:
             raise IOError("lpm requires at least %d columns in your display" % min_cols)
 
     def setup_colors(self):
-        for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"].items()):
-            logger.debug("%s, %s, %s, %s", i + 1, k, *v)
+        for i, (k, v) in enumerate(COLOR_CONF["monochromecolors"].items()):
             curses.init_pair(i + 1, *v)
             self.colors[k] = curses.color_pair(i + 1)
+            logger.debug("%s, %s, %s, %s, %s", i + 1, k, *v, self.colors[k])
 
-        # make certain colors more visible
-        if not "xterm256colors":
-            self.colors["correct"] |= curses.A_DIM
-            self.colors["incorrect"] |= curses.A_UNDERLINE | curses.A_BOLD
-            self.colors["quote"] |= curses.A_BOLD
-            self.colors["status"] |= curses.A_BOLD
+        # # make certain colors more visible
+        # if not "xterm256colors":
+        #     self.colors["correct"] |= curses.A_DIM
+        #     self.colors["incorrect"] |= curses.A_UNDERLINE | curses.A_BOLD
+        #     self.colors["quote"] |= curses.A_BOLD
+        #     self.colors["status"] |= curses.A_BOLD
 
     def get_key(self):
         """Gets the most recently pressed key.
@@ -201,10 +209,10 @@ class Screen:
 
     def _render_stat(self, stat):
         if stat:
-            self.window.addstr(0, 0, stat, self.colors["correct"])
+            self.window.addstr(0, 0, str(stat), self.colors["correct"])
         else:
             # if stat is none, use an empty Stat object (shows all 0s)
-            self.window.addstr(0, 0, Stat(), self.colors["correct"])
+            self.window.addstr(0, 0, str(Stat()), self.colors["correct"])
 
     def _render_author(self, author):
         self.window.addstr(2, 0, author, self.colors["author"])
@@ -213,8 +221,8 @@ class Screen:
         for i, line in enumerate(snippet.lines):
             self.window.addstr(4 + i, 0, line, self.colors["prompt"])
 
-    def _render_score(self, stat):
-        self.window.addstr(Config.MAX_LINES + 6, 0, stat, self.colors["score"])
+    def _render_score(self, snip, stat):
+        self.window.addstr(len(snip.lines) + 6, 0, str(stat), self.colors["score"])
 
     def new_snippet(self, game):
         """Renders the typing interface with the most up to date information.
@@ -228,7 +236,7 @@ class Screen:
         # clear screen
         self.clear()
 
-        snip = game.snippets.current_entry()
+        snip = game.snippets.current_snippet()
 
         # render stats
         self._render_stat(game.current_stat)
@@ -236,16 +244,22 @@ class Screen:
         # render author
         self._render_author(snip.author)
 
-        # set cursor
-        # cursor at 4, 0
-
         # render lines
         self._render_lines(snip)
+
+        # # set cursor
+        # # cursor at 4, 0
+
+        # TESTING PURPOSES DLETE THIS LATER
+        self._render_score(snip, "DONE!")
+
+        self.window.refresh()
+        # curses.napms(3000)  # TESTING PURPOSES, DELETE THIS LATER
 
     def update_snippet(
         self, game, val="one of backspace, enter, correct, incorrect, or None"
     ):
-        snip = game.snippets.current_entry()
+        snip = game.snippets.current_snippet()
 
         # render stats
         self._render_stat(game.current_stat)

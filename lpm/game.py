@@ -30,38 +30,58 @@ class Game:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.screen.deinit()
         if exc_type == KeyboardInterrupt:
             self.stats.save(Config.STATS_PATH)
-            return True
-        self.screen.deinit()
+            return True  # don't throw KeyboardInterrupt
 
     def run(self):
         """Main loop logic for typing game."""
-        while True:
-            self.screen.render(self)
-            key = self.screen.get_key()
-            self.state = self.get_state(key)
+        # TESTING CODE, DELETE AFTERWARDS
+        import time
+        import random
 
-            # # only do rendering stuff here
-            if self.state == 0:
-                # resize screen
-                self.screen.resize()
-            if self.state == 1:
-                # user is browsing
-                # must exit using ctrl + c
-                self.browsing(key)
-            if self.state == 2:
-                # reading user input
-                self.typing(key)
-            elif self.state == 3:
-                # show stats for this snippet
-                self.done(key)
-            elif self.state == -1:
-                # throw keyboard error which exits
-                self.save_game()
-                raise KeyboardInterrupt
-            else:
-                raise Exception("wtf")
+        start = time.time()
+        self.current_stat = Stat()
+        self.current_stat.start()
+        while True:
+            self.screen.new_snippet(self)
+            if time.time() - start > 0.1:
+                self.current_stat.num_chars += 1
+                if random.random() > 0.3:
+                    self.current_stat.num_correct += 1
+                else:
+                    self.current_stat.num_wrong += 1
+
+                if random.random() < 0.05:
+                    self.current_stat.num_lines += 1
+                start = time.time()
+
+        # while True:
+        #     self.screen.render(self)
+        #     key = self.screen.get_key()
+        #     self.state = self.get_state(key)
+
+        #     # # only do rendering stuff here
+        #     if self.state == 0:
+        #         # resize screen
+        #         self.screen.resize()
+        #     if self.state == 1:
+        #         # user is browsing
+        #         # must exit using ctrl + c
+        #         self.browsing(key)
+        #     if self.state == 2:
+        #         # reading user input
+        #         self.typing(key)
+        #     elif self.state == 3:
+        #         # show stats for this snippet
+        #         self.done(key)
+        #     elif self.state == -1:
+        #         # throw keyboard error which exits
+        #         self.save_game()
+        #         raise KeyboardInterrupt
+        #     else:
+        #         raise Exception("wtf")
 
     def get_state(self, key):
         """Get the state of the game.
