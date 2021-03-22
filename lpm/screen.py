@@ -2,6 +2,7 @@
 import os
 import sys
 import curses
+import curses.ascii
 import locale
 import logging
 
@@ -59,7 +60,7 @@ class Screen:
     KEY_RIGHT = curses.KEY_RIGHT
     KEY_RESIZE = curses.KEY_RESIZE
     KEY_ENTER = curses.KEY_ENTER
-    # KEY_ESCAPE = curses.ascii.ESC  # not sure if this will work
+    KEY_ESCAPE = curses.ascii.ESC  # not sure if this will work
 
     def __init__(self):
         """Screen object used for command-line IO."""
@@ -82,6 +83,17 @@ class Screen:
         # initialize curses screen
         self.screen = curses.initscr()
         self.screen.nodelay(True)  # makes getch a non-blocking call
+
+        # check that terminal is sufficiently large
+        # TODO: add this to config? maybe we shouldn't let resize even do this?
+        if self.lines < Config.MAX_LINES:
+            curses.endwin()
+            raise IOError("lpm requires at least %d lines in your display" % min_lines)
+        if self.columns < Config.MAX_COLS:
+            curses.endwin()
+            raise IOError("lpm requires at least %d columns in your display" % min_cols)
+
+        # screen configurations
         self.screen.keypad(True)  # makes curses return keys in form curses.KEY_
         curses.noecho()
         curses.cbreak()
@@ -97,17 +109,8 @@ class Screen:
         self.window.timeout(window_timeout)
         self.window.bkgd(" ", self.colors["background"])
 
-        # check that terminal is sufficiently large
-        # TODO: add this to config? maybe we shouldn't let resize even do this?
-        if self.lines < Config.MAX_LINES:
-            curses.endwin()
-            raise IOError("lpm requires at least %d lines in your display" % min_lines)
-        if self.columns < Config.MAX_COLS:
-            curses.endwin()
-            raise IOError("lpm requires at least %d columns in your display" % min_cols)
-
     def setup_colors(self):
-        for i, (k, v) in enumerate(COLOR_CONF["monochromecolors"].items()):
+        for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"].items()):
             curses.init_pair(i + 1, *v)
             self.colors[k] = curses.color_pair(i + 1)
             logger.debug("%s, %s, %s, %s, %s", i + 1, k, *v, self.colors[k])
@@ -136,52 +139,56 @@ class Screen:
 
     def _get_key_py33(self):
         """Python 3.3+ implementation of get_key."""
-        # pylint: disable=too-many-return-statements
-        try:
-            # Curses in Python 3.3 handles unicode via get_wch
-            key = self.window.get_wch()
-            if isinstance(key, int):
-                if key == curses.KEY_BACKSPACE:
-                    return "KEY_BACKSPACE"
-                if key == curses.KEY_LEFT:
-                    return "KEY_LEFT"
-                if key == curses.KEY_RIGHT:
-                    return "KEY_RIGHT"
-                if key == curses.KEY_RESIZE:
-                    return "KEY_RESIZE"
-                return None
-            return key
-        except curses.error:
-            return None
+        raise NotImplementedError
+
+        # # pylint: disable=too-many-return-statements
+        # try:
+        #     # Curses in Python 3.3 handles unicode via get_wch
+        #     key = self.window.get_wch()
+        #     if isinstance(key, int):
+        #         if key == curses.KEY_BACKSPACE:
+        #             return "KEY_BACKSPACE"
+        #         if key == curses.KEY_LEFT:
+        #             return "KEY_LEFT"
+        #         if key == curses.KEY_RIGHT:
+        #             return "KEY_RIGHT"
+        #         if key == curses.KEY_RESIZE:
+        #             return "KEY_RESIZE"
+        #         return None
+        #     return key
+        # except curses.error:
+        #     return None
 
     def _get_key_py27(self):
-        """Python 2.7 implementation of get_key."""
-        # pylint: disable=too-many-return-statements
-        try:
-            key = self.window.getkey()
+        raise NotImplementedError
 
-            # Start of UTF-8 multi-byte character?
-            if self.encoding == "utf-8" and ord(key[0]) & 0x80:
-                multibyte = key[0]
-                cont_bytes = ord(key[0]) << 1
-                while cont_bytes & 0x80:
-                    cont_bytes <<= 1
-                    multibyte += self.window.getkey()[0]
-                return multibyte.decode(self.encoding)
+    #     """Python 2.7 implementation of get_key."""
+    #     # pylint: disable=too-many-return-statements
+    #     try:
+    #         key = self.window.getkey()
 
-            if isinstance(key, int):
-                if key == curses.KEY_BACKSPACE:
-                    return "KEY_BACKSPACE"
-                if key == curses.KEY_LEFT:
-                    return "KEY_LEFT"
-                if key == curses.KEY_RIGHT:
-                    return "KEY_RIGHT"
-                if key == curses.KEY_RESIZE:
-                    return "KEY_RESIZE"
-                return None
-            return key.decode("ascii")
-        except curses.error:
-            return None
+    #         # Start of UTF-8 multi-byte character?
+    #         if self.encoding == "utf-8" and ord(key[0]) & 0x80:
+    #             multibyte = key[0]
+    #             cont_bytes = ord(key[0]) << 1
+    #             while cont_bytes & 0x80:
+    #                 cont_bytes <<= 1
+    #                 multibyte += self.window.getkey()[0]
+    #             return multibyte.decode(self.encoding)
+
+    #         if isinstance(key, int):
+    #             if key == curses.KEY_BACKSPACE:
+    #                 return "KEY_BACKSPACE"
+    #             if key == curses.KEY_LEFT:
+    #                 return "KEY_LEFT"
+    #             if key == curses.KEY_RIGHT:
+    #                 return "KEY_RIGHT"
+    #             if key == curses.KEY_RESIZE:
+    #                 return "KEY_RESIZE"
+    #             return None
+    #         return key.decode("ascii")
+    #     except curses.error:
+    #         return None
 
     @property
     def columns(self):
