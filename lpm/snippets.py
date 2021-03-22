@@ -94,6 +94,7 @@ class Snippets:
             snippets = pickle.load(fi)
 
         snippets.snippets = [s for s in snippets.snippets if s.language in languages]
+        snippets.shuffle()
         return snippets
 
     def save(self, filename):
