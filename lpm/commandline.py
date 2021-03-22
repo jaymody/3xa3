@@ -24,12 +24,23 @@ def stats():
 
 def start():
     """Starts the lpm typing interface."""
-    snippets = Snippets.load(Config.SNIPPETS_PATH)
+    # load snippets
+    if not os.path.exists(Config.SNIPPETS_PATH):
+        from . import _github_permalink
 
+        print("... downloading snippets ...")
+
+        snippets = Snippets.from_urls(_github_permalink)
+    else:
+
+        snippets = Snippets.load(Config.SNIPPETS_PATH)
+
+    # load stats
     if not os.path.exists(Config.STATS_PATH):
         statistics = Stats([])
     else:
         statistics = Stats.load(Config.STATS_PATH)
+
     with Game(snippets, statistics) as game:
         game.run()
 

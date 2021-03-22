@@ -1,11 +1,14 @@
 """Module that specifies data structures, namely Snippet and Snippets."""
 import random
 import pickle
+from urllib.request import urlopen
 
 from .config import Config
 
 
 class Snippet:
+    ext_to_lang = {"java": "java", "py": "python", "js": "javascript"}
+
     def __init__(self, snippet_id, lines, url, author, language):
         """Data for a single code snippet.
 
@@ -28,6 +31,53 @@ class Snippet:
         self.url = url
         self.author = author
         self.language = language
+
+    @classmethod
+    def from_url(cls, snippet_id, url):
+        """Create Snippet object from github permalink.
+
+        A url must be of form:
+        https://github.com/<USERNAME>/<REPO>/blob/<COMMIT_HASH>/path/to/file.ext#L<START>-L<END>
+
+        For example:
+        https://github.com/jaymody/linkipedia/blob/09f3ca27e1ad858a6a010d2ef3d0768cbb9dda36/src/main/java/com/linkipedia/Graph.java#L9-L31
+
+        This will extract the code from the given url and create a Snippet
+        object from it. The code will be assigned to lines, the url to url, and
+        the author to <USERNAME>/<REPO>. Language will be infered from the
+        extension of the file, so the file must have an extension.
+
+        Parameters
+        ----------
+        snippet_id : int
+            Unique ID for the code snippet.
+        url : str
+            Github permalink.
+
+        Returns
+        -------
+        Snippet
+            Snippet object created using github permalink.
+        """
+        # author
+        author = url.split("/blob/")[0].split("github.com/")[-1]
+
+        # get line numbers
+        l1, l2 = [int(n[1:]) for n in url.split("#")[-1].split("-")]
+
+        # get code snippet lines
+        raw_url = url.replace("/blob/", "/raw/", 1)
+        with urlopen(raw_url) as response:
+            text = response.read().decode("utf-8")
+        lines = text.splitlines()
+        lines = lines[l1 - 1 : l2]
+        lines = [line.rstrip() for line in lines]
+
+        # get language
+        ext = url.split("#")[-2].split(".")[-1]
+        language = cls.ext_to_lang[ext]
+
+        return cls(snippet_id, lines, url, author, language)
 
 
 class Snippets:
@@ -107,3 +157,24 @@ class Snippets:
         """
         with open(filename, "wb") as fo:
             pickle.dump(self, fo)
+
+    @classmethod
+    def from_urls(cls, urls):
+        """Creates snippets object from github permalinks.
+
+        See Snippet.from_url() for more information.
+
+        Parameters
+        ----------
+        urls : list[str]
+            List of github permalink urls.
+
+        Returns
+        -------
+        Snippets
+            Snippets object with snippets from urls.
+        """
+        # TODO: add try except if something goes wrong for a given url
+        # get author (ie jaymody/linkipedia)
+        snippets = [Snippet.from_url(i, url) for i, url in enumerate(urls)]
+        return cls(snippets)
