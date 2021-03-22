@@ -229,7 +229,7 @@ class Screen:
             self.window.addstr(4 + i, 0, line, self.colors["prompt"])
 
     def _render_score(self, snip, stat):
-        self.window.addstr(len(snip.lines) + 6, 0, str(stat), self.colors["score"])
+        self.window.addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
 
     def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
