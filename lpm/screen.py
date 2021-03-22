@@ -224,7 +224,7 @@ class Screen:
     def _render_score(self, snip, stat):
         self.window.addstr(len(snip.lines) + 6, 0, str(stat), self.colors["score"])
 
-    def new_snippet(self, game):
+    def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
 
         Parameters
@@ -255,10 +255,15 @@ class Screen:
 
         self.window.refresh()
         # curses.napms(3000)  # TESTING PURPOSES, DELETE THIS LATER
+        pass
 
-    def update_snippet(
-        self, game, val="one of backspace, enter, correct, incorrect, or None"
+    def render_update(
+        self,
+        game,
+        ret=False,
+        val="one of backspace, enter, correct, incorrect, or None",
     ):
+        """Val is the action that happened right before the given cursor position."""
         snip = game.snippets.current_snippet()
 
         # render stats
@@ -279,3 +284,7 @@ class Screen:
         else:
             # do nothing
             pass
+        pass
+
+    def render_score(self, game):
+        pass

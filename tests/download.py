@@ -19,6 +19,7 @@ if __name__ == "__main__":
         code = requests.get(raw_url).text
         code = code.splitlines()
         code = code[l1 - 1 : l2]
+        code = [line.rstrip() for line in code]
 
         # get language
         ext_to_lang = {"java": "java", "py": "python", "js": "javascript"}

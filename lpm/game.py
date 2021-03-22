@@ -5,6 +5,18 @@ from .stats import Stat
 from .config import Config
 
 
+# forget implementing resize
+# forget good UI
+# forget advanced features
+# just use current snippet examples
+# return/enter advanced logic
+
+# get core game logic working and happy with screen
+# cursor logic is a bit advanced
+# fix how downloading/creating the snippets pickle works
+# game tick/input fetching/state updating
+
+
 class Game:
     def __init__(self, snippets, stats):
         """Game object that runs the lpm typing game.
@@ -22,7 +34,7 @@ class Game:
         self.screen = None
         self.stats = stats
         self.current_stat = None
-        self.current_position = [0, 0]
+        self.cursor = [0, 0]
         self.state = 0
 
     def __enter__(self):
@@ -45,7 +57,7 @@ class Game:
         self.current_stat = Stat()
         self.current_stat.start()
         while True:
-            self.screen.new_snippet(self)
+            self.screen.render_snippet(self)
             if time.time() - start > 0.1:
                 self.current_stat.num_chars += 1
                 if random.random() > 0.3:
@@ -56,6 +68,10 @@ class Game:
                 if random.random() < 0.05:
                     self.current_stat.num_lines += 1
                 start = time.time()
+
+        # render a new snippet
+        # render an update (ie while a game is in session)
+        # show score at the end of a game
 
         # while True:
         #     self.screen.render(self)
@@ -129,10 +145,12 @@ class Game:
 
     def typing(self, key):
         """Handles interaction during the typing (gameplay) state."""
-        current_entry = self.snippets.current_entry()
-        current_snippet = self.snippets.getItem(current_entry)
-        current_line = current_snippet.lines[self.current_position[0]]
-        current_char = current_line[self.current_position[1]]
+
+        # nwhitespace = len(lines[i]) - len(lines[i].lstrip())
+
+        current_snippet = self.snippets.current_snippet()
+        current_line = current_snippet.lines[self.cursor[0]]
+        current_char = current_line[self.cursor[1]]
 
         if key == None:
             pass
