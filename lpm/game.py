@@ -141,13 +141,13 @@ class Game:
                 self.start_snippet()
                 return 2
         elif (
-            self.current_stat.start_time() is not None
-            and self.current_stat.end_time() is None
+            self.current_stat.start_time is not None
+            and self.current_stat.end_time is None
         ):
             return 2
         elif (
-            self.current_stat.start_time() is not None
-            and self.current_stat.end_time() is not None
+            self.current_stat.start_time is not None
+            and self.current_stat.end_time is not None
         ):
             return 3
         else:
@@ -244,17 +244,15 @@ class Game:
     def browsing(self, key):
         """Handles interaction during the browsing state."""
         if key == Screen.KEY_LEFT:
-            self.snippets.prev_entry()
+            self.snippets.prev_snippet()
             self.reset()
             self.screen.render_snippet(self)
         elif key == Screen.KEY_RIGHT:
-            self.snippets.next_entry()
+            self.snippets.next_snippet()
             self.reset()
             self.screen.render_snippet(self)
-
-    def save_game(self):
-        """Save game"""
-        self.stats.save(Config.STATS_PATH)
+        elif key == Screen.KEY_ESCAPE:
+            raise KeyboardInterrupt
 
     def reset(self):
         """Resets stats and browses"""
