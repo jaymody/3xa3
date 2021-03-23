@@ -155,9 +155,9 @@ class Game:
 
     def typing(self, key):
         """Handles interaction during the typing (gameplay) state."""
+
         current_snippet = self.snippets.current_snippet()
         current_line = current_snippet.lines[self.row]
-        current_char = current_line[self.col]
 
         def calculate_whitespace(row):
             return len(current_snippet.lines[row]) - len(
@@ -165,12 +165,12 @@ class Game:
             )
 
         def end_of_snippet():
-            if (
-                self.col == len(current_line) - 1
-                and self.row != len(current_snippet.lines) - 1
-            ):
-                ret = True
-            return ret
+            return self.col == len(current_line) and self.row != len(
+                current_snippet.lines
+            )
+
+        if not end_of_snippet():
+            current_char = current_line[self.col]
 
         ret = False
         action = None
