@@ -20,7 +20,7 @@ DEFAULT_CONFIG = {
     "STATS_PATH": "~/.lpmstats.pickle",
     "SNIPPET_PATH": "~/.lpmsnippets.pickle",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
-    "MAX_LINES": 26,
+    "MAX_LINES": 24,
     "MAX_COLS": 80,
 }
 
