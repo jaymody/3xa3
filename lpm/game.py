@@ -10,15 +10,7 @@ from .config import Config
 # forget advanced features
 # just use current snippet examples
 # return/enter advanced logic
-
-# get core game logic working and happy with screen
-# cursor logic is a bit advanced
-# fix how downloading/creating the snippets pickle works
-# game tick/input fetching/state updating
-
-# we can't hit enter
-# current_stat is not working
-# wtf on backspace or esc at very beggining
+# escape always fails (fix escape)
 
 
 class Game:
@@ -54,32 +46,6 @@ class Game:
 
     def run(self):
         """Main loop logic for typing game."""
-        # # TESTING CODE, DELETE AFTERWARDS
-        # import time
-        # import random
-
-        # start = time.time()
-        # self.current_stat = Stat()
-        # self.current_stat.start()
-
-        # while True:
-        #     time.sleep(0.04)
-        #     self.screen.render_snippet(self)
-        #     if time.time() - start > 0.1:
-        #         self.current_stat.num_chars += 1
-        #         if random.random() > 0.3:
-        #             self.current_stat.num_correct += 1
-        #         else:
-        #             self.current_stat.num_wrong += 1
-
-        #         if random.random() < 0.05:
-        #             self.current_stat.num_lines += 1
-        #         start = time.time()
-
-        # render a new snippet
-        # render an update (ie while a game is in session)
-        # show score at the end of a game
-
         self.screen.render_snippet(self)
 
         while True:
@@ -104,7 +70,7 @@ class Game:
                 # throw keyboard error which exits
                 raise KeyboardInterrupt
             else:
-                raise Exception("wtf")
+                raise Exception("something has gone horribly wrong")
 
     def get_state(self, key):
         """Get the state of the game.
