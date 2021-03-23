@@ -113,7 +113,7 @@ class Screen:
         for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"].items()):
             curses.init_pair(i + 1, *v)
             self.colors[k] = curses.color_pair(i + 1)
-            logger.debug("%s, %s, %s, %s, %s", i + 1, k, *v, self.colors[k])
+            # logger.debug("%s, %s, %s, %s, %s", i + 1, k, *v, self.colors[k])
 
         # # make certain colors more visible
         # if not "xterm256colors":
@@ -284,7 +284,7 @@ class Screen:
             self._addstr(4 + i, 0, line, self.colors["prompt"])
 
     def _render_score(self, snip, stat):
-        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
+        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["prompt"])
 
     def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
@@ -339,9 +339,9 @@ class Screen:
         elif action == "enter":
             pass
         elif action == "correct":
-            self._chgat(row, col - 1, 1, self.colors["score"])
-        elif action == "incorrect":
             self._chgat(row, col - 1, 1, self.colors["incorrect"])
+        elif action == "incorrect":
+            self._chgat(row, col - 1, 1, self.colors["score"])
         else:
             # do nothing
             pass

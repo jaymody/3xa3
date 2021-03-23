@@ -160,7 +160,7 @@ class Stat:
     def __str__(self):
         # TODO: spacing at the end is used so that trailing chars do not persist
         # if the stat string becomes shorter, please fix this abomination
-        return f"{self.elapsed:.2f}s  {self.cpm:.2f} cpm  {self.wpm:.2f} wpm  {self.lpm:.2f} lpm  {self.acc*100:.2f}% acc                   "
+        return f"{self.elapsed:.2f}s  {self.lpm:.2f} lpm  {self.wpm:.2f} wpm  {self.cpm:.2f} cpm  {self.acc*100:.2f}% acc                   "
 
 
 class Stats:
