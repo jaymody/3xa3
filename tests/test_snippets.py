@@ -3,7 +3,6 @@ from lpm.config import Config
 from lpm.snippets import Snippets, Snippet
 
 # create folder tests/data/ and then run download.py
-SNIPPETS_PATH = "tests/data/snippets.pickle"
 MIN_NUM_SNIPPET = 20
 
 
@@ -78,17 +77,17 @@ MIN_NUM_SNIPPET = 20
 
 def test_min_snippets_per_lang():
     for lang in Config.DEFAULT_LANGS:
-        assert len(Snippets.load(SNIPPETS_PATH, lang)) >= MIN_NUM_SNIPPET
+        assert len(Snippets.load(Config.SNIPPETS_PATH, lang)) >= MIN_NUM_SNIPPET
 
 
 def test_max_line_len_per_snippet():
-    snippets = Snippets.load(SNIPPETS_PATH)
+    snippets = Snippets.load(Config.SNIPPETS_PATH)
     for s in snippets:
         assert len(s.lines) <= Config.MAX_LINES
 
 
 def test_max_char_len_per_snippet():
-    snippets = Snippets.load(SNIPPETS_PATH)
+    snippets = Snippets.load(Config.SNIPPETS_PATH)
     for s in snippets:
         for line in s.lines:
             assert len(line) <= Config.MAX_COLS, s.author + " " + s.url[-10:]
