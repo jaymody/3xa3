@@ -34,7 +34,8 @@ class Game:
         self.screen = None
         self.stats = stats
         self.current_stat = None
-        self.cursor = [0, 0]
+        self.row = 0
+        self.col = 0
         self.state = 0
 
     def __enter__(self):
@@ -56,7 +57,9 @@ class Game:
         start = time.time()
         self.current_stat = Stat()
         self.current_stat.start()
+
         while True:
+            time.sleep(0.2)
             self.screen.render_snippet(self)
             if time.time() - start > 0.1:
                 self.current_stat.num_chars += 1
@@ -73,8 +76,9 @@ class Game:
         # render an update (ie while a game is in session)
         # show score at the end of a game
 
+        # self.screen.render_snippet(self)
+
         # while True:
-        #     self.screen.render(self)
         #     key = self.screen.get_key()
         #     self.state = self.get_state(key)
 
@@ -124,7 +128,9 @@ class Game:
         if key == Screen.KEY_RESIZE:
             return 0
         elif self.current_stat is None:
-            if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT:  # TODO spacebar
+            if (
+                key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT or key == None
+            ):  # TODO spacebar
                 return 1
             elif key not in keys:
                 # start a new game
@@ -145,40 +151,75 @@ class Game:
 
     def typing(self, key):
         """Handles interaction during the typing (gameplay) state."""
-
-        # nwhitespace = len(lines[i]) - len(lines[i].lstrip())
-
         current_snippet = self.snippets.current_snippet()
-        current_line = current_snippet.lines[self.cursor[0]]
-        current_char = current_line[self.cursor[1]]
+        current_line = current_snippet.lines[self.row]
+        current_char = current_line[self.col]
+
+        def calculate_whitespace(row):
+            return len(current_snippet.lines[row]) - len(
+                current_snippet.lines[row].lstrip()
+            )
+
+        def end_of_snippet():
+            if (
+                self.col == len(current_line) - 1
+                and self.row != len(current_snippet.lines) - 1
+            ):
+                ret = True
+            return ret
+
+        ret = False
+        action = None
 
         if key == None:
             pass
         elif key == Screen.KEY_ENTER:  # Go to next line
-            self.current_position[0] += 1
+            if current_char == len(current_line) - 1:
+                self.row += 1
+                while calculate_whitespace(self.row) == 0:
+                    self.row += 1
+                self.col = calculate_whitespace(self.row)
+                action = "enter"
         elif key == Screen.KEY_BACKSPACE:  # Go back one character
+            if self.row == 0 and calculate_whitespace(self.row) == self.col:
+                # First character of first line -> pass
+                pass
             self.stats.num_wrong -= 1
-            self.current_position[1] -= 1
+            if calculate_whitespace(self.row) == self.col:
+                # 0th char of a row -> up 1 row, last col
+                self.row -= 1
+                self.col = len(current_snippet.lines[self.row]) - 1
+            else:
+                #'normal' backspace
+                self.col -= 1
+            action = "back"
         elif key == Screen.KEY_ESCAPE:  # Stop typing
             # Figure this out later
             # TODO:
             pass
         else:  # key is a typed key
-            # If we made it to the end, abort
-            if current_line == len(current_snippet.lines) and current_char == len(
-                current_line
-            ):  # this might be +1
-                self.finished_snippet()
-
-            if key == current_char:
+            if end_of_snippet():
+                pass
+            elif key == current_char:
                 # Right
                 self.stats.num_right += 1
-
+                action = "correct"
+                self.col += 1
             else:
                 # Wrong
                 self.stats.num_wrong += 1
+                action = "incorrect"
+                self.col += 1
 
-            self.current_position[1] += 1
+            end_of_snippet()
+
+        self.screen.render_update(self, ret, action)
+
+        # If we made it to the end, call done game
+        if current_line == len(current_snippet.lines) - 1 and current_char == len(
+            current_line - 1
+        ):
+            self.finished_snippet()
 
     def start_snippet(self):
         """Start snippet"""
@@ -189,6 +230,7 @@ class Game:
         """Finished Snippet"""
         self.current_stat.stop()
         self.stats.update(self.current_stat)
+        self.screen.render_score(self)
 
     def done(self, key):
         """Handles interaction during done state."""
@@ -196,12 +238,15 @@ class Game:
             self.browsing(key)
 
     def browsing(self, key):
-        """Handles interactio during the browsing state."""
+        """Handles interaction during the browsing state."""
         if key == Screen.KEY_LEFT:
             self.snippets.prev_entry()
+            self.reset()
+            self.screen.render_snippet(self)
         elif key == Screen.KEY_RIGHT:
             self.snippets.next_entry()
-        self.reset()
+            self.reset()
+            self.screen.render_snippet(self)
 
     def save_game(self):
         """Save game"""
