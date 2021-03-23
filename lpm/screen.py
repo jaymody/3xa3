@@ -190,24 +190,6 @@ class Screen:
         except curses.error:
             return None
 
-        # # pylint: disable=too-many-return-statements
-        # try:
-        #     # Curses in Python 3.3 handles unicode via get_wch
-        #     key = self.window.get_wch()
-        #     if isinstance(key, int):
-        #         if key == curses.KEY_BACKSPACE:
-        #             return "KEY_BACKSPACE"
-        #         if key == curses.KEY_LEFT:
-        #             return "KEY_LEFT"
-        #         if key == curses.KEY_RIGHT:
-        #             return "KEY_RIGHT"
-        #         if key == curses.KEY_RESIZE:
-        #             return "KEY_RESIZE"
-        #         return None
-        #     return key
-        # except curses.error:
-        #     return None
-
     def _get_key_py27(self):
         raise NotImplementedError
 
@@ -327,7 +309,7 @@ class Screen:
         self._render_score(snip, "DONE!")
 
         # TESTING PURPOSES DLETE THIS LATER updating a char
-        self._chgat(2, 5, 3, self.colors["score"])
+        self._chgat(2, 5, 3, self.colors["correct"])
 
         # TESTING PURPOSES DLETE THIS LATER: set cursor (MUST HAPPEN LAST)
         self._set_cursor(4, 0)
@@ -340,7 +322,7 @@ class Screen:
 
         action = one of back, enter, correct, incorrect, or None
         """
-        snip = game.snippets.current_snippet()
+        row, col = game.row + 4, game.col
 
         # render stats
         self._render_stat(game.current_stat)
@@ -350,18 +332,19 @@ class Screen:
         # cursor at 4, 0
         # note you cannot go back to prev line
         if action == "back":
-            pass
-            # self._chgat(game.row, game.col + 1)
+            self._chgat(row, col, 1, self.colors["prompt"])
         elif action == "enter":
             pass
         elif action == "correct":
-            pass
+            self._chgat(row, col - 1, 1, self.colors["score"])
         elif action == "incorrect":
-            pass
+            self._chgat(row, col - 1, 1, self.colors["incorrect"])
         else:
             # do nothing
             pass
-        self._set_cursor(game.row, game.col)
+
+        self._set_cursor(row, col)
+        self.window.refresh()
 
     def render_score(self, game):
         pass
