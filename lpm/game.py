@@ -187,8 +187,8 @@ class Game:
         elif key == Screen.KEY_BACKSPACE:  # Go back one character
             if self.row == 0 and calculate_whitespace(self.row) == self.col:
                 # First character of first line -> pass
-                pass
-            self.stats.num_wrong -= 1
+                return
+            self.current_stat.num_wrong -= 1
             if calculate_whitespace(self.row) == self.col:
                 # 0th char of a row -> up 1 row, last col
                 self.row -= 1
@@ -198,26 +198,26 @@ class Game:
                 self.col -= 1
             action = "back"
         elif key == Screen.KEY_ESCAPE:  # Stop typing
-            # Figure this out later
-            # TODO:
-            pass
+            self.start_snippet()
+            self.screen.render_snippet(self)
+            return
         else:  # key is a typed key
             if end_of_snippet():
-                pass
+                ret = True
             elif key == current_char:
                 # Right
-                self.stats.num_right += 1
+                self.current_stat.num_correct += 1
                 action = "correct"
                 self.col += 1
             else:
                 # Wrong
-                self.stats.num_wrong += 1
+                self.current_stat.num_wrong += 1
                 action = "incorrect"
                 self.col += 1
 
-            end_of_snippet()
+            # ret = end_of_snippet()
 
-        self.screen.render_update(self, ret, action)
+        self.screen.render_update(self, action, ret)
 
         # If we made it to the end, call done game
         if current_line == len(current_snippet.lines) - 1 and current_char == len(
