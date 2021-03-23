@@ -5,6 +5,9 @@ configuration is loaded from CONFIG_PATH, which the user may edit via:
 `lpm --settings`
 """
 
+# TODO: either don't load snippets longer than max_lines, or base it off of the
+# size of the terminal
+
 import os
 import json
 
@@ -20,7 +23,7 @@ DEFAULT_CONFIG = {
     "STATS_PATH": "~/.lpmstats.pickle",
     "SNIPPET_PATH": "~/.lpmsnippets.pickle",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
-    "MAX_LINES": 24,
+    "MAX_LINES": 20,
     "MAX_COLS": 80,
 }
 

@@ -10,16 +10,36 @@ from . import __version__
 from .config import Config
 from .snippets import Snippets
 from .screen import Screen
-from .stats import Stats
+from .stats import Stat, Stats
 from .game import Game
 
 
 def stats():
     """Displays the users statistics to the command-line."""
-    print("==================================================================")
-    print("Games | Avg LPM | Avg Accuracy | Avg CPM | Lifetime Elapsed Time")
-    # print(f"{} | {} | {} | {} | {}")
-    print("==================================================================")
+    # TODO: make this better
+    if not os.path.exists(Config.STATS_PATH):
+        print("No stats recorded")
+    else:
+        from datetime import datetime, timedelta
+
+        statistics = Stats.load(Config.STATS_PATH)
+
+        lifetime = Stat()
+        elapsed = 0
+        for s in statistics:
+            lifetime.num_chars += s.num_chars
+            lifetime.num_lines += s.num_lines
+            lifetime.num_correct += s.num_correct
+            lifetime.num_wrong += s.num_wrong
+            elapsed += s.elapsed
+            print(s.end_time.strftime("%Y-%m-%d %H:%M:%S"), "  ", s)
+
+        lifetime.start_time = datetime.today()
+        lifetime.end_time = lifetime.start_time + timedelta(0, elapsed)
+        print("-" * 32)
+        print(
+            f"{len(statistics)} games | {lifetime.elapsed:.2f}s total elapsed | {lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | {lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
+        )
 
 
 def start():

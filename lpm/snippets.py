@@ -71,7 +71,8 @@ class Snippet:
             text = response.read().decode("utf-8")
         lines = text.splitlines()
         lines = lines[l1 - 1 : l2]
-        lines = [line.rstrip() for line in lines]
+        # TODO: maybes use config tabs to spaces?
+        lines = [line.rstrip().replace("\t", " " * 4) for line in lines]
 
         # get language
         ext = url.split("#")[-2].split(".")[-1]

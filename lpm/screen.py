@@ -22,14 +22,14 @@ logger.addHandler(fh)
 # (text takes on foreground color, and the background of the text is bg)
 COLOR_CONF = {
     "xterm256colors": {
-        "background": (233, 233),
-        "author": (240, 233),
-        "correct": (240, 233),
-        "incorrect": (197, 52),
-        "prompt": (244, 233),
-        "quote": (195, 233),
-        "score": (230, 197),
-        "top_bar": (51, 24),
+        "background": (235, 235),
+        "author": (39, 235),
+        "correct": (76, 235),
+        "incorrect": (160, 235),
+        "prompt": (250, 235),
+        "quote": (250, 235),
+        "score": (250, 235),
+        "top_bar": (250, 24),
     },
     "xtermcolors": {
         "background": (curses.COLOR_BLACK, curses.COLOR_BLACK),
@@ -86,10 +86,10 @@ class Screen:
 
         # check that terminal is sufficiently large
         # TODO: add this to config? maybe we shouldn't let resize even do this?
-        if self.lines < Config.MAX_LINES:
+        if self.lines < min_lines:
             curses.endwin()
             raise IOError("lpm requires at least %d lines in your display" % min_lines)
-        if self.columns < Config.MAX_COLS:
+        if self.columns < min_cols:
             curses.endwin()
             raise IOError("lpm requires at least %d columns in your display" % min_cols)
 
@@ -270,21 +270,27 @@ class Screen:
         pass
 
     def _render_stat(self, stat):
-        if stat:
-            self._addstr(0, 0, str(stat), self.colors["correct"])
-        else:
-            # if stat is none, use an empty Stat object (shows all 0s)
-            self._addstr(0, 0, str(Stat()), self.colors["correct"])
+        # if stat is none, use an empty Stat object (shows all 0s)
+        top_bar = str(stat) if stat else str(Stat())
+        top_bar = top_bar.ljust(self.columns - 1)
+        # raise EOFError(self.columns)
+        self._addstr(0, 0, top_bar, self.colors["top_bar"])
 
-    def _render_author(self, author):
-        self._addstr(2, 0, author, self.colors["author"])
+    def _render_author(self, snip):
+        text = snip.url
+        if len(text) > self.columns - 1:
+            text = text.replace("https://", "")
+            if len(text) > self.columns - 1:
+                text = snip.author
+
+        self._addstr(2, 0, text, self.colors["author"])
 
     def _render_lines(self, snippet):
         for i, line in enumerate(snippet.lines):
             self._addstr(4 + i, 0, line, self.colors["prompt"])
 
     def _render_score(self, snip, stat):
-        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["prompt"])
+        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
 
     def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
@@ -304,7 +310,7 @@ class Screen:
         self._render_stat(game.current_stat)
 
         # render author
-        self._render_author(snip.url)
+        self._render_author(snip)
 
         # render lines
         self._render_lines(snip)
@@ -313,8 +319,9 @@ class Screen:
         # self._render_score(snip, "DONE!")
 
         # TESTING PURPOSES DLETE THIS LATER updating a char
-        self._chgat(2, 5, 3, self.colors["correct"])
-        # TESTING PURPOSES DLETE THIS LATER: set cursor (MUST HAPPEN LAST)
+        # self._chgat(2, 5, 3, self.colors["correct"])
+
+        # set cursor (MUST HAPPEN LAST)
         self._set_cursor(4, 0)
 
         self.window.refresh()
@@ -339,9 +346,9 @@ class Screen:
         elif action == "enter":
             pass
         elif action == "correct":
-            self._chgat(row, col - 1, 1, self.colors["incorrect"])
+            self._chgat(row, col - 1, 1, self.colors["correct"])
         elif action == "incorrect":
-            self._chgat(row, col - 1, 1, self.colors["score"])
+            self._chgat(row, col - 1, 1, self.colors["incorrect"])
         else:
             # do nothing
             pass
