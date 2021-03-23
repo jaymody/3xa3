@@ -122,6 +122,31 @@ class Screen:
         #     self.colors["quote"] |= curses.A_BOLD
         #     self.colors["status"] |= curses.A_BOLD
 
+    @staticmethod
+    def is_escape(key):
+        """Checks for escape key."""
+        if len(key) == 1:
+            return ord(key) == curses.ascii.ESC
+        return False
+
+    @staticmethod
+    def is_enter(key):
+        """Checks for backspace key."""
+        if key == Screen.KEY_ENTER:
+            return True
+        if ord(key) in (curses.ascii.CR, 10, 13):  # TODO: don't use int vals
+            return True
+        return False
+
+    @staticmethod
+    def is_backspace(key):
+        """Checks for backspace key."""
+        if key == Screen.KEY_BACKSPACE:
+            return True
+        if ord(key) in (curses.ascii.BS, curses.ascii.DEL):
+            return True
+        return False
+
     def get_key(self):
         """Gets the most recently pressed key.
 
@@ -139,7 +164,31 @@ class Screen:
 
     def _get_key_py33(self):
         """Python 3.3+ implementation of get_key."""
-        raise NotImplementedError
+        # pylint: disable=too-many-return-statements
+        try:
+            # Curses in Python 3.3 handles unicode via get_wch
+            key = self.window.get_wch()
+            if self.is_backspace(key):
+                return Screen.KEY_BACKSPACE
+            elif self.is_enter(key):
+                return Screen.KEY_ENTER
+            elif self.is_escape(key):
+                return Screen.KEY_ESCAPE
+            elif isinstance(key, int):
+                keymap = set(
+                    [
+                        Screen.KEY_BACKSPACE,
+                        Screen.KEY_LEFT,
+                        Screen.KEY_RIGHT,
+                        Screen.KEY_RESIZE,
+                        Screen.KEY_ENTER,
+                        Screen.KEY_ESCAPE,
+                    ]
+                )
+                return None if key not in keymap else key
+            return key
+        except curses.error:
+            return None
 
         # # pylint: disable=too-many-return-statements
         # try:
