@@ -202,6 +202,8 @@ class Game:
 
     def start_snippet(self):
         """Start snippet"""
+        self.row = 0
+        self.col = 0
         self.current_stat = Stat()
         self.current_stat.start()
 
