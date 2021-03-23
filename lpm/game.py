@@ -54,67 +54,66 @@ class Game:
 
     def run(self):
         """Main loop logic for typing game."""
-        # TESTING CODE, DELETE AFTERWARDS
-        import time
-        import random
+        # # TESTING CODE, DELETE AFTERWARDS
+        # import time
+        # import random
 
-        start = time.time()
-        self.current_stat = Stat()
-        self.current_stat.start()
+        # start = time.time()
+        # self.current_stat = Stat()
+        # self.current_stat.start()
 
-        while True:
-            time.sleep(0.2)
-            self.screen.render_snippet(self)
-            if time.time() - start > 0.1:
-                self.current_stat.num_chars += 1
-                if random.random() > 0.3:
-                    self.current_stat.num_correct += 1
-                else:
-                    self.current_stat.num_wrong += 1
+        # while True:
+        #     time.sleep(0.04)
+        #     self.screen.render_snippet(self)
+        #     if time.time() - start > 0.1:
+        #         self.current_stat.num_chars += 1
+        #         if random.random() > 0.3:
+        #             self.current_stat.num_correct += 1
+        #         else:
+        #             self.current_stat.num_wrong += 1
 
-                if random.random() < 0.05:
-                    self.current_stat.num_lines += 1
-                start = time.time()
+        #         if random.random() < 0.05:
+        #             self.current_stat.num_lines += 1
+        #         start = time.time()
 
         # render a new snippet
         # render an update (ie while a game is in session)
         # show score at the end of a game
 
-        # self.screen.render_snippet(self)
+        self.screen.render_snippet(self)
 
-        # while True:
-        #     key = self.screen.get_key()
-        #     self.state = self.get_state(key)
+        while True:
+            key = self.screen.get_key()
+            self.state = self.get_state(key)
 
-        #     # # only do rendering stuff here
-        #     if self.state == 0:
-        #         # resize screen
-        #         self.screen.resize()
-        #     if self.state == 1:
-        #         # user is browsing
-        #         # must exit using ctrl + c
-        #         self.browsing(key)
-        #     if self.state == 2:
-        #         # reading user input
-        #         self.typing(key)
-        #     elif self.state == 3:
-        #         # show stats for this snippet
-        #         self.done(key)
-        #     elif self.state == -1:
-        #         # throw keyboard error which exits
-        #         self.save_game()
-        #         raise KeyboardInterrupt
-        #     else:
-        #         raise Exception("wtf")
+            # only do rendering stuff here
+            if self.state == 0:
+                # resize screen
+                self.screen.resize()
+            elif self.state == 1:
+                # user is browsing
+                # must exit using ctrl + c
+                self.browsing(key)
+            elif self.state == 2:
+                # reading user input
+                self.typing(key)
+            elif self.state == 3:
+                # show stats for this snippet
+                self.done(key)
+            elif self.state == -1:
+                # throw keyboard error which exits
+                raise KeyboardInterrupt
+            else:
+                raise Exception("wtf")
 
     def get_state(self, key):
         """Get the state of the game.
 
         This should return one of the following values:
-            0 if the user is in browse mode
-            1 if the user is currently typing (ie attempting a code snippet)
-            2 if the user had completed a code snippet (similar to browse mode)
-            3 if the user is resizing the window
+            0 if the user is resizing the window
+            1 if the user is in browse mode
+            2 if the user is currently typing (ie attempting a code snippet)
+            3 if the user had completed a code snippet (similar to browse mode)
             -1 if the user is attempting to exit the game
 
         Parameters
