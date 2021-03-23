@@ -200,6 +200,21 @@ class Screen:
         """Returns number of terminal lines."""
         return curses.LINES  # pylint: disable=no-member
 
+    def _addstr(self, row, col, text, color=None, encode=True):
+        """Wraps call around curses.window.addsr."""
+        if encode:
+            text = text.encode(self.encoding)
+
+        if self.lines > row >= 0:
+            if col >= 0 and (col + len(text)) < self.columns:
+                self.window.addstr(row, col, text, color)
+
+    def _chgat(self, row, col, length, color):
+        """Wraps call around curses.window.chgat."""
+        if self.lines > row >= 0:
+            if col >= 0 and (col + length) <= self.columns:
+                self.window.chgat(row, col, length, color)
+
     def clear(self):
         self.window.clear()
 
@@ -216,20 +231,20 @@ class Screen:
 
     def _render_stat(self, stat):
         if stat:
-            self.window.addstr(0, 0, str(stat), self.colors["correct"])
+            self._addstr(0, 0, str(stat), self.colors["correct"])
         else:
             # if stat is none, use an empty Stat object (shows all 0s)
-            self.window.addstr(0, 0, str(Stat()), self.colors["correct"])
+            self._addstr(0, 0, str(Stat()), self.colors["correct"])
 
     def _render_author(self, author):
-        self.window.addstr(2, 0, author, self.colors["author"])
+        self._addstr(2, 0, author, self.colors["author"])
 
     def _render_lines(self, snippet):
         for i, line in enumerate(snippet.lines):
-            self.window.addstr(4 + i, 0, line, self.colors["prompt"])
+            self._addstr(4 + i, 0, line, self.colors["prompt"])
 
     def _render_score(self, snip, stat):
-        self.window.addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
+        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
 
     def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
