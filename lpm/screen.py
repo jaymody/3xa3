@@ -215,6 +215,11 @@ class Screen:
             if col >= 0 and (col + length) <= self.columns:
                 self.window.chgat(row, col, length, color)
 
+    def _set_cursor(self, row, col):
+        """Sets cursor position."""
+        if (row < self.lines) and (col < self.columns):
+            self.window.move(row, col)
+
     def clear(self):
         self.window.clear()
 
@@ -269,23 +274,23 @@ class Screen:
         # render lines
         self._render_lines(snip)
 
-        # # set cursor
-        # # cursor at 4, 0
-
         # TESTING PURPOSES DLETE THIS LATER
         self._render_score(snip, "DONE!")
 
+        # TESTING PURPOSES DLETE THIS LATER updating a char
+        self._chgat(2, 5, 3, self.colors["score"])
+
+        # TESTING PURPOSES DLETE THIS LATER: set cursor (MUST HAPPEN LAST)
+        self._set_cursor(4, 0)
+
         self.window.refresh()
         # curses.napms(3000)  # TESTING PURPOSES, DELETE THIS LATER
-        pass
 
-    def render_update(
-        self,
-        game,
-        ret=False,
-        val="one of backspace, enter, correct, incorrect, or None",
-    ):
-        """Val is the action that happened right before the given cursor position."""
+    def render_update(self, game, action, ret=False):
+        """Val is the action that happened right before the given cursor position.
+
+        action = one of back, enter, correct, incorrect, or None
+        """
         snip = game.snippets.current_snippet()
 
         # render stats
@@ -295,18 +300,19 @@ class Screen:
         # set cursor
         # cursor at 4, 0
         # note you cannot go back to prev line
-        if val == "back":
+        if action == "back":
             pass
-        elif val == "enter":
+            # self._chgat(game.row, game.col + 1)
+        elif action == "enter":
             pass
-        elif val == "correct":
+        elif action == "correct":
             pass
-        elif val == "incorrect":
+        elif action == "incorrect":
             pass
         else:
             # do nothing
             pass
-        pass
+        self._set_cursor(game.row, game.col)
 
     def render_score(self, game):
         pass
