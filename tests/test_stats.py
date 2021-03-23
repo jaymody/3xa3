@@ -1,6 +1,8 @@
 import os
 import pytest
 
+from lpm.config import Config
+
 
 def test_Stat():
     import time
@@ -70,7 +72,7 @@ def test_Stats():
     with pytest.raises(ValueError):
         stats.update(stat1)
 
-    filename = "tests/data/stats.pickle"
+    filename = ".deleteme"
     stats.save(filename)
     assert stats == stats.load(filename)
     os.remove(filename)
