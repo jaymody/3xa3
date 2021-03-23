@@ -24,18 +24,26 @@ def stats():
 
 def start():
     """Starts the lpm typing interface."""
-    snippets = Snippets.load(Config.SNIPPETS_PATH)
-    screen = Screen()
-    statistics = Stats.load(Config.STATS_PATH)
-    game = Game(snippets, screen, statistics)
-    try:
-        game.run()
+    # load snippets
+    if not os.path.exists(Config.SNIPPETS_PATH):
+        from . import _github_permalink
 
-        # technically, this line should never be reached
-        statistics.save(Config.STATS_PATH)
-    except KeyboardInterrupt:
-        # save stats, clear screen or something, quit game
-        statistics.save(Config.STATS_PATH)
+        print("... downloading snippets ...")
+
+        snippets = Snippets.from_urls(_github_permalink)
+        snippets.save(Config.SNIPPETS_PATH)
+    else:
+
+        snippets = Snippets.load(Config.SNIPPETS_PATH)
+
+    # load stats
+    if not os.path.exists(Config.STATS_PATH):
+        statistics = Stats([])
+    else:
+        statistics = Stats.load(Config.STATS_PATH)
+
+    with Game(snippets, statistics) as game:
+        game.run()
 
 
 def settings():
@@ -75,11 +83,10 @@ def cli():
     if args.stats:
         stats()
     elif args.version:
-        print(f"Current version: {__version__}")
+        print(__version__)
     elif args.reset:
         reset()
     elif args.settings:
         settings()
     else:
-        # panik
-        pass
+        start()

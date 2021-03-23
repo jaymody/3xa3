@@ -1,8 +1,5 @@
 """Module for tracking and computing lpm statistics."""
-
-import copy
-import json
-
+import pickle
 from datetime import datetime
 
 
@@ -109,6 +106,8 @@ class Stat:
     @property
     def elapsed(self):
         """Elapsed time in seconds since stat was started."""
+        if self.start_time is None:
+            return 0
         if self.end_time is None:
             return (datetime.now() - self.start_time).total_seconds()
         return (self.end_time - self.start_time).total_seconds()
@@ -117,46 +116,31 @@ class Stat:
     def lpm(self):
         """Lines per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return lines_per_minute(self.num_lines, self.elapsed)
 
     @property
     def wpm(self):
         """Words per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return words_per_minute(self.num_chars, self.elapsed)
 
     @property
     def cpm(self):
         """Characters per minute."""
         if self.start_time is None:
-            return None
+            return 0
         return characters_per_minute(self.num_chars, self.elapsed)
 
     @property
     def acc(self):
         """Accuracy."""
         if self.start_time is None:
-            return None
+            return 0
+        if not self.num_correct + self.num_wrong > 0:
+            return 0
         return accuracy(self.num_correct, self.num_wrong)
-
-    @classmethod
-    def from_dict(cls, d):
-        """Create Stat object from dict."""
-        stat = cls()
-        for k, v in d.items():
-            setattr(stat, k, v)
-        stat.start_time = datetime.strptime(stat.start_time, cls.TIME_STR_FMT)
-        stat.end_time = datetime.strptime(stat.end_time, cls.TIME_STR_FMT)
-        return stat
-
-    def to_dict(self):
-        """Send to dict."""
-        d = copy.deepcopy(self.__dict__)
-        d["start_time"] = d["start_time"].strftime(self.TIME_STR_FMT)
-        d["end_time"] = d["end_time"].strftime(self.TIME_STR_FMT)
-        return d
 
     def __eq__(self, other):
         """Check two Stat objects are equal.
@@ -172,6 +156,11 @@ class Stat:
             Whether self is equivalent to other.
         """
         return self.__dict__ == other.__dict__
+
+    def __str__(self):
+        # TODO: spacing at the end is used so that trailing chars do not persist
+        # if the stat string becomes shorter, please fix this abomination
+        return f"{self.elapsed:.2f}s  {self.lpm:.2f} lpm  {self.wpm:.2f} wpm  {self.cpm:.2f} cpm  {self.acc*100:.2f}% acc                   "
 
 
 class Stats:
@@ -201,7 +190,7 @@ class Stats:
 
     @classmethod
     def load(cls, filename):
-        """Loads stats from the stats JSON file.
+        """Loads stats from the stats pickle file.
 
         Parameters
         ----------
@@ -211,22 +200,22 @@ class Stats:
         Returns
         -------
         Stats
-            Stats object loaded from json.
+            Stats object loaded from pickle.
         """
-        with open(filename) as fi:
-            stats = [Stat.from_dict(d) for d in json.load(fi)]
-        return cls(stats)
+        with open(filename, "rb") as fi:
+            stats = pickle.load(fi)
+        return stats
 
     def save(self, filename):
-        """Saves current statistics to the specified JSON file.
+        """Saves current statistics to the specified pickle file.
 
         Parameters
         ----------
         filename : str
             File path to save stats to.
         """
-        with open(filename, "w") as fo:
-            json.dump([stat.to_dict() for stat in self.stats], fo, indent=2)
+        with open(filename, "wb") as fo:
+            pickle.dump(self, fo)
 
     def __getitem__(self, index):
         """Get Stat by index.

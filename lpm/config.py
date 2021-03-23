@@ -17,9 +17,11 @@ DEFAULT_CONFIG = {
     "COLOR_TEXT": "#5f85c0",
     "COLOR_CORRECT": "#9effb6",
     "COLOR_INCORRECT": "#da5a58",
-    "STATS_PATH": "~/.lpmstats.json",
-    "SNIPPET_PATH": "~/.lpmsnippets.json",
+    "STATS_PATH": "~/.lpmstats.pickle",
+    "SNIPPET_PATH": "~/.lpmsnippets.pickle",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
+    "MAX_LINES": 24,
+    "MAX_COLS": 80,
 }
 
 """Stores the default configuration for lpm."""
@@ -38,8 +40,14 @@ class Config:
     INIT = False
     "Flag that stores if the config has been loaded."
 
-    CONFIG_PATH = os.path.expanduser("~/.lpmconfig.json")
+    CONFIG_PATH = os.path.expanduser(DEFAULT_CONFIG["CONFIG_PATH"])
     "Path to configuration file."
+
+    STATS_PATH = os.path.expanduser(DEFAULT_CONFIG["STATS_PATH"])
+    "Path to stats file."
+
+    SNIPPETS_PATH = os.path.expanduser(DEFAULT_CONFIG["SNIPPET_PATH"])
+    "Path to snippets file."
 
     COLOR = DEFAULT_CONFIG["COLOR"]
     "Highlight color, used for stats header color."
@@ -62,14 +70,14 @@ class Config:
     COLOR_INCORRECT = DEFAULT_CONFIG["COLOR_INCORRECT"]
     "Color of snippet text that was incorrectly typed."
 
-    STATS_PATH = DEFAULT_CONFIG["STATS_PATH"]
-    "Path to stats file."
-
-    SNIPPETS_PATH = DEFAULT_CONFIG["SNIPPET_PATH"]
-    "Path to snippets file."
-
     DEFAULT_LANGS = DEFAULT_CONFIG["DEFAULT_LANGS"]
     "Code snippet programming languages to load lpm with by default."
+
+    MAX_LINES = DEFAULT_CONFIG["MAX_LINES"]
+    """Max lines allowed for a code snippet."""
+
+    MAX_COLS = DEFAULT_CONFIG["MAX_COLS"]
+    """Max cols allowed for a code snippet."""
 
     @staticmethod
     def load():
@@ -78,13 +86,14 @@ class Config:
         #
         # if config_path is invalid json or some field is missing
         # report error to user (ask them to verify or ask them to lpm --reset)
+        ignore = {"CONFIG_PATH", "STATS_PATH", "SNIPPETS_PATH"}
         if not (os.path.exists(Config.CONFIG_PATH)):
             Config.reset()
         else:
             with open(Config.CONFIG_PATH) as fi:
                 data = json.load(fi)
                 for k, v in data.items():
-                    if k in DEFAULT_CONFIG and k != "CONFIG_PATH":
+                    if k in DEFAULT_CONFIG and k not in ignore:
                         setattr(Config, k, v)
 
     @staticmethod
