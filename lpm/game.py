@@ -157,18 +157,26 @@ class Game:
 
         current_snippet = self.snippets.current_snippet()
         current_line = current_snippet.lines[self.row]
+        current_char = None
 
         def calculate_whitespace(row):
             return len(current_snippet.lines[row]) - len(
                 current_snippet.lines[row].lstrip()
             )
 
-        def end_of_snippet():
-            return self.col == len(current_line) and self.row != len(
-                current_snippet.lines
+        def end_of_line():
+            return (
+                self.col == len(current_line)
+                and self.row != len(current_snippet.lines) - 1
             )
 
-        if not end_of_snippet():
+        def end_of_snippet():
+            return (
+                self.col == len(current_line)
+                and self.row == len(current_snippet.lines) - 1
+            )
+
+        if not end_of_line():
             current_char = current_line[self.col]
 
         ret = False
@@ -177,9 +185,10 @@ class Game:
         if key == None:
             pass
         elif key == Screen.KEY_ENTER:  # Go to next line
-            if current_char == len(current_line) - 1:
+            if end_of_line():
                 self.row += 1
-                while calculate_whitespace(self.row) == 0:
+                self.current_stat.num_lines += 1
+                while current_snippet.lines[self.row] == "":
                     self.row += 1
                 self.col = calculate_whitespace(self.row)
                 action = "enter"
@@ -187,7 +196,7 @@ class Game:
             if self.row == 0 and calculate_whitespace(self.row) == self.col:
                 # First character of first line -> pass
                 return
-            self.current_stat.num_wrong -= 1
+            # self.current_stat.num_wrong -= 1
             if calculate_whitespace(self.row) == self.col:
                 # 0th char of a row -> up 1 row, last col
                 self.row -= 1
@@ -201,27 +210,28 @@ class Game:
             self.screen.render_snippet(self)
             return
         else:  # key is a typed key
-            if end_of_snippet():
-                ret = True
+            if current_char == None:
+                pass
             elif key == current_char:
                 # Right
                 self.current_stat.num_correct += 1
                 action = "correct"
                 self.col += 1
+                self.current_stat.num_chars += 1
             else:
                 # Wrong
                 self.current_stat.num_wrong += 1
                 action = "incorrect"
                 self.col += 1
+                self.current_stat.num_chars += 1
 
-            # ret = end_of_snippet()
+            ret = end_of_line()
 
         self.screen.render_update(self, action, ret)
 
         # If we made it to the end, call done game
-        if current_line == len(current_snippet.lines) - 1 and current_char == len(
-            current_line - 1
-        ):
+        if end_of_snippet():
+            self.current_stat.num_lines += 1
             self.finished_snippet()
 
     def start_snippet(self):

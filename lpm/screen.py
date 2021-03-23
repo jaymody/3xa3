@@ -125,7 +125,7 @@ class Screen:
     @staticmethod
     def is_escape(key):
         """Checks for escape key."""
-        if len(key) == 1:
+        if isinstance(key, str) and len(key) == 1:
             return ord(key) == curses.ascii.ESC
         return False
 
@@ -134,7 +134,11 @@ class Screen:
         """Checks for backspace key."""
         if key == Screen.KEY_ENTER:
             return True
-        if ord(key) in (curses.ascii.CR, 10, 13):  # TODO: don't use int vals
+        if isinstance(key, str) and ord(key) in (
+            curses.ascii.CR,
+            10,
+            13,
+        ):  # TODO: don't use int vals
             return True
         return False
 
@@ -143,7 +147,7 @@ class Screen:
         """Checks for backspace key."""
         if key == Screen.KEY_BACKSPACE:
             return True
-        if ord(key) in (curses.ascii.BS, curses.ascii.DEL):
+        if isinstance(key, str) and ord(key) in (curses.ascii.BS, curses.ascii.DEL):
             return True
         return False
 
@@ -300,17 +304,16 @@ class Screen:
         self._render_stat(game.current_stat)
 
         # render author
-        self._render_author(snip.author)
+        self._render_author(snip.url)
 
         # render lines
         self._render_lines(snip)
 
         # TESTING PURPOSES DLETE THIS LATER
-        self._render_score(snip, "DONE!")
+        # self._render_score(snip, "DONE!")
 
         # TESTING PURPOSES DLETE THIS LATER updating a char
         self._chgat(2, 5, 3, self.colors["correct"])
-
         # TESTING PURPOSES DLETE THIS LATER: set cursor (MUST HAPPEN LAST)
         self._set_cursor(4, 0)
 
@@ -347,4 +350,4 @@ class Screen:
         self.window.refresh()
 
     def render_score(self, game):
-        pass
+        self._render_score(game.snippets.current_snippet(), "DONE!")
