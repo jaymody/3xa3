@@ -16,6 +16,10 @@ from .config import Config
 # fix how downloading/creating the snippets pickle works
 # game tick/input fetching/state updating
 
+# we can't hit enter
+# current_stat is not working
+# wtf on backspace or esc at very beggining
+
 
 class Game:
     def __init__(self, snippets, stats):
