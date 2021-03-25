@@ -69,7 +69,11 @@ class Config:
 
     @staticmethod
     def load():
-        """Loads the configuration file from CONFIG_PATH."""
+        """Loads the configuration file from CONFIG_PATH.
+
+        This method extracts information from the config file, located at
+        CONFIG_PATH.
+        """
         # reset if file does not exist
         #
         # if config_path is invalid json or some field is missing
