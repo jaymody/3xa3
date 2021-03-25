@@ -32,20 +32,24 @@ def stats():
 
         lifetime = Stat()
         elapsed = 0
-        i = 0
-        for s in reversed(statistics):
+        i = len(statistics)
+        print("last 5 games")
+        print("------------")
+        for s in statistics:
             lifetime.num_chars += s.num_chars
             lifetime.num_lines += s.num_lines
             lifetime.num_correct += s.num_correct
             lifetime.num_wrong += s.num_wrong
             elapsed += s.elapsed
-            if i < 5:
+            if i <= 5:
                 print(s.end_time.strftime("%Y-%m-%d %H:%M:%S"), "  ", s)
-                i += 1
+            i -= 1
 
         lifetime.start_time = datetime.today()
         lifetime.end_time = lifetime.start_time + timedelta(0, elapsed)
-        print("-" * 32)
+        print("")
+        print("lifetime stats")
+        print("--------------")
         print(
             f"{len(statistics)} games | {lifetime.elapsed:.2f}s total elapsed | {lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | {lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
         )
