@@ -16,6 +16,7 @@ from .game import Game
 def stats():
     """Displays the users statistics to the command-line."""
     # TODO: make this better
+    # TODO: only show last N things
     if not os.path.exists(Config.STATS_PATH):
         print("No stats recorded")
     else:
@@ -25,13 +26,16 @@ def stats():
 
         lifetime = Stat()
         elapsed = 0
-        for s in statistics:
+        i = 0
+        for s in reversed(statistics):
             lifetime.num_chars += s.num_chars
             lifetime.num_lines += s.num_lines
             lifetime.num_correct += s.num_correct
             lifetime.num_wrong += s.num_wrong
             elapsed += s.elapsed
-            print(s.end_time.strftime("%Y-%m-%d %H:%M:%S"), "  ", s)
+            if i < 5:
+                print(s.end_time.strftime("%Y-%m-%d %H:%M:%S"), "  ", s)
+                i += 1
 
         lifetime.start_time = datetime.today()
         lifetime.end_time = lifetime.start_time + timedelta(0, elapsed)
@@ -41,8 +45,22 @@ def stats():
         )
 
 
-def start():
+def start(langs=None):
     """Starts the lpm typing interface."""
+    if langs is None:
+        langs = Config.DEFAULT_LANGS
+    else:
+        for lang in langs:
+            if "--" in lang or "-" in lang:
+                print("ERROR: invalid flag(s), please see lpm -h for more info")
+                return
+            elif lang not in Config.DEFAULT_LANGS:
+                print(
+                    "ERROR: one or more args are not valid languages, must be one of:\n",
+                    f"{', '.join(Config.DEFAULT_LANGS)}",
+                )
+                return
+
     # load snippets
     if not os.path.exists(Config.SNIPPETS_PATH):
         from . import _github_permalink
@@ -51,9 +69,7 @@ def start():
 
         snippets = Snippets.from_urls(_github_permalink)
         snippets.save(Config.SNIPPETS_PATH)
-    else:
-
-        snippets = Snippets.load(Config.SNIPPETS_PATH)
+    snippets = Snippets.load(Config.SNIPPETS_PATH, languages=langs)
 
     # load stats
     if not os.path.exists(Config.STATS_PATH):
@@ -97,7 +113,7 @@ def cli():
     parser.add_argument("--reset", action="store_true", help=reset.__doc__)
     parser.add_argument("--settings", action="store_true", help=settings.__doc__)
 
-    args = parser.parse_args()
+    args, langs = parser.parse_known_args()
 
     if args.stats:
         stats()
@@ -108,4 +124,4 @@ def cli():
     elif args.settings:
         settings()
     else:
-        start()
+        start(langs)
