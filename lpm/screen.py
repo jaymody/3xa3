@@ -13,6 +13,7 @@ class Screen:
     KEY_BACKSPACE = curses.KEY_BACKSPACE
     KEY_LEFT = curses.KEY_LEFT
     KEY_RIGHT = curses.KEY_RIGHT
+    KEY_SPACEBAR = " "
     KEY_RESIZE = curses.KEY_RESIZE
     KEY_ENTER = curses.KEY_ENTER
     KEY_ESCAPE = curses.ascii.ESC
