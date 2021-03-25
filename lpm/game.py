@@ -86,17 +86,16 @@ class Game:
         """
         if key == Screen.KEY_RESIZE:
             return 0
-        elif key == Screen.KEY_ESCAPE:
-            return -1
         elif self.current_stat is None:
-            if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT or key == None:
+            keys = {Screen.KEY_LEFT, Screen.KEY_RIGHT, Screen.KEY_SPACEBAR, None}
+            if key in keys:
                 return 1
-            elif key != Screen.KEY_BACKSPACE:
+            elif key == Screen.KEY_ESCAPE:
+                return -1
+            else:
                 # start a new game
                 self.start_snippet()
                 return 2
-            else:
-                return 1
         elif (
             self.current_stat.start_time is not None
             and self.current_stat.end_time is None
@@ -108,7 +107,7 @@ class Game:
         ):
             return 3
         else:
-            return -1  ## Eventually be exit
+            return -1
 
     def typing(self, key):
         """Handles interaction during the typing (gameplay) state."""
@@ -164,7 +163,7 @@ class Game:
                 self.col -= 1
             action = "back"
         elif key == Screen.KEY_ESCAPE:  # Stop typing
-            self.quit_snippet()
+            self.reset_snippet()
             self.screen.render_snippet(self)
             return
         else:  # key is a typed key
@@ -199,12 +198,6 @@ class Game:
         self.current_stat = Stat()
         self.current_stat.start()
 
-    def quit_snippet(self):
-        """Quit Snippet"""
-        self.current_stat = None
-        self.row = 0
-        self.col = 0
-
     def finished_snippet(self):
         """Finished Snippet"""
         self.current_stat.stop()
@@ -220,15 +213,17 @@ class Game:
         """Handles interaction during the browsing state."""
         if key == Screen.KEY_LEFT:
             self.snippets.prev_snippet()
-            self.reset()
+            self.reset_snippet()
             self.screen.render_snippet(self)
-        elif key == Screen.KEY_RIGHT:
+        elif key == Screen.KEY_RIGHT or key == Screen.KEY_SPACEBAR:
             self.snippets.next_snippet()
-            self.reset()
+            self.reset_snippet()
             self.screen.render_snippet(self)
         elif key == Screen.KEY_ESCAPE:
             raise KeyboardInterrupt
 
-    def reset(self):
+    def reset_snippet(self):
         """Resets stats and browses"""
+        self.row = 0
+        self.col = 0
         self.current_stat = None
