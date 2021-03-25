@@ -14,7 +14,13 @@ from .game import Game
 
 
 def stats():
-    """Displays the users statistics to the command-line."""
+    """Displays the users statistics to the command-line.
+
+    Returns
+    -------
+    None
+        Note that this method does output to the user screen.
+    """
     # TODO: make this better
     # TODO: only show last N things
     if not os.path.exists(Config.STATS_PATH):
@@ -47,7 +53,7 @@ def stats():
 
 def start(langs=None):
     """Starts the lpm typing interface."""
-    if langs is None:
+    if not langs:
         langs = Config.DEFAULT_LANGS
     else:
         for lang in langs:
@@ -82,13 +88,20 @@ def start(langs=None):
 
 
 def settings():
-    """Allows user to modify lpm settings."""
+    """Allows user to modify lpm settings through their text editor.
+
+    This method will open the config file using the default text editor, thus
+    replacing the command line window.
+    """
     editor = os.environ.get("EDITOR", "vim")
     os.system(f"{editor} {Config.CONFIG_PATH}")
 
 
 def reset():
-    """Resets the settings for lpm."""
+    """Resets the settings for lpm.
+
+    This method can update both the config and stats files, based on user choice.
+    """
     config_reset = input("Do you want to reset your config? (y/n) ")
     if config_reset == "y" or config_reset == "Y":
         Config.reset()
