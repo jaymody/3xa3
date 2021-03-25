@@ -13,7 +13,6 @@ class Screen:
     KEY_BACKSPACE = curses.KEY_BACKSPACE
     KEY_LEFT = curses.KEY_LEFT
     KEY_RIGHT = curses.KEY_RIGHT
-    KEY_SPACEBAR = " "
     KEY_RESIZE = curses.KEY_RESIZE
     KEY_ENTER = curses.KEY_ENTER
     KEY_ESCAPE = curses.ascii.ESC
@@ -222,24 +221,29 @@ class Screen:
 
     def resize(self, game):
         """Resizes game interface based on current user terminal size."""
-        max_y, max_x = self.screen.window.getmaxyx()
-        self.screen.clear()
+        # TODO: resize
+        # max_y, max_x = self.screen.window.getmaxyx()
+        # self.screen.clear()
 
-        # Check if we have the resizeterm ncurses extension
-        if hasattr(curses, "resizeterm"):
-            curses.resizeterm(max_y, max_x)
-            # An ungetch for KEY_RESIZE will be sent to let others handle it.
-            # We'll just pop it off again to prevent endless loops.
-            self.screen.get_key()
+        # # Check if we have the resizeterm ncurses extension
+        # if hasattr(curses, "resizeterm"):
+        #     curses.resizeterm(max_y, max_x)
+        #     # An ungetch for KEY_RESIZE will be sent to let others handle it.
+        #     # We'll just pop it off again to prevent endless loops.
+        #     self.screen.get_key()
 
-        self.clear()
-        self.render_snippet(game)
+        # self.clear()
+        # self.render_snippet(game)
+        pass
 
     def _render_stat(self, stat):
         # if stat is none, use an empty Stat object (shows all 0s)
         top_bar = str(stat) if stat else str(Stat())
+
+        # pad with spaces to the right to overwrite chars if the
+        # stats string gets shorter
         top_bar = top_bar.ljust(self.columns - 1)
-        # raise EOFError(self.columns)
+
         self._addstr(0, 0, top_bar, self.colors["top_bar"])
 
     def _render_author(self, snip):
@@ -281,7 +285,7 @@ class Screen:
 
         # render prompt
         self._render_prompt(
-            snip, "press ESC to quit, SPACE/ARROWS to browse, or start typing!"
+            snip, "press ESC to quit, ARROWS to browse, or start typing!"
         )
 
         # set cursor (MUST HAPPEN LAST)
@@ -322,5 +326,5 @@ class Screen:
 
     def render_score(self, game):
         self._render_stat(game.current_stat)
-        prompt = f"You scored {game.current_stat.lpm:.2f} lpm, press ESC to quit, SPACE/ARROWS to browse, or start typing!"
+        prompt = f"You scored {game.current_stat.lpm:.2f} lpm, press ESC to quit, ARROWS to browse, or start typing!"
         self._render_prompt(game.snippets.current_snippet(), prompt)
