@@ -2,6 +2,8 @@
 import pickle
 from datetime import datetime
 
+# TODO: save stats to a csv instead of pickle so it's more efficient
+
 
 def lines_per_minute(num_lines, elapsed):
     """Calculates lines per minute.

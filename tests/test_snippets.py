@@ -77,7 +77,7 @@ MIN_NUM_SNIPPET = 20
 
 def test_min_snippets_per_lang():
     for lang in Config.DEFAULT_LANGS:
-        assert len(Snippets.load(Config.SNIPPETS_PATH, lang)) >= MIN_NUM_SNIPPET
+        assert len(Snippets.load(Config.SNIPPETS_PATH, [lang])) >= MIN_NUM_SNIPPET
 
 
 def test_max_line_len_per_snippet():

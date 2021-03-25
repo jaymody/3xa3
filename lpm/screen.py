@@ -4,54 +4,9 @@ import sys
 import curses
 import curses.ascii
 import locale
-import logging
 
 from .config import Config
 from .stats import Stat
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("debug.log", "w+")
-formatter = logging.Formatter("[%(asctime)s] %(levelname)s:%(name)s: %(message)s")
-fh.setFormatter(formatter)
-logger.addHandler(fh)
-
-# TODO: move this to config
-# tuples represent a (fg, bg) pair
-# (text takes on foreground color, and the background of the text is bg)
-COLOR_CONF = {
-    "xterm256colors": {
-        "background": (235, 235),
-        "author": (39, 235),
-        "correct": (76, 235),
-        "incorrect": (160, 235),
-        "prompt": (250, 235),
-        "quote": (250, 235),
-        "score": (250, 235),
-        "top_bar": (250, 24),
-    },
-    "xtermcolors": {
-        "background": (curses.COLOR_BLACK, curses.COLOR_BLACK),
-        "author": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "correct": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "incorrect": (curses.COLOR_RED, curses.COLOR_BLACK),
-        "prompt": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "quote": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "score": (curses.COLOR_YELLOW, curses.COLOR_RED),
-        "top_bar": (curses.COLOR_CYAN, curses.COLOR_BLUE),
-    },
-    "monochromecolors": {
-        "background": (curses.COLOR_BLACK, curses.COLOR_BLACK),
-        "author": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "correct": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "incorrect": (curses.COLOR_BLACK, curses.COLOR_WHITE),
-        "prompt": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "quote": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "score": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-        "top_bar": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-    },
-}
 
 
 class Screen:
@@ -60,7 +15,7 @@ class Screen:
     KEY_RIGHT = curses.KEY_RIGHT
     KEY_RESIZE = curses.KEY_RESIZE
     KEY_ENTER = curses.KEY_ENTER
-    KEY_ESCAPE = curses.ascii.ESC  # not sure if this will work
+    KEY_ESCAPE = curses.ascii.ESC
 
     def __init__(self):
         """Screen object used for command-line IO."""
@@ -110,10 +65,9 @@ class Screen:
         self.window.bkgd(" ", self.colors["background"])
 
     def setup_colors(self):
-        for i, (k, v) in enumerate(COLOR_CONF["xterm256colors"].items()):
+        for i, (k, v) in enumerate(Config.COLORS.items()):
             curses.init_pair(i + 1, *v)
             self.colors[k] = curses.color_pair(i + 1)
-            # logger.debug("%s, %s, %s, %s, %s", i + 1, k, *v, self.colors[k])
 
         # # make certain colors more visible
         # if not "xterm256colors":
@@ -265,9 +219,20 @@ class Screen:
         curses.echo()
         curses.endwin()
 
-    def resize(self):
+    def resize(self, game):
         """Resizes game interface based on current user terminal size."""
-        pass
+        max_y, max_x = self.screen.window.getmaxyx()
+        self.screen.clear()
+
+        # Check if we have the resizeterm ncurses extension
+        if hasattr(curses, "resizeterm"):
+            curses.resizeterm(max_y, max_x)
+            # An ungetch for KEY_RESIZE will be sent to let others handle it.
+            # We'll just pop it off again to prevent endless loops.
+            self.screen.get_key()
+
+        self.clear()
+        self.render_snippet(game)
 
     def _render_stat(self, stat):
         # if stat is none, use an empty Stat object (shows all 0s)
@@ -279,18 +244,16 @@ class Screen:
     def _render_author(self, snip):
         text = snip.url
         if len(text) > self.columns - 1:
-            text = text.replace("https://", "")
-            if len(text) > self.columns - 1:
-                text = snip.author
+            text = snip.author
 
         self._addstr(2, 0, text, self.colors["author"])
 
     def _render_lines(self, snippet):
         for i, line in enumerate(snippet.lines):
-            self._addstr(4 + i, 0, line, self.colors["prompt"])
+            self._addstr(4 + i, 0, line, self.colors["text"])
 
-    def _render_score(self, snip, stat):
-        self._addstr(len(snip.lines) + 5, 0, str(stat), self.colors["score"])
+    def _render_prompt(self, snip, prompt):
+        self._addstr(len(snip.lines) + 5, 0, prompt, self.colors["prompt"])
 
     def render_snippet(self, game):
         """Renders the typing interface with the most up to date information.
@@ -315,11 +278,10 @@ class Screen:
         # render lines
         self._render_lines(snip)
 
-        # TESTING PURPOSES DLETE THIS LATER
-        # self._render_score(snip, "DONE!")
-
-        # TESTING PURPOSES DLETE THIS LATER updating a char
-        # self._chgat(2, 5, 3, self.colors["correct"])
+        # render prompt
+        self._render_prompt(
+            snip, "press ESC to quit, SPACE/ARROWS to browse, or start typing!"
+        )
 
         # set cursor (MUST HAPPEN LAST)
         self._set_cursor(4, 0)
@@ -342,7 +304,7 @@ class Screen:
         # cursor at 4, 0
         # note you cannot go back to prev line
         if action == "back":
-            self._chgat(row, col, 1, self.colors["prompt"])
+            self._chgat(row, col, 1, self.colors["text"])
         elif action == "enter":
             pass
         elif action == "correct":
@@ -353,8 +315,11 @@ class Screen:
             # do nothing
             pass
 
+        self._render_prompt(game.snippets.current_snippet(), " " * (self.columns - 1))
         self._set_cursor(row, col)
         self.window.refresh()
 
     def render_score(self, game):
-        self._render_score(game.snippets.current_snippet(), "DONE!")
+        self._render_stat(game.current_stat)
+        prompt = f"You scored {game.current_stat.lpm:.2f} lpm, press ESC to quit, SPACE/ARROWS to browse, or start typing!"
+        self._render_prompt(game.snippets.current_snippet(), prompt)

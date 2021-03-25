@@ -5,14 +5,6 @@ from .stats import Stat
 from .config import Config
 
 
-# forget implementing resize
-# forget good UI
-# forget advanced features
-# just use current snippet examples
-# return/enter advanced logic
-# escape always fails (fix escape)
-
-
 class Game:
     def __init__(self, snippets, stats):
         """Game object that runs the lpm typing game.
@@ -55,7 +47,7 @@ class Game:
             # only do rendering stuff here
             if self.state == 0:
                 # resize screen
-                self.screen.resize()
+                self.screen.resize(self)
             elif self.state == 1:
                 # user is browsing
                 # must exit using ctrl + c
@@ -70,7 +62,7 @@ class Game:
                 # throw keyboard error which exits
                 raise KeyboardInterrupt
             else:
-                raise Exception("something has gone horribly wrong")
+                raise KeyboardInterrupt
 
     def get_state(self, key):
         """Get the state of the game.
@@ -92,19 +84,19 @@ class Game:
         int
             Current state of the game.
         """
-        keys = {Screen.KEY_BACKSPACE, Screen.KEY_ESCAPE}
-
         if key == Screen.KEY_RESIZE:
             return 0
+        elif key == Screen.KEY_ESCAPE:
+            return -1
         elif self.current_stat is None:
-            if (
-                key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT or key == None
-            ):  # TODO spacebar
+            if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT or key == None:
                 return 1
-            elif key not in keys:
+            elif key != Screen.KEY_BACKSPACE:
                 # start a new game
                 self.start_snippet()
                 return 2
+            else:
+                return 1
         elif (
             self.current_stat.start_time is not None
             and self.current_stat.end_time is None
@@ -172,7 +164,7 @@ class Game:
                 self.col -= 1
             action = "back"
         elif key == Screen.KEY_ESCAPE:  # Stop typing
-            self.start_snippet()
+            self.quit_snippet()
             self.screen.render_snippet(self)
             return
         else:  # key is a typed key
@@ -206,6 +198,12 @@ class Game:
         self.col = 0
         self.current_stat = Stat()
         self.current_stat.start()
+
+    def quit_snippet(self):
+        """Quit Snippet"""
+        self.current_stat = None
+        self.row = 0
+        self.col = 0
 
     def finished_snippet(self):
         """Finished Snippet"""

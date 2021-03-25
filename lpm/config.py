@@ -5,28 +5,31 @@ configuration is loaded from CONFIG_PATH, which the user may edit via:
 `lpm --settings`
 """
 
-# TODO: either don't load snippets longer than max_lines, or base it off of the
-# size of the terminal
-
 import os
 import json
+import curses
 
+# TODO: either don't load snippets longer than max_lines, or base it off of the
+# size of the terminal
+# TODO: add multiple theme options (including one that supports non-256 terms)
+# TODO: don't save stuff to home dir except .lpmconfig (rename to .lpmrc)
 DEFAULT_CONFIG = {
     "CONFIG_PATH": "~/.lpmconfig.json",
-    "COLOR": "#5f85c0",
-    "COLOR_BACKGROUND": "#121212",
-    "COLOR_STATS": "#77abfc",
-    "COLOR_INFO": "#77abfc",
-    "COLOR_TEXT": "#5f85c0",
-    "COLOR_CORRECT": "#9effb6",
-    "COLOR_INCORRECT": "#da5a58",
     "STATS_PATH": "~/.lpmstats.pickle",
     "SNIPPET_PATH": "~/.lpmsnippets.pickle",
     "DEFAULT_LANGS": ["python", "java", "javascript"],
     "MAX_LINES": 20,
     "MAX_COLS": 80,
+    "COLORS": {  # tuples represent a (fg, bg) pair
+        "background": [235, 235],
+        "text": [252, 235],
+        "correct": [243, 235],
+        "incorrect": [9, 88],
+        "author": [39, 235],
+        "prompt": [243, 235],
+        "top_bar": [254, 32],
+    },
 }
-
 """Stores the default configuration for lpm."""
 
 
@@ -52,35 +55,17 @@ class Config:
     SNIPPETS_PATH = os.path.expanduser(DEFAULT_CONFIG["SNIPPET_PATH"])
     "Path to snippets file."
 
-    COLOR = DEFAULT_CONFIG["COLOR"]
-    "Highlight color, used for stats header color."
-
-    COLOR_BACKGROUND = DEFAULT_CONFIG["COLOR_BACKGROUND"]
-    "Background color."
-
-    COLOR_STATS = DEFAULT_CONFIG["COLOR_STATS"]
-    "Color of stats text."
-
-    COLOR_INFO = DEFAULT_CONFIG["COLOR_INFO"]
-    "Color of snippet information text (author, title, etc...)."
-
-    COLOR_TEXT = DEFAULT_CONFIG["COLOR_TEXT"]
-    "Color of snippet text."
-
-    COLOR_CORRECT = DEFAULT_CONFIG["COLOR_CORRECT"]
-    "Color of snippet text that was correctly typed."
-
-    COLOR_INCORRECT = DEFAULT_CONFIG["COLOR_INCORRECT"]
-    "Color of snippet text that was incorrectly typed."
+    COLORS = DEFAULT_CONFIG["COLORS"]
+    "xterm256 colors for interface components."
 
     DEFAULT_LANGS = DEFAULT_CONFIG["DEFAULT_LANGS"]
     "Code snippet programming languages to load lpm with by default."
 
     MAX_LINES = DEFAULT_CONFIG["MAX_LINES"]
-    """Max lines allowed for a code snippet."""
+    "Max lines allowed for a code snippet."
 
     MAX_COLS = DEFAULT_CONFIG["MAX_COLS"]
-    """Max cols allowed for a code snippet."""
+    "Max cols allowed for a code snippet."
 
     @staticmethod
     def load():

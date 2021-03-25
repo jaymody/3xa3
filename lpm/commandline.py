@@ -9,7 +9,6 @@ import argparse
 from . import __version__
 from .config import Config
 from .snippets import Snippets
-from .screen import Screen
 from .stats import Stat, Stats
 from .game import Game
 

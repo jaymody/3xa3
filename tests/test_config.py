@@ -1,8 +1,8 @@
 def test_reset():
-    from lpm.config import Config
+    from lpm.config import Config, DEFAULT_CONFIG
 
     Config.reset()
-    assert Config.COLOR_CORRECT == "#9effb6"
+    assert Config.COLORS == DEFAULT_CONFIG["COLORS"]
 
 
 def test_correct_load():
