@@ -164,7 +164,6 @@ class Game:
             action = "back"
         elif key == Screen.KEY_ESCAPE:  # Stop typing
             self.reset_snippet()
-            self.screen.render_snippet(self)
             return
         else:  # key is a typed key
             if current_char == None:
@@ -208,17 +207,21 @@ class Game:
         """Handles interaction during done state."""
         if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT:  # TODO spacebar
             self.browsing(key)
+        elif key == Screen.KEY_ESCAPE:
+            raise KeyboardInterrupt
+        elif key == Screen.KEY_SPACEBAR:
+            self.reset_snippet()
 
     def browsing(self, key):
         """Handles interaction during the browsing state."""
         if key == Screen.KEY_LEFT:
             self.snippets.prev_snippet()
             self.reset_snippet()
-            self.screen.render_snippet(self)
-        elif key == Screen.KEY_RIGHT or key == Screen.KEY_SPACEBAR:
+        elif key == Screen.KEY_RIGHT:
             self.snippets.next_snippet()
             self.reset_snippet()
-            self.screen.render_snippet(self)
+        elif key == Screen.KEY_SPACEBAR:
+            self.reset_snippet()
         elif key == Screen.KEY_ESCAPE:
             raise KeyboardInterrupt
 
@@ -227,3 +230,4 @@ class Game:
         self.row = 0
         self.col = 0
         self.current_stat = None
+        self.screen.render_snippet(self)
