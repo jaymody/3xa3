@@ -110,24 +110,51 @@ class Game:
             return -1
 
     def typing(self, key):
-        """Handles interaction during the typing (gameplay) state."""
+        """Handles interaction during the typing (gameplay) state.
+
+        This handling of interaction includes special characters (Enter,
+        backspace, escape) as well as normal keystrokes (letters, numbers,
+        special characters).
+
+        Parameters
+        ----------
+        key: str or int
+            Most recent key pressed by the user.
+        """
 
         current_snippet = self.snippets.current_snippet()
         current_line = current_snippet.lines[self.row]
         current_char = None
 
         def calculate_whitespace(row):
+            """Calculates whitespace between the beginning of the line and when
+            the text starts. Used for correctly rendering cursor location."""
             return len(current_snippet.lines[row]) - len(
                 current_snippet.lines[row].lstrip()
             )
 
         def end_of_line():
+            """Deduces whether the cursor has made it to the end of the currently
+            typed line.
+
+            Returns
+            -------
+            bool
+                Whether the user is at the end of the line or not."""
             return (
                 self.col == len(current_line)
                 and self.row != len(current_snippet.lines) - 1
             )
 
         def end_of_snippet():
+            """Deduces whether the cursor has made it to the end of the currently
+            typed snippet.
+
+            Returns
+            -------
+            bool
+                Whether the user is at the end of the snippet or not.
+            """
             return (
                 self.col == len(current_line)
                 and self.row == len(current_snippet.lines) - 1
@@ -204,7 +231,13 @@ class Game:
         self.screen.render_score(self)
 
     def done(self, key):
-        """Handles interaction during done state."""
+        """Handles interaction during done state.
+
+        Parameters
+        ----------
+        key: str or int
+            Most recent key pressed by the user.
+        """
         if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT:  # TODO spacebar
             self.browsing(key)
         elif key == Screen.KEY_ESCAPE:
@@ -213,7 +246,13 @@ class Game:
             self.reset_snippet()
 
     def browsing(self, key):
-        """Handles interaction during the browsing state."""
+        """Handles interaction during the browsing state.
+
+        Parameters
+        ----------
+        key: str or int
+            Most recent key pressed by the user.
+        """
         if key == Screen.KEY_LEFT:
             self.snippets.prev_snippet()
             self.reset_snippet()
