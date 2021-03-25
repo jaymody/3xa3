@@ -87,7 +87,7 @@ class Game:
         if key == Screen.KEY_RESIZE:
             return 0
         elif self.current_stat is None:
-            keys = {Screen.KEY_LEFT, Screen.KEY_RIGHT, Screen.KEY_SPACEBAR, None}
+            keys = {Screen.KEY_LEFT, Screen.KEY_RIGHT, None}
             if key in keys:
                 return 1
             elif key == Screen.KEY_ESCAPE:
@@ -238,12 +238,14 @@ class Game:
         key: str or int
             Most recent key pressed by the user.
         """
-        if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT:  # TODO spacebar
+        if key == Screen.KEY_LEFT or key == Screen.KEY_RIGHT:
             self.browsing(key)
         elif key == Screen.KEY_ESCAPE:
             raise KeyboardInterrupt
-        elif key == Screen.KEY_SPACEBAR:
+        elif key not in {None, Screen.KEY_ENTER, Screen.KEY_BACKSPACE}:
             self.reset_snippet()
+            self.start_snippet()
+            self.typing(key)
 
     def browsing(self, key):
         """Handles interaction during the browsing state.
@@ -258,8 +260,6 @@ class Game:
             self.reset_snippet()
         elif key == Screen.KEY_RIGHT:
             self.snippets.next_snippet()
-            self.reset_snippet()
-        elif key == Screen.KEY_SPACEBAR:
             self.reset_snippet()
         elif key == Screen.KEY_ESCAPE:
             raise KeyboardInterrupt
