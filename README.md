@@ -51,11 +51,12 @@ make clean && make html && make latexpdf
 
 Upload to [PyPI](https://pypi.org/project/lpm/0.0.1/):
 1. Update version in `lpm/__init__.py`
-2. Update requirements-dev.txt if needed
-3. Update setup.py if needed
-4. Run tests to assure everything is working
-5. `python -m build`
-6. `python -m twine upload dist/*`
+2. Run code linting and formatting
+3. Update `requirements-dev.txt` if needed
+4. Update `setup.py` if needed
+5. Run tests to assure everything is working
+6. `python -m build`
+7. `python -m twine upload dist/*`
 
 
 The folders and files for this project are as follows:
