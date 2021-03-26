@@ -1,13 +1,21 @@
 import os
+import time
+from datetime import datetime
+
 import pytest
 
 from lpm.config import Config
+from lpm.stats import (
+    Stat,
+    Stats,
+    words_per_minute,
+    characters_per_minute,
+    lines_per_minute,
+    accuracy,
+)
 
 
 def test_Stat():
-    import time
-    from lpm.stats import Stat
-
     stat = Stat()
 
     stat.start()
@@ -32,9 +40,6 @@ def test_Stat():
 
 
 def test_Stats():
-    from datetime import datetime
-    from lpm.stats import Stat, Stats
-
     fmt = "%Y-%m-%d %H:%M:%S"
 
     # 10 second difference
@@ -76,3 +81,56 @@ def test_Stats():
     stats.save(filename)
     assert stats == stats.load(filename)
     os.remove(filename)
+
+
+def test_S1():
+    """Test lines per minute calculation."""
+    assert lines_per_minute(1, 10) == 6
+    assert lines_per_minute(2, 10) == 12
+    assert lines_per_minute(0, 10) == 0
+
+
+def test_S2():
+    """Test characters per minute calculation."""
+    assert characters_per_minute(20, 5) == 240
+    assert characters_per_minute(0, 10) == 0
+
+
+def test_S3():
+    """Test words per minute calculation."""
+    assert words_per_minute(5.6 * 10, 10) == 60
+    assert words_per_minute(0, 10) == 0
+
+
+def test_S4():
+    """Test accuracy calculations."""
+    assert accuracy(100, 0) == 1
+    assert accuracy(99, 1) == 0.99
+    assert accuracy(0, 100) == 0
+
+
+def test_S5():
+    """Test lifetime statistics."""
+    import statistics
+
+    fmt = "%Y-%m-%d %H:%M:%S"
+
+    # 10 second difference
+    stat1 = Stat(
+        start_time=datetime.strptime("2020-01-02 16:12:11", fmt),
+        end_time=datetime.strptime("2020-01-02 16:12:21", fmt),
+    )
+    stat1.num_lines += 3
+
+    # 10 second difference
+    stat2 = Stat(
+        start_time=datetime.strptime("2020-02-02 16:12:11", fmt),
+        end_time=datetime.strptime("2020-02-02 16:12:21", fmt),
+    )
+    stat2.num_lines += 4
+
+    stats = Stats([])
+    stats.update(stat1)
+    stats.update(stat2)
+
+    assert statistics.mean([stat.lpm for stat in stats.stats]) == 21
