@@ -289,10 +289,9 @@ class Screen:
         )
 
         # set cursor (MUST HAPPEN LAST)
-        self._set_cursor(4, 0)
+        self._set_cursor(game.row + 4, game.col)
 
         self.window.refresh()
-        # curses.napms(3000)  # TESTING PURPOSES, DELETE THIS LATER
 
     def render_update(self, game, action, ret=False):
         """Val is the action that happened right before the given cursor position.

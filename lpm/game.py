@@ -22,9 +22,13 @@ class Game:
         self.screen = None
         self.stats = stats
         self.current_stat = None
-        self.row = 0
-        self.col = 0
+        self._reset_row_col()
         self.state = 0
+
+    def _reset_row_col(self):
+        snip = self.snippets.current_snippet()
+        self.row = 0
+        self.col = len(snip.lines[0]) - len(snip.lines[0].lstrip())
 
     def __enter__(self):
         self.screen = Screen()
@@ -219,8 +223,7 @@ class Game:
 
     def start_snippet(self):
         """Start snippet"""
-        self.row = 0
-        self.col = 0
+        self._reset_row_col()
         self.current_stat = Stat()
         self.current_stat.start()
 
@@ -266,7 +269,6 @@ class Game:
 
     def reset_snippet(self):
         """Resets stats and browses"""
-        self.row = 0
-        self.col = 0
+        self._reset_row_col()
         self.current_stat = None
         self.screen.render_snippet(self)
