@@ -66,6 +66,7 @@ class Snippet:
         l1, l2 = [int(n[1:]) for n in url.split("#")[-1].split("-")]
 
         # get code snippet lines
+        # TODO: make this more efficient
         raw_url = url.replace("/blob/", "/raw/", 1)
         with urlopen(raw_url) as response:
             text = response.read().decode("utf-8")
@@ -73,6 +74,12 @@ class Snippet:
         lines = lines[l1 - 1 : l2]
         # TODO: maybes use config tabs to spaces?
         lines = [line.rstrip().replace("\t", " " * 4) for line in lines]
+
+        # if first line contains whitespace, remove that much whitespace from
+        # the rest of the lines
+        ws = lambda x: len(x) - len(x.lstrip())
+        fws = ws(lines[0])
+        lines = [line[min(ws(line), fws) :] for line in lines]
 
         # get language
         ext = url.split("#")[-2].split(".")[-1]
