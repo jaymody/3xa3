@@ -12,7 +12,7 @@ _github_permalink = [
     "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/functions/commands/tldr.js#L24-L33",
     "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/functions/commands/tldr.js#L77-L87",
     "https://github.com/cslarsen/wpm/blob/6e48d8b750c7828166b67a532ff03d62584fb953/wpm/histogram.py#L44-L58",
-    "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/utils/format_message.js#L37-L48"
+    "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/utils/format_message.js#L37-L48",
     "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/models/shoe.model.js#L5-L15",
     "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/routes/offers.js#L4-L11",
     "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/client/src/App.js#L14-L23",
