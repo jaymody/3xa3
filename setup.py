@@ -35,6 +35,7 @@ setup(
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     install_requires=["setuptools"],
+    python_requires=">=3.6.0",
     zip_safe=True,
     test_suite="tests",
     keywords=["lpm", "typing", "typist", "code", "keyboard"],

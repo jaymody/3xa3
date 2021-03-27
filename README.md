@@ -49,6 +49,19 @@ cd docs
 make clean && make html && make latexpdf
 ```
 
+Code coverage:
+```
+# automated testing coverage
+coverage run --source lpm -m pytest tests
+coverage html
+open htmlcov/index.html
+
+# manual testing coverage
+coverage run -m lpm
+coverage html
+open htmlcov/index.html
+```
+
 Upload to [PyPI](https://pypi.org/project/lpm/0.0.1/):
 1. Update version in `lpm/__init__.py`
 2. Run code linting and formatting
