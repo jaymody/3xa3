@@ -51,7 +51,9 @@ def stats():
         print("lifetime stats")
         print("--------------")
         print(
-            f"{len(statistics)} games | {lifetime.elapsed:.2f}s total elapsed | {lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | {lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
+            f"{len(statistics)} games | {lifetime.elapsed:.2f}s total elapsed | "
+            "{lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | "
+            "{lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
         )
 
 
@@ -106,18 +108,29 @@ def reset():
 
     This method can update both the config and stats files, based on user choice.
     """
-    config_reset = input("Do you want to reset your config? (y/n) ")
-    if config_reset == "y" or config_reset == "Y":
+    config_reset = input("Do you want to reset your config? (y/n): ")
+    if config_reset.lower() == "y":
         Config.reset()
-        print("User settings were reset using defaults. \n")
+        print("User settings were reset using defaults.\n")
 
-    stats_reset = input("Do you want to reset your lifetime statistics? (y/n) ")
-    if stats_reset == "y" or stats_reset == "Y":
+    stats_reset = input("Do you want to reset your lifetime statistics? (y/n): ")
+    if stats_reset.lower() == "y":
         if os.path.exists(Config.STATS_PATH):
             os.remove(Config.STATS_PATH)
-            print("User statistics were reset. \n")
+            print("User statistics were reset.\n")
         else:
-            print("User statistics do not exist. \n")
+            print("User statistics do not exist.\n")
+
+    snippets_reset = input("Do you want to redownload snippets? (y/n): ")
+    if snippets_reset.lower() == "y":
+        from . import _github_permalink
+
+        print("... downloading snippets ...")
+
+        snippets = Snippets.from_urls(_github_permalink)
+        snippets.save(Config.SNIPPETS_PATH)
+
+        print("... done ...")
 
 
 def cli():
