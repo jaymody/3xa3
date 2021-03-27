@@ -64,7 +64,18 @@ class Screen:
         self.window.timeout(window_timeout)
         self.window.bkgd(" ", self.colors["background"])
 
+    @property
+    def columns(self):
+        """Returns number of terminal columns."""
+        return curses.COLS  # pylint: disable=no-member
+
+    @property
+    def lines(self):
+        """Returns number of terminal lines."""
+        return curses.LINES  # pylint: disable=no-member
+
     def setup_colors(self):
+        """Setups up terminal color from Config.COLORS."""
         for i, (k, v) in enumerate(Config.COLORS.items()):
             curses.init_pair(i + 1, *v)
             self.colors[k] = curses.color_pair(i + 1)
@@ -75,35 +86,6 @@ class Screen:
         #     self.colors["incorrect"] |= curses.A_UNDERLINE | curses.A_BOLD
         #     self.colors["quote"] |= curses.A_BOLD
         #     self.colors["status"] |= curses.A_BOLD
-
-    @staticmethod
-    def is_escape(key):
-        """Checks for escape key."""
-        if isinstance(key, str) and len(key) == 1:
-            return ord(key) == curses.ascii.ESC
-        return False
-
-    @staticmethod
-    def is_enter(key):
-        """Checks for backspace key."""
-        if key == Screen.KEY_ENTER:
-            return True
-        if isinstance(key, str) and ord(key) in (
-            curses.ascii.CR,
-            10,
-            13,
-        ):  # TODO: don't use int vals
-            return True
-        return False
-
-    @staticmethod
-    def is_backspace(key):
-        """Checks for backspace key."""
-        if key == Screen.KEY_BACKSPACE:
-            return True
-        if isinstance(key, str) and ord(key) in (curses.ascii.BS, curses.ascii.DEL):
-            return True
-        return False
 
     def get_key(self):
         """Gets the most recently pressed key.
@@ -122,15 +104,39 @@ class Screen:
 
     def _get_key_py33(self):
         """Python 3.3+ implementation of get_key."""
+
+        def _is_escape(key):
+            if isinstance(key, str) and len(key) == 1:
+                return ord(key) == curses.ascii.ESC
+            return False
+
+        def _is_enter(key):
+            if key == Screen.KEY_ENTER:
+                return True
+            if isinstance(key, str) and ord(key) in (
+                curses.ascii.CR,
+                10,
+                13,
+            ):  # TODO: don't use int vals
+                return True
+            return False
+
+        def _is_backspace(key):
+            if key == Screen.KEY_BACKSPACE:
+                return True
+            if isinstance(key, str) and ord(key) in (curses.ascii.BS, curses.ascii.DEL):
+                return True
+            return False
+
         # pylint: disable=too-many-return-statements
         try:
             # Curses in Python 3.3 handles unicode via get_wch
             key = self.window.get_wch()
-            if self.is_backspace(key):
+            if _is_backspace(key):
                 return Screen.KEY_BACKSPACE
-            elif self.is_enter(key):
+            elif _is_enter(key):
                 return Screen.KEY_ENTER
-            elif self.is_escape(key):
+            elif _is_escape(key):
                 return Screen.KEY_ESCAPE
             elif isinstance(key, int):
                 keymap = set(
@@ -148,49 +154,22 @@ class Screen:
         except curses.error:
             return None
 
-    def _get_key_py27(self):
-        raise NotImplementedError
-
-    #     """Python 2.7 implementation of get_key."""
-    #     # pylint: disable=too-many-return-statements
-    #     try:
-    #         key = self.window.getkey()
-
-    #         # Start of UTF-8 multi-byte character?
-    #         if self.encoding == "utf-8" and ord(key[0]) & 0x80:
-    #             multibyte = key[0]
-    #             cont_bytes = ord(key[0]) << 1
-    #             while cont_bytes & 0x80:
-    #                 cont_bytes <<= 1
-    #                 multibyte += self.window.getkey()[0]
-    #             return multibyte.decode(self.encoding)
-
-    #         if isinstance(key, int):
-    #             if key == curses.KEY_BACKSPACE:
-    #                 return "KEY_BACKSPACE"
-    #             if key == curses.KEY_LEFT:
-    #                 return "KEY_LEFT"
-    #             if key == curses.KEY_RIGHT:
-    #                 return "KEY_RIGHT"
-    #             if key == curses.KEY_RESIZE:
-    #                 return "KEY_RESIZE"
-    #             return None
-    #         return key.decode("ascii")
-    #     except curses.error:
-    #         return None
-
-    @property
-    def columns(self):
-        """Returns number of terminal columns."""
-        return curses.COLS  # pylint: disable=no-member
-
-    @property
-    def lines(self):
-        """Returns number of terminal lines."""
-        return curses.LINES  # pylint: disable=no-member
-
     def _addstr(self, row, col, text, color=None, encode=True):
-        """Wraps call around curses.window.addsr."""
+        """Wraps call around curses.window.addsr. Adds text at a given position.
+
+        Parameters
+        ----------
+        row : int
+            Row position.
+        col : int
+            Column position.
+        text : str
+            Text to display.
+        color : curses.color_pair, optional
+            Color setting for text, by default None
+        encode : bool, optional
+            Whether to encode text with self.encoding, by default True
+        """
         if encode:
             text = text.encode(self.encoding)
 
@@ -199,17 +178,38 @@ class Screen:
                 self.window.addstr(row, col, text, color)
 
     def _chgat(self, row, col, length, color):
-        """Wraps call around curses.window.chgat."""
+        """Wraps call around curses.window.chgat. Changes text color at given position.
+
+        Parameters
+        ----------
+        row : int
+            Row position.
+        col : int
+            Column position.
+        length : int
+            Number of chars after position to modify.
+        color : curses.color_pair
+            Color setting for text.
+        """
         if self.lines > row >= 0:
             if col >= 0 and (col + length) <= self.columns:
                 self.window.chgat(row, col, length, color)
 
     def _set_cursor(self, row, col):
-        """Sets cursor position."""
+        """Set cursor position.
+
+        Parameters
+        ----------
+        row : int
+            Row position.
+        col : int
+            Column position.
+        """
         if (row < self.lines) and (col < self.columns):
             self.window.move(row, col)
 
     def clear(self):
+        """Clear the terminal."""
         self.window.clear()
 
     def deinit(self):
@@ -237,6 +237,13 @@ class Screen:
         pass
 
     def _render_stat(self, stat):
+        """Render the top stat bar.
+
+        Parameters
+        ----------
+        stat : Stat
+            Stat object to display.
+        """
         # if stat is none, use an empty Stat object (shows all 0s)
         top_bar = str(stat) if stat else str(Stat())
 
@@ -247,6 +254,13 @@ class Screen:
         self._addstr(0, 0, top_bar, self.colors["top_bar"])
 
     def _render_author(self, snip):
+        """Render the author information.
+
+        Parameters
+        ----------
+        snip : Snippet
+            Snippet to display author information.
+        """
         text = snip.url
         if len(text) > self.columns - 1:
             text = snip.author
@@ -254,10 +268,26 @@ class Screen:
         self._addstr(2, 0, text, self.colors["author"])
 
     def _render_lines(self, snippet):
+        """Render the code sinppet.
+
+        Parameters
+        ----------
+        snippet : Snippet
+            Snippet to render.
+        """
         for i, line in enumerate(snippet.lines):
             self._addstr(4 + i, 0, line, self.colors["text"])
 
     def _render_prompt(self, snip, prompt):
+        """Render the prompt.
+
+        Parameters
+        ----------
+        snip : Snippet
+            Snippet object, required since prompt occurs below snippet.
+        prompt : str
+            Prompt string to display.
+        """
         self._addstr(len(snip.lines) + 5, 0, prompt, self.colors["prompt"])
 
     def render_snippet(self, game):
@@ -293,10 +323,16 @@ class Screen:
 
         self.window.refresh()
 
-    def render_update(self, game, action, ret=False):
-        """Val is the action that happened right before the given cursor position.
+    def render_update(self, game, action):
+        """Render an update to a currently active typing game.
 
-        action = one of back, enter, correct, incorrect, or None
+        Parameters
+        ----------
+        game : Game
+            Game object.
+        action : str
+            Current action being taken, one of "back", "enter", "correct",
+            or "incorrect", or None
         """
         row, col = game.row + 4, game.col
 
@@ -324,6 +360,13 @@ class Screen:
         self.window.refresh()
 
     def render_score(self, game):
+        """Render the score.
+
+        Parameters
+        ----------
+        game : Game
+            Game object.
+        """
         self._render_stat(game.current_stat)
         prompt = f"You scored {game.current_stat.lpm:.2f} lpm, press ESC to quit, ARROWS to browse, or start typing!"
         self._render_prompt(game.snippets.current_snippet(), prompt)

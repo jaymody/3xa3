@@ -167,7 +167,6 @@ class Game:
         if not end_of_line():
             current_char = current_line[self.col]
 
-        ret = False
         action = None
 
         if key == None:
@@ -212,9 +211,7 @@ class Game:
                 self.col += 1
                 self.current_stat.num_chars += 1
 
-            ret = end_of_line()
-
-        self.screen.render_update(self, action, ret)
+        self.screen.render_update(self, action)
 
         # If we made it to the end, call done game
         if end_of_snippet():
