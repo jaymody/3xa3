@@ -149,8 +149,8 @@ def cli():
     parser.add_argument(
         "languages",
         type=str,
-        default=None,
-        nargs="+",
+        default=Config.DEFAULT_LANGS,
+        nargs="*",
         help="List of programming languages to filter code snippets. Must be "
         f"one of a {', '.join(Config.DEFAULT_LANGS)}. If no languages provided, "
         "all languages are loaded by default.",
