@@ -16,10 +16,7 @@ from .game import Game
 def stats():
     """Displays the users statistics to the command-line.
 
-    Returns
-    -------
-    None
-        Note that this method does output to the user screen.
+    This method outputs text to the command-line.
     """
     # TODO: make this better
     # TODO: only show last N things
@@ -57,21 +54,23 @@ def stats():
         )
 
 
-def start(langs=None):
-    """Starts the lpm typing interface."""
-    if not langs:
-        langs = Config.DEFAULT_LANGS
-    else:
-        for lang in langs:
-            if "--" in lang or "-" in lang:
-                print("ERROR: invalid flag(s), please see lpm -h for more info")
-                return
-            elif lang not in Config.DEFAULT_LANGS:
-                print(
-                    "ERROR: one or more args are not valid languages, must be one of:\n",
-                    f"{', '.join(Config.DEFAULT_LANGS)}",
-                )
-                return
+def start(languages=None):
+    """Starts the lpm typing interface.
+
+    Parameters
+    ----------
+    languages : list[str]
+        Whitelist of programming languages to load code snippets for.
+    """
+    if not languages:
+        languages = Config.DEFAULT_LANGS
+    for lang in languages:
+        if lang.lower() not in Config.DEFAULT_LANGS:
+            print(
+                "ERROR: one or more args are not valid languages, must be one of:\n",
+                ", ".join(Config.DEFAULT_LANGS),
+            )
+            return
 
     # load snippets
     if not os.path.exists(Config.SNIPPETS_PATH):
@@ -81,7 +80,7 @@ def start(langs=None):
 
         snippets = Snippets.from_urls(_github_permalink)
         snippets.save(Config.SNIPPETS_PATH)
-    snippets = Snippets.load(Config.SNIPPETS_PATH, languages=langs)
+    snippets = Snippets.load(Config.SNIPPETS_PATH, languages=languages)
 
     # load stats
     if not os.path.exists(Config.STATS_PATH):
@@ -135,17 +134,53 @@ def reset():
 
 def cli():
     """Main entry point for lpm CLI."""
-    parser = argparse.ArgumentParser("Lines Per Minute")
-    parser.add_argument("-s", "--stats", action="store_true", help=stats.__doc__)
-    parser.add_argument(
-        "-v", "--version", action="store_true", help="Show program version"
+    parser = argparse.ArgumentParser(
+        "lpm",
+        description="Lines Per Minute, a typing tool made for programmers.",
+        epilog="Example usage:\n"
+        "    lpm\n"
+        "    lpm python\n"
+        "    lpm java\n"
+        "    lpm python java\n"
+        "    lpm --help\n"
+        "    lpm --stats\n",
+        formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("--reset", action="store_true", help=reset.__doc__)
-    parser.add_argument("--settings", action="store_true", help=settings.__doc__)
+    parser.add_argument(
+        "languages",
+        type=str,
+        default=None,
+        nargs="+",
+        help="List of programming languages to filter code snippets. Must be "
+        f"one of a {', '.join(Config.DEFAULT_LANGS)}. If no languages provided, "
+        "all languages are loaded by default.",
+    )
+    parser.add_argument(
+        "-s",
+        "--stats",
+        action="store_true",
+        help="Display the lifetime statistics and the statistics from the 5 "
+        "most recent completed snippets.",
+    )
+    parser.add_argument(
+        "-v", "--version", action="store_true", help="Get program version."
+    )
+    parser.add_argument(
+        "--reset",
+        action="store_true",
+        help="Prompts the user if they would like to reset the config, stats, "
+        "and/or redownload the code snippets.",
+    )
+    parser.add_argument(
+        "--settings",
+        action="store_true",
+        help="Edit lpm settings via default text editor.",
+    )
 
-    args, langs = parser.parse_known_args()
-
-    if args.stats:
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        print("ERROR: invalid flag(s), please see lpm -h for more info")
+    elif args.stats:
         stats()
     elif args.version:
         print(__version__)
@@ -154,4 +189,4 @@ def cli():
     elif args.settings:
         settings()
     else:
-        start(langs)
+        start(args.languages)
