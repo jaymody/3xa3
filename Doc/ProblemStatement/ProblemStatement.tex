@@ -6,6 +6,8 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
 \title{SE 3XA3: Problem Statement\\Lines Per Minute (lpm)}
 
 \author{Team \#16, Lines Per Minute (lpm) \\
@@ -26,7 +28,8 @@ Maanav Dalal - dalalm1 - 400178115\\
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-\today & Jay/Jessica/Maanav & Initial document write-up. Completed.\\
+January 28, 2021 & Jay/Jessica/Maanav & Initial document write-up. Completed.\\
+March 27, 2021 & Jay & Update for final report. Completed.\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -37,17 +40,17 @@ Maanav Dalal - dalalm1 - 400178115\\
 \section*{Problem \& Relevance}
 With the rise of work-from-home situations, being proficient with your keyboard is more important than ever before. Increasing one's average typing speed has become a goal of many virtual workers/students around the globe. Words Per Minute (\textit{wpm}) is a command-line package that allows users to practice typing, and get statistics regarding their speed and accuracy. The \textit{wpm} python package works directly through the command line, so it can be used offline and without requiring access to a web browser. \\
 
-Software developers are constantly trying to increase their typing speed in order to increase productivity and efficiency. While many tools exist for increasing typing speed using plain-English text, there are very few tools that a targeted specifically towards programmers \& developers. The keys and patterns used when coding differ from natural language, so plain English phrases are less beneficial towards typing speed for programmers. Furthermore, command-line packages are more accessible for developers, as they frequently use the command line to code, rather than a web browser. \\
+Increased typing speeds are particularly valuable for software developers, who can increase their productivity and efficiency with faster typing speeds. While many tools exist for increasing typing speed using plain-English text (like \textit{wpm}), there are few tools that are targeted specifically towards programmers \& developers. The keys and patterns used when coding greatly differ from natural language, so plain English phrases are less beneficial towards typing speed for programmers. Furthermore, command-line packages are more accessible for developers, as they frequently use the command line to code, rather than a web browser. \\
 
-We propose Lines Per Minute (\textit{lpm}), a python package built upon \textit{wpm}. \textit{lpm} will include additional features targeted to programmers and software developers. \\
+We propose Lines Per Minute (\textit{lpm}), a python package built upon \textit{wpm}. \textit{lpm} will include additional features targeted to programmers and software developers.
 
 \section*{Description \& Issues}
 
-The main issue \texit{lpm} will tackle is the addition of code snippets as an option to make the experience more tailored for developers. \textit{lpm} will utilize various code snippets from open source software from a variety of programming languages to provide this functionality. \\
+The main issue \textit{lpm} will tackle is the \sout{addition of} \textcolor{red}{replacement of English passages with} code snippets \sout{as an option} to make the experience more tailored for developers. \textit{lpm} will utilize various code snippets from open source software from a variety of programming languages to provide this functionality.
 
-In addition, the existing \textit{wpm} package misses a few core components of a well-architected software project. For example, despite the inclusion of a testing framework, there are no unit tests present. As we have learned, testing is an essential part of a software project to ensure it is working as expected. Since there is a lack of testing throughout the project, we as users and developers are unable to know how well the software works, or test if new changes break the existing functionality. Specifically, we'd like to introduce testing for different versions of Python and tests to ensure the accuracy of various stats, including words per minute, lines per minute, and error rates. \\
+In addition, the existing \textit{wpm} package misses a few core components of a well-architected software project. For example, despite the inclusion of a testing framework, there are no unit tests present. As we have learned, testing is an essential part of a software project to ensure it is working as expected. Since there is a lack of testing throughout the project, we as users and developers are unable to know how well the software works, or test if new changes break the existing functionality. \sout{Specifically, we'd like to introduce testing for different versions of Python and tests to ensure the accuracy of various stats, including words per minute, lines per minute, and error rates.} \\
 
-Furthermore, there is a lack of options for users to choose between when testing their \textit{wpm}. They may be training their typing skills to become better programmers, or better at typing numbers and there is no support for code snippets or different varieties of \textit{wpm} tests (no punctuation, numbers, capital letters, etc.). \\
+Finally, the current \textit{wpm} implementation has high coupling and low separation of concerns between modules. We aim to keep the overall architecture the same between \textit{wpm} and \textit{lpm}, but we will be simplifying and re-implementing the modules to have low coupling and higher cohesion. \sout{Furthermore, there is a lack of options for users to choose between when testing their \textit{wpm}. They may be training their typing skills to become better programmers, or better at typing numbers and there is no support for code snippets or different varieties of \textit{wpm} tests (no punctuation, numbers, capital letters, etc.).}
 
 \section*{Context}
 \subsection*{Stakeholders}

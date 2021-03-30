@@ -18,6 +18,7 @@
     urlcolor=blue
 }
 \usepackage[round]{natbib}
+\usepackage[normalem]{ulem}
 
 \newcounter{acnum}
 \newcommand{\actheacnum}{AC\theacnum}
@@ -61,6 +62,8 @@ March 16, 2021 & Jay/Maanav & Set up Sphyx, Document code \\
 March 16, 2021 & Jessica & Document architecture in MG \\
 \midrule
 March 17, 2021 & Jay/Jessica/Maanav & Tracability Matrix, Complete MG, Complete MIS \\
+\midrule
+March 27, 2021 & Jay/Jessica/Maanav & Revise for R1 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -180,10 +183,10 @@ The following items describe features of our overall architecture model that wil
 %decisions will be changed.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucHardware}:] The number of modules and how they interact, will likely be consistent
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucSt}:] The statistics being calculated and the statistics functions will likely not change
-\item [\refstepcounter{ucnum} \uctheucnum \label{ucD}:] The data structures for the different information types will likely stay consistent
-\item [\refstepcounter{ucnum} \uctheucnum \label{ucEnt}:] The entry point for the CLI application will be consistent
+\item[\refstepcounter{ucnum} \uctheucnum \label{uc1}:] The number of modules and how they interact, will likely be consistent
+\item[\refstepcounter{ucnum} \uctheucnum \label{uc2}:] The statistics being calculated and the statistics functions will likely not change
+\item [\refstepcounter{ucnum} \uctheucnum \label{uc3}:] The data structures for the different information types will likely stay consistent
+\item [\refstepcounter{ucnum} \uctheucnum \label{uc4}:] The entry point for the CLI application will be consistent
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -195,15 +198,17 @@ This section includes an overview of the hierarchy for the the design of the mod
 % actually be implemented.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item [\refstepcounter{mnum} \mthemnum \label{mMa}:] Main Module
-\item [\refstepcounter{mnum} \mthemnum \label{mCl}:] Commandline Module
-\item [\refstepcounter{mnum} \mthemnum \label{mGm}:] Game Module
-\item [\refstepcounter{mnum} \mthemnum \label{mSc}:] Screen Module
-\item [\refstepcounter{mnum} \mthemnum \label{mSt}:] Stats Module
-\item [\refstepcounter{mnum} \mthemnum \label{mCg}:] Config Module
-\item [\refstepcounter{mnum} \mthemnum \label{mD}:] Snippets Module
+\item [\refstepcounter{mnum} \mthemnum \label{mCl}:] \textcolor{red}{lpm.Commandline Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mCg}:] \textcolor{red}{lpm.Config Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mGm}:] \textcolor{red}{lpm.Game Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mSc}:] \textcolor{red}{lpm.Screen Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mD}:] \textcolor{red}{lpm.Snippets Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mSt}:] \textcolor{red}{lpm.Stats Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mMa}:] \textcolor{red}{Main (\_\_main\_\_) Module}
+\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] \textcolor{red}{Hardware-Hiding Module (not implemented)}
 \end{description}
+
+\textcolor{red}{The following hierarchy can be mapped 1:1 to the MIS specification for items M1-M6. M7 is simply an implementation launcher that calls the lpm.Commandline module (see the Usage flow diagram in Section \ref{SecUse}). M8 is not implemented as it is a hardware hiding module build into the OS. Thus it is separated from the system.}
 
 \begin{table}[h!]
 \centering
@@ -215,16 +220,16 @@ This section includes an overview of the hierarchy for the the design of the mod
 \midrule
 
 \multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & \\
-& Main Module \\
-& Commandline Module \\
-& Game Module \\
-& Screen Module \\
+& \textcolor{red}{Main (\_\_main\_\_) Module} \\
+& \textcolor{red}{lpm.Commandline Module} \\
+& \textcolor{red}{lpm.Game Module} \\
+& \textcolor{red}{lpm.Screen Module} \\
 \midrule
 
 \multirow{3}{0.3\textwidth}{Software Decision Module} & \\
-& Stats Module \\
-& Config Module \\
-& Snippets Module \\
+& \textcolor{red}{lpm.Stats Module} \\
+& \textcolor{red}{lpm.Config Module} \\
+& \textcolor{red}{lpm.Snippets Module} \\
 \bottomrule
 
 \end{tabular}
@@ -282,35 +287,36 @@ The following section will outline the different modules that were decomposed to
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Main Launch Module (\mref{mMa})}
+\subsubsection{\textcolor{red}{Main (\_\_main\_\_) Module} (\mref{mMa})}
 
 \begin{description}
 \item[Secrets:] The format and structure of how the initial launch of the application occurs.
 \item[Services:] Acts as the entry point of the application and triggers the launch of the lpm commmand line interface.
-\item[Implemented By:] Main Module
+\item[Implemented By:] \textcolor{red}{Main (\_\_main\_\_) Module}
 \end{description}
 
-\subsubsection{Commandline Module (\mref{mCl})}
+\subsubsection{\textcolor{red}{lpm.Commandline Module} (\mref{mCl})}
 
 \begin{description}
 \item[Secrets:]The format and structure of the command-line interface when the program is run.
 \item[Services:] Reads the command line arguments and converts them appropriately to activate the module so that the program behaves as expected.
-\item[Implemented By:] Commandline Module
+\item[Implemented By:] \textcolor{red}{lpm.Commandline Module}
 \end{description}
 
-\subsubsection{Game Module (\mref{mGm})}
+\subsubsection{\textcolor{red}{lpm.Game Module} (\mref{mGm})}
 
 \begin{description}
 \item[Secrets:]The format and structure of how the stats module, data modules and screen modules interact with one another.
 \item[Services:] Provides Game object that runs an instance of the lpm typing interface game.
-\item[Implemented By:] Game Module
+\item[Implemented By:] \textcolor{red}{lpm.Game Module}
 \end{description}
 
-\subsubsection{Screen Input/Output Module (\mref{mSc})}
+\subsubsection{\textcolor{red}{lpm.Screen Module} (\mref{mSc})}
 
 \begin{description}
 \item[Secrets:]The format and structure of how the input gets communicated with the game, and how output is displayed to the user
 \item[Services:] Provides methods to capture user input and to display the current state of the game via the command line.
+\item[Implemented By:] \textcolor{red}{lpm.Screen Module}
 \end{description}
 
 \subsection{Software Decision Module}
@@ -326,28 +332,28 @@ The following section will outline the different modules that were decomposed to
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Statistics Module (\mref{mSt})}
+\subsubsection{\textcolor{red}{lpm.Stats Module} (\mref{mSt})}
 
 \begin{description}
 \item[Secrets:] The format and structure of how the statistics are calculated
 \item[Services:] Provides services to calculate LPM, CPM, WPM, and error rate for both a single snippet and over a lifetime
-\item[Implemented By:] Stats Module
+\item[Implemented By:] \textcolor{red}{lpm.Stats Module}
 \end{description}
 
-\subsubsection{Game Configurations Module (\mref{mCg})}
+\subsubsection{\textcolor{red}{lpm.Config Module} (\mref{mCg})}
 
 \begin{description}
 \item[Secrets:]The format of how configurations effect the operation of the game.
 \item[Services:] Provides services that will limit the code snippets the user is provided.
-\item[Implemented By:] Config Module
+\item[Implemented By:] \textcolor{red}{lpm.Config Module}
 \end{description}
 
-\subsubsection{Code Snippet Module (\mref{mD})}
+\subsubsection{\textcolor{red}{lpm.Snippets Module} (\mref{mD})}
 
 \begin{description}
 \item[Secrets:] The format and structure of the code snippets, and how they are organized.
 \item[Services:] Provides the appropriate code snippets based upon certain filters and requirements. Checks to make sure code snippet is of appropriate language and length.
-\item[Implemented By:] Snippets Module
+\item[Implemented By:] \textcolor{red}{lpm.Snippets Module}
 \end{description}
 
 \section{Traceability Matrix} \label{SecTM}
@@ -363,28 +369,28 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-FR1 & \mref{mMa}, \\
-FR2 & \mref{mMa}, \mref{mCl}\\
-FR3 & \mref{mMa}, \mref{mCl}\\
-FR4 & \mref{mMa}, \mref{mCl}\\
-FR5 & \mref{mCl}, \mref{mSc}, \mref{mSt}\\
+FR1 & \mref{mCl}, \mref{mMa}\\
+FR2 & \mref{mCl}\\
+FR3 & \mref{mCl}\\
+FR4 & \mref{mCl}\\
+FR5 & \mref{mCl}, \mref{mSt}\\
 FR6 & \mref{mCl}, \mref{mCg}\\
-FR7 & \mref{mCl}, \mref{mGm}, \mref{mSc}\\
-FR8 & \mref{mGm}, \mref{mSc}, \mref{mD}\\
-FR9 & \mref{mGm}, \mref{mSc}, \mref{mD}\\
-FR10 & \mref{mGm}, \mref{mSc}, \mref{mSt}\\
-FR11 & \mref{mGm}, \mref{mSc}, \mref{mSt}\\
+FR7 & \mref{mGm}, \mref{mSc}, \textcolor{red}{\mref{mD}}\\
+FR8 & \sout{\mref{mGm}}, \mref{mSc}, \mref{mD}\\
+FR9 & \sout{\mref{mGm}}, \mref{mSc}, \mref{mD}\\
+\sout{FR10} & \sout{\mref{mGm}, \mref{mSc}, \mref{mSt}}\\
+FR11 & \mref{mSc}, \mref{mSt}\\
 FR12 & \mref{mGm}, \mref{mSc}, \mref{mD}\\
 FR13 & \mref{mGm}, \mref{mSc}, \mref{mD}\\
-FR14 & \mref{mGm}, \mref{mSc}, \mref{mSt}, \mref{mD}\\
+FR14 & \mref{mGm}, \mref{mSc}, \mref{mSt}, \sout{\mref{mD}}\\
 FR15 & \mref{mGm}, \mref{mSc}, \mref{mSt}\\
 FR16 & \mref{mSc}, \mref{mCg}\\
 FR17 & \mref{mSc}, \mref{mCg}\\
 FR18 & \mref{mSc}, \mref{mCg}\\
 FR19 & \mref{mSc}, \mref{mCg}\\
-FR20 & \mref{mCl}, \mref{mGm}, \mref{mSc}\\
-FR21 & \mref{mGm}, \mref{mCg}, \mref{mD}\\
-FR22 & \mref{mGm}, \mref{mCg}, \mref{mD}\\
+FR20 & \sout{\mref{mCl},} \mref{mGm}, \mref{mSc}\\
+FR21 & \mref{mCg}, \mref{mD}\\
+FR22 & \mref{mCg}, \mref{mD}\\
 FR23 & \mref{mD}\\
 FR24 & \mref{mD}\\
 FR25 & \mref{mGm}, \mref{mSt}\\
@@ -403,10 +409,10 @@ FR28 & \mref{mGm}, \mref{mSt}\\
 \toprule
 \textbf{AC} & \textbf{Modules}\\
 \midrule
-\acref{acGame} & \mref{mCl}, \mref{mGm}, \mref{mSc}, \mref{mSt}, \mref{mD} \\
-\acref{acAe} & \mref{mHH}, \mref{mSc}, \mref{mCg}\\
-\acref{acSc} & \mref{mHH}, \mref{mSc}, \mref{mCg}\\
-\acref{acSn} & \mref{mGm}, \mref{mD} \\
+\acref{acGame} & \mref{mCl}, \mref{mGm}, \mref{mSc}, \mref{mD}, \mref{mSt} \\
+\acref{acAe} & \mref{mSc}, \mref{mCg}\\
+\acref{acSc} & \mref{mSc}, \mref{mCg}\\
+\acref{acSn} & \mref{mCg}, \mref{mGm}, \mref{mD} \\
 \acref{acCg} & \mref{mSc},  \mref{mCg}, \mref{mD}\\
 \acref{acSt} & \mref{mGm}, \mref{mSt} \\
 \bottomrule

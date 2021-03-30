@@ -1,5 +1,7 @@
 \documentclass[12pt, titlepage]{article}
 
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
 \usepackage[a4paper,margin=1in,footskip=0.25in]{geometry}
 \usepackage{indentfirst}
 \usepackage{xcolor}
@@ -41,7 +43,8 @@ Maanav Dalal - dalalm1 - 400178115\\
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 February 6, 2021 & Jay/Jessica/Maanav & Initial document write-up. \\
-\today & Jay/Jessica/Maanav & Document completed \& submitted. \\
+February 8, 2021 & Jay/Jessica/Maanav & Document completed \& submitted. \\
+March 25, 2021 & Jay/Jessica/Maanav & Edit SRS Document for R1. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -51,8 +54,6 @@ February 6, 2021 & Jay/Jessica/Maanav & Initial document write-up. \\
 \tableofcontents
 \listoftables
 \listoffigures
-
-
 
 \newpage
 
@@ -118,7 +119,7 @@ Given that it is an open source project, other stakeholders include anyone on th
 \section{Functional Requirements}
 
 \subsection{The Scope of the Work and the Product}
-Lines Per Minute is a command-line application written in python that allows individuals to practice their typing speed for code. The application is delivered through PyPI as a pip install-able package, and is strictly interfaced via the command line.
+Lines Per Minute is a command-line application written in python that's lets individuals practice their typing speed for code. The application is delivered through PyPI as a pip install-able package, and is strictly interfaced via the command line.
 
 \subsubsection{The Context of the Work}
 Lines Per Minute is created as the final project for the course SE3XA3 Fall 2021 at McMaster University. The final project for SE3XA3 involves taking a current open source project, and going through the entire software design process to recreate the project with additional features or fixes that improve upon the original project. The project inspiration for lpm is the wpm python package \citep{wpm}. \\
@@ -161,7 +162,7 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
         \hline
         Event Number & Summary \\
         \hline
-        1 & Using the CLI, the user can start the typing interface with python code snippets via "lpm --python". The user can also specify multiple languages to select code snippets from by adding additional arguments "lpm --python --java --javascript".\\
+        1 & Using the CLI, the user can start the typing interface with python code snippets via "lpm python". The user can also specify multiple languages to select code snippets from by adding additional arguments "lpm python java javascript".\\
         \hline
         2 & While in the typing interface, the user can use the right arrow key to skip the current snippet and load the next one in the order.\\
         \hline
@@ -171,7 +172,7 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
         \hline
         5 & While the timer has been started, the user can choose to stop the timer with teh escape key. The timer may be started again using event 4.\\
         \hline
-        6 & While in the typing interface, the user can press the escape key to quit the typing interface and return to the command line.\\
+        6 & While \textcolor{red}{in browsing mode (not typing)} \sout{in the typing interface}, the user can press the escape key to quit the typing interface and return to the command line.\\
         \hline
         7 & Using the CLI, the user can show their lifetime stats as command line output via "lpm --stats".\\
         \hline
@@ -261,7 +262,7 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 
 \noindent \textbf{FR2}: The CLI shall provide an option to start the typing interface.
 
-\noindent \textbf{FR3}: Upon launch, the CLI shall accept flags that allow the user to load one or more languages for the typing interface.
+\noindent \textbf{FR3}: Upon launch, the CLI shall accept flags that allow the user to select one or more languages for the typing interface.
 
 \noindent \textbf{FR4}: The CLI shall provide an option to view a help menu.
 
@@ -270,13 +271,13 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 \noindent \textbf{FR6}: The CLI shall provide an option to change the settings of the program.
 
 \subsubsection{Typing Editor}
-\noindent \textbf{FR7}: On startup, the typing interface will randomly generate an order of code snippets from the specified languages.
+\noindent \textbf{FR7}: On startup, the typing interface will randomly generate a code snippet from the specified languages.
 
 \noindent \textbf{FR8}: The typing interface shall display the current code snippet to the user.
 
-\noindent \textbf{FR9}: The typing interface shall display the author and title of the project where a code snippet was sourced.
+\noindent \textbf{FR9}: The typing interface shall display the \textcolor{red}{link} \sout{author and title of the project} where a code snippet was sourced.
 
-\noindent \textbf{FR10}: The typing interface shall display the session statistics.
+\noindent \sout{\textbf{FR10}: The typing interface shall display the session statistics.}
 
 \noindent \textbf{FR11}: The typing interface shall display the current code snippet statistics.
 
@@ -286,7 +287,7 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 
 \noindent \textbf{FR14}: The typing interface shall start the timer and start reading the user's input if they press a non arrow key (the key that is pressed will be considered the first input).
 
-\noindent \textbf{FR15}: The shall be able to stop the timer and reading of the input.
+\noindent \textbf{FR15}: The user shall be able to stop the \textcolor{red}{timer when typing a snippet.}
 
 \noindent \textbf{FR16}: The code snippet shall be shown to the user using the TEXT\_COLOR font color.
 
@@ -299,23 +300,23 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 \noindent \textbf{FR20}: The user shall be able to exit the typing interface.
 
 \subsubsection{Code Snippets}
-\noindent \textbf{FR21}: The code snippets shall be shorter than MAX\_SNIPPET\_LENGTH lines.
+\noindent \textbf{FR21}: The code snippets shall be shorter than \textcolor{red}{MAX\_LENGTH} \sout{MAX\_SNIPPET\_LENGTH} lines.
 
-\noindent \textbf{FR22}: A line for a code snippet shall not exceed 80 characters.
+\noindent \textbf{FR22}: A line for a code snippet shall not exceed \textcolor{red}{MAX\_COLS} \sout{80} characters.
 
 \noindent \textbf{FR23}: Code snippets should be made available for Python, Java, and JavaScript.
 
-\noindent \textbf{FR24}: Each language shall have a minimum of 20 code snippets.
+\noindent \textbf{FR24}: Each language shall have a minimum of \textcolor{red}{MIN\_NUM\_SNIPPETS} \sout{20} code snippets.
 
 \subsubsection{Statistics}
 
-\noindent \textbf{FR25}: The application shall track the user's characters per minute speed during a given code snippet, typing session, and the entire lifetime history of the application.
+\noindent \textbf{FR25}: The application shall track the user's characters per minute speed during a given code snippet, \sout{typing session,} and the entire lifetime history of the application.
 
-\noindent \textbf{FR26}: The application shall track the user's words per minute speed during a given code snippet, typing session, and the entire lifetime history of the application.
+\noindent \textbf{FR26}: The application shall track the user's words per minute speed during a given code snippet, \sout{typing session,} and the entire lifetime history of the application.
 
-\noindent \textbf{FR27}: The application shall track the user's lines per minute speed during a given code snippet, typing session, and the entire lifetime history of the application.
+\noindent \textbf{FR27}: The application shall track the user's lines per minute speed during a given code snippet, \sout{typing session,} and the entire lifetime history of the application.
 
-\noindent \textbf{FR28}: The application shall track the error rate during a given code snippet, typing session, and the lifetime entire history of the application. The error rate can be defined as the ratio between correctly typed characters and all characters that were typed.
+\noindent \textbf{FR28}: The application shall track the error rate during a given code snippet, \sout{typing session,} and the lifetime entire history of the application. The error rate can be defined as the ratio between correctly typed characters and all characters that were typed.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -326,15 +327,15 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 
 \subsection{Look and Feel Requirements}
 
-\noindent \textbf{NFR1}: The typing interface shall respond to a user input within 0.1ms.
+\noindent \textbf{NFR1}: The typing interface shall respond to a user input within \sout{0.1}{\color{red}10}ms.
 
-\noindent \textbf{NFR2}: The user interface should be visible in both light and dark terminal backgrounds.
+\noindent \textbf{NFR2}: The user interface should be visible \sout{in both light and dark terminal backgrounds} {\color{red}regardless of the user's terminal theme}.
 
 \noindent \textbf{NFR3}: The provided theme shall be easy on the eyes and follow the WCAG AA or AAA specification in terms of colour choice.
 
 \noindent \textbf{NFR4}: The code snippets chosen should be diverse, and representative of the languages' syntax.
 
-\noindent \textbf{NFR5}: The entirety of the user interface should fit within a terminal window sized 640x480 pixels or larger, and scale up according on the current terminal window size.
+\noindent \textbf{NFR5}: The entirety of the user interface should fit within a terminal window sized \sout{640x480 pixels or larger, and scale up according on the current terminal window size} {\color{red} greater than MAX\_COLS in width and MAX\_LINES in length}.
 
 \subsection{Usability and Humanity Requirements}
 
@@ -347,17 +348,17 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 \noindent \textbf{NFR9}: The user will only require the keys on a typical 60\% keyboard to correctly type all given code.
 
 \subsection{Performance Requirements}
-\noindent \textbf{NFR10}: When the user loads the package, the time it takes for the package to be ready to accept user input shall not exceed 1 second.
+\noindent \textbf{NFR10}: When the user loads the package \textcolor{red}{excluding the first time loading}, the time it takes for the package to be ready to accept user input shall not exceed 1 second.
 
 \noindent \textbf{NFR11}: Application should be available 99.999\% (5 nines) of the time. This translates to 5.26 minutes of downtime in a given year, afforded by user updates of python or lpm, as well as unforeseen circumstances in the CI/CD Pipeline.
 
 \subsection{Operational and Environmental Requirements}
 
-\noindent \textbf{NFR12}: The system shall work on Python 2 and Python 3.
+\noindent \textbf{NFR12}: The system shall work on \sout{Python 2 and} Python 3{\color{red}.6 and above}.
 
 \noindent \textbf{NFR13}: The system shall work on Linux, macOS, and Windows operating systems.
 
-\noindent \textbf{NFR14}: In terms of computer specs, the package shall run on any computer that is able to run Python 2 and Python 3 based on their respective minimum requirements (i.e. if running on Python 3, the user's computer shall at least have Python 3's minimum requirements to be supported officially by the lpm package).
+\noindent \textbf{NFR14}: In terms of computer specs, the package shall run on any computer that is able to run \sout{Python 2 and }Python 3{\color{red}.6+} based on their respective minimum requirements (i.e. if running on Python 3{\color{red}.7}, the user's computer shall at least have Python 3{\color{red}.7}'s minimum requirements to be supported officially by the lpm package).
 
 \noindent \textbf{NFR15}: Application should be installable via the pip package manager.
 
@@ -377,7 +378,7 @@ While the wpm package strictly focuses on English text passages, lpm focuses on 
 
 \subsection{Legal Requirements}
 
-\noindent \textbf{NFR20}: Code snippets shall have a valid open source license to be displayed in lpm
+\noindent \textbf{NFR20}: Code snippets shall have a valid open source license {\color{red}or the authors of the code snippets have given explicit permission to the developers} to be displayed in lpm.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%% project issues %%%
@@ -473,10 +474,12 @@ There should be no costs associated to this project beyond labour costs.
 \subsection{Symbolic Parameters}
 
 \begin{itemize}
-    \item TEXT\_COLOR = \#FFFFFF
-    \item CORRECT\_COLOR = \#00BFFFF
-    \item INCORRECT\_COLOR = \#F9BF3B
-    \item MAX\_SNIPPET\_LENGTH = 30
+    \item TEXT\_COLOR = \textcolor{red}{Terminal Color [252, 235]} \sout{\#FFFFFF}
+    \item CORRECT\_COLOR = \textcolor{red}{Terminal Color [243, 235]} \sout{\#00BFFFF}
+    \item INCORRECT\_COLOR = \textcolor{red}{Terminal Color [9, 88]}\sout{\#F9BF3B}
+    \item \textcolor{red}{MAX\_LENGTH} \sout{MAX\_SNIPPET\_LENGTH} = \textcolor{red}{20} \sout{30}
+    \item \textcolor{red}{MAX\_COL} = \textcolor{red}{80}
+    \item \textcolor{red}{MIN\_NUM\_SNIPPETS} = \textcolor{red}{10}
 \end{itemize}
 
 \end{document}

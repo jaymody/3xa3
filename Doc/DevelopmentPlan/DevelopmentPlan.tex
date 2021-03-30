@@ -7,6 +7,7 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage[normalem]{ulem}
 \title{\textbf{SE 3XA3: Development Plan}}
 
 \author{Team \#16, Lines Per Minute (lpm) \\
@@ -26,7 +27,8 @@ Maanav Dalal - dalalm1 - 400178115\\
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 February 3, 2021 & Jay/Jessica/Maanav & Initial document write-up. \\
-\today & Jay/Jessica/Maanav & Gantt Chart, Document completed. \\
+February 5, 2021 & Jay/Jessica/Maanav & Gantt Chart, Document completed. \\
+March 25, 2021 & Jay/Jessica/Maanav & Project Review Added. R1 Document Complete \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -48,7 +50,7 @@ Secondary meetings will be held on the following days, whenever required:
 \end{itemize}
 
 \subsection*{Agenda / Roles}
-An informal agenda for the meeting will be discussed prior to the meeting, and officially drafted by group member and chair \textbf{Maanav Dalal}, to ensure group meetings are productive and succinct. For a given meeting, the agenda will follow \textbf{Scrum} guidelines to ensure focused work. This includes covering blockers, what we completed between our last meeting and the current one, goals for the next sprint, and a member-by-member recount of their current progress and confidence in meeting upcoming sprint goals.
+An informal agenda for the meeting will be discussed prior to the meeting, and officially drafted by group member \textbf{Maanav Dalal}, to ensure group meetings are productive and succinct. For a given meeting, the agenda will follow \textbf{Scrum} guidelines to ensure focused work. \textcolor{red}{He will also update the GANTT chart as needed.} This includes covering blockers, what we completed between our last meeting and the current one, goals for the next sprint, and a member-by-member recount of their current progress and confidence in meeting upcoming sprint goals.
 
 \section{Team Communication Plan}
 \noindent Primary Communication Platform (for team members): Facebook Messenger Chat \\
@@ -107,7 +109,7 @@ $ lpm
 
 \section{Technology}
 
-\noindent \textbf{Programming Languages:} Python (project must work with Python2, Python3, and PyPy)
+\noindent \textbf{Programming Languages:} Python (project must work with \sout{Python2, Python3, and PyPy} \textcolor{red}{Python3})
 
 \noindent \textbf{Makefile:} For defining commands for devops (run linting, run formatting, run tests, etc ...)
 
@@ -139,6 +141,17 @@ Our Gantt Chart can be found \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/t
 
 \section{Project Review}
 
-This section will be completed after revision 1
+\sout{This section will be completed after revision 1} \\
+
+\color{red}
+
+Overall, the implementation of the lpm program was a success. The team was able to implement a complete version of lpm. This new program followed the overall structure and functionality of wpm, but included additional features, testing frameworks, and better module implementations.\\
+
+This re-implementation taught the team every architectural decision is critical to the overall process of implementation. When structuring the lpm codebase, a focus was made to decouple the different modules, to ensure modularization and module hiding between the different modules. Doing so required us to make some changes to the wpm codebase, which was less modular. This slight restructuring essentially required us to rewrite the entire codebase (from scratch). However, this was worth the additional effort as it improved the project's property of \textbf{separation of concerns}.\\
+
+One of the biggest challenges of this project was ensuring consistency between the different documents and the codebase. Extensive documentation was done throughout the project, and traceability matrices were included between requirements, tests, and modules. However, the traceability between the different documents were oftentimes not done up to standard. Since our team was knowledgeable about the system, codebase and documents, we were able to navigate between the requirements, tests and codebase. For R1, more of an effort was made to make clear links between requirements, tests, code modules, and test results.\\
+
+Overall, our team is happy with the overall lpm product and is proud that lpm is now available on PyPI for anyone to install via pip.
+
 
 \end{document}

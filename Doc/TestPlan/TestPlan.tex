@@ -1,5 +1,7 @@
 \documentclass[12pt, titlepage]{article}
 
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
 \usepackage[a4paper,margin=1in,footskip=0.25in]{geometry}
 \usepackage{indentfirst}
 \usepackage{xcolor}
@@ -45,6 +47,7 @@ February 23, 2021 & Jay/Jessica/Maanav & Initial document write-up. \\
 March 2, 2021 & Jay/Jessica & Tests for Functional requirements. \\
 March 2, 2021 & Maanav & Tests for Non-Functional requirements. \\
 March 4, 2021 & Jay/Jessica/Maanav & Finish sections 1, 4, 5 and 6 \\
+March 25, 2021 & Jay/Jessica/Maanav & Test Plan Revision for R1 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -66,11 +69,11 @@ March 4, 2021 & Jay/Jessica/Maanav & Finish sections 1, 4, 5 and 6 \\
 
 \subsection{Purpose}
 
-The purpose of this document is to outline the testing plan for the software program Lines Per Minute. It contains a detailed list of tests that can be traced to the requirements outlined in the SRS document.
+The purpose of this document is to the testing plan for Lines Per Minute. This document with outline the tests that will be implemented for the software program lpm. It also will provide traceability and mapping to the requirements outlined in the SRS document. This document will act as an testing outline to ensure that the software product meets all predetermined requirements.
 
 \subsection{Scope}
 
-This document describes automated, dynamic, static and manual tests to ensure the functional and non-functional requirements for lpm are met. This documents objective is to provide a plan for catching bugs early in the development stage and to verify that the requirements of the software are met. As such, test plans for code coverage, unit testing, and integration testing are provided.
+This document outlines tests to ensure the functional and non-functional requirements for lpm are met. Automated, dynamic, static and manual tests are all outlines in this document. This document outlines the frameworks that will be used for testing. It also provides Unit Tests and an outline of testing for the Proof-of-concept.
 
 \subsection{Acronyms, Abbreviations, and Symbols}
 
@@ -119,13 +122,13 @@ This document describes automated, dynamic, static and manual tests to ensure th
 
 \subsection{Overview of Document}
 
-The document starts with an overview of the testing approach, testing tools, and testing schedule for the project. It then provides a detailed list of tests along with a traceability matrix to map requirements to specific tests. We also provide a test plan for the proof of concept build, comparisons to existing implementations, as well as a description of the unit testing approach.
+This document will outline the Testing Plan for lpm, which is a software program adapted from wpm. The test plan will describe how the functional and non-functional requirements will be satisfied using the PyTest framework and manual tests.
 
 \section{Plan}
 
 \subsection{Software Description}
 
-The software product lpm is a command-line tool that will allow users to measure their typing speed when typing code passages. The software product is built with inspiration from the PyPI package wpm. The product is built using Python and is tested via the Pytest package.
+The software product lpm is a command-line tool that will allow users to measure their typing speed when typing code passages. The software product is built with inspiration from the Pypi package wpm. The product is built using Python and is tested via the Pytest package.
 
 \subsection{Test Team}
 
@@ -137,7 +140,6 @@ The team will be using automated testing by employing GitLab's CI/CD Pipelines. 
     \item Linting using Pylint for static analysis
     \item Code formatting using the black code formatter.
     \item Dynamic testing of our code using pytest.
-    \item Code coverage reporting using PyPI coverage.
 \end{enumerate}
 
 Through this automated procedure, it is ensured that any new commits made will conform to our code requirements and the developers are immediately informed about any breaking changes. We have decided that this is the optimal approach to testing as Pylint, black, and pytest are popular libraries for linting, code formatting, and testing respectively. As such, there is a lot of support for these libraries and them being frequently used speaks to their clear benefits in development.
@@ -147,8 +149,7 @@ Pytest will be be main testing tool for this project. Pytest test modules will b
 
 \subsection{Testing Schedule}
 
-See Gantt Chart with the updated testing plan at the following \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/tree/master/ProjectSchedule}{link}.
-Also, feel free to see the \textbf{testplanGantt.png} image at the same location for the snippet of the gantt chart directly relating to the test plan.
+See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.mcmaster.ca/modyj/3xa3/-/tree/master/ProjectSchedule}{link}:
 
 \section{System Test Description}
 
@@ -201,9 +202,9 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 \item{\textbf{test-CLI2:} Start the Typing Interface with Specific Languages\\}
 \textbf{Type:} Functional, Manual \\
 \textbf{Initial State}: Newly started terminal session.\\
-\textbf{Input:} lpm --python, lpm --python --java\\
-\textbf{Output:} The lpm typing interface with only python code snippets, the lpm typing interface with either python or java code snippets\\
-\textbf{Description:} The test member runs the inputs in terminal and verifies that only the correct code snippet languages are displayed. The first test ensures a single language can be loaded, the second ensure multiple languages can be loaded.\\
+\textbf{Input:} lpm python, lpm python java \textcolor{red}{javascript}\\
+\textbf{Output:} The lpm typing interface with only python code snippets, the lpm typing interface with python, \sout{and} java \textcolor{red}{and javascript} code snippets\\
+\textbf{Description:} The test member runs the inputs in terminal and verifies that only the correct code snippet languages are displayed. The first test ensures a single language can be loaded, the second ensures multiple languages can be loaded.\\
 \end{enumerate}
 
 \paragraph{Show Help Menu}
@@ -211,7 +212,7 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 \begin{enumerate}
 \item{\textbf{test-CLI3}: Show Help Menu\\}
 \textbf{Type:} Functional, Manual\\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed}\sout{Newly started terminal session.} \\
 \textbf{Input:} lpm --help \\
 \textbf{Output:} The text-based help menu \\
 \textbf{Description:} The test member runs the input command and ensures the help menu is displayed is displayed in the output. \\
@@ -222,9 +223,9 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 
 \item{\textbf{test-CLI4}: Show Statistics\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
-\textbf{Input:} lpm --stats \\
-\textbf{Output:} The user's typing statistics. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
+\textbf{Input:} \textcolor{red}{A.} lpm --stats \textcolor{red}{(with existing history) B. lpm --stats (with no history)  } \\
+\textbf{Output:} \textcolor{red}{A.} The user's \textcolor{red}{lifetime} typing statistics \textcolor{red}{B. Display that there is no history} \\
 \textbf{Description:} The test member runs the input command and ensures that the typing statistics are displayed in the output. \\
 
 \end{enumerate}
@@ -234,9 +235,9 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 
 \item{\textbf{test-CLI5}: Change Settings\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm --settings \\
-\textbf{Output:} The user's a settings menu. \\
+\textbf{Output:} \textcolor{red}{Open a vim session with lpmconfig.json file in terminal} \sout{The users settings menu.} \\
 \textbf{Description:} The test member runs the input command, changes a setting, and ensures it is reflected when they run the program again. \\
 
 \end{enumerate}
@@ -247,53 +248,74 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 \paragraph{Code Snippet Navigation}
 \begin{enumerate}
 
-\item{\textbf{test-TE1}: Randomized Snippet Order\\}
+\item{\textbf{test-TE1}: \textcolor{red}{Display} Randomized Order Snippet\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm, lpm \\
-\textbf{Output:} Typing interface, Typing interface  \\
+\textbf{Output:} Typing interface \textcolor{red}{with random code snippet}, Typing interface \textcolor{red}{with random code snippet}\\
 \textbf{Description:} The test member runs the input command lpm, and moves to the previous and next code snippets, taking note of what snippets they have encountered. They then quit run the lpm command again, and ensure that a different order of snippets is shown. \\
 
 \item{\textbf{test-TE2}: Next/Prev\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm \\
 \textbf{Output:} Typing interface  \\
 \textbf{Description:} The test member runs the input command lpm, and verifies that the user is able to move to the next and previous code snippets using the arrow keys. \\
 
-\item{\textbf{test-TE3}: Start/Stop\\}
+\item{\textbf{test-TE3}: Start \sout{/Stop}\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
-\textbf{Input:} lpm \\
-\textbf{Output:} Typing interface  \\
-\textbf{Description:} The test member runs the input command lpm, and verifies that the user is able to start and stop the timer by inputting a key and using the escape button respectively. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
+\textbf{Input:} lpm, \textcolor{red}{Type character that is not escape or the arrowkeys} \\
+\textbf{Output:} Typing interface \textcolor{red}{with started timer} \\
+\textbf{Description:} The test member runs the input command lpm, and verifies that the user is able to start \sout{and stop} the timer by inputting a key \sout{and using the escape button respectively.} \\
 
 \item{\textbf{test-TE4}: Exit\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{lpm session running but no snippet in session} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm \\
-\textbf{Output:} Typing interface  \\
-\textbf{Description:} The test member runs the input command lpm, and verifies that the user is able to quit the program using the escape key (assuming the timer has not been started or if it has, the user has stopped it). \\
+\textbf{Output:} \textcolor{red}{Terminal screen exited from lpm} \sout{Typing interface}  \\
+\textbf{Description:} The test member verifies that the user is able to quit the program using the escape key (assuming the timer has not been started or if it has, the user has stopped it). \\
 
+\color{red}
+\item{\textcolor{red}{\textbf{test-TE8}: Stop}} \\
+\textbf{Type:} Functional, Manual \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed and lpm snippet session started with timer activated} \\
+\textbf{Input:} Escape key \\
+\textbf{Output:} Typing interface with timer ended and cursor at the beginning\\
+\textbf{Description:} The test member runs the input command lpm and begins the timer. Test user verifies they stop the timer by using the escape button\\
 \end{enumerate}
-
 
 \paragraph{Editor Information}
 
 \begin{enumerate}
-\item{\textbf{test-TE5}: Typing Interface Information\\}
+\item{\textbf{test-TE5}: Typing Interface Link\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm \\
 \textbf{Output:} Typing interface \\
-\textbf{Description:} The test member runs the input command lpm, and verifies that for the given code snippet, the correct author, title, and time is displayed. \\
+\textbf{Description:} The test member runs the input command lpm \textcolor{red}{and verifies the given hyperlink references the source code for the snippet, by clicking on the hyperlink} \sout{verifies that for the given code snippet the correct author, title, and time is displayed.} \\
 
 \item{\textbf{test-TE6}: Keystroke Information\\}
 \textbf{Type:} Functional, Manual \\
-\textbf{Initial State:} Newly started terminal session. \\
+\textbf{Initial State:} \textcolor{red}{lpm code snippet in session} \sout{Newly started terminal session.} \\
+\textbf{Input:} \textcolor{red}{A. Key matching next character on screen, B. Key not matching next character on screen}\\
+\textbf{Output:} \textcolor{red}{A. Character in CORRECT\_COLOR B. Character in INCORRECT\_COLOR, All other characters in TEXT\_COLOR} \sout{Typing interface}  \\
+\textbf{Description:} The test member runs the input command lpm, and types in a mix of correct and incorrect characters. The test member should verify that incorrect inputs should be converted to INCORRECT\_COLOR, and correct inputs should be converted to CORRECT\_COLOR. Characters that have not been passed yet should be TEXT\_COLOR. \\
+
+\item{\textbf{test-TE7}: Typing Interface Statistics\\}
+\textbf{Type:} Functional, Manual \\
+\textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
 \textbf{Input:} lpm \\
 \textbf{Output:} Typing interface \\
-\textbf{Description:} The test member runs the input command lpm, and types in a mix of correct and incorrect characters. The test member should verify that incorrect inputs should be converted to INCORRECT\_COLOR, and correct inputs should be converted to CORRECT\_COLOR. Characters that have not been passed yet should be TEXT\_COLOR. \\
+\textbf{Description:} The test member runs the input command lpm \textcolor{red}{and verifies that the code snippet accuracy, lpm, cpm and wpm are present on the screen.} \\
+
+\color{red}
+\item{\textbf{test-TE9}: Keystroke Information Correction\\}
+\textbf{Type:} Functional, Manual \\
+\textbf{Initial State:} lpm session with previously typed characters \\
+\textbf{Input:} Backspace key\\
+\textbf{Output:} Character returned to TEXT\_COLOR and cursor moved back one spot \\
+\textbf{Description:} The test member runs the input command lpm, and types in a mix of correct and incorrect characters. The test member should verify that upon pushing backspace, the text color of the last character is returned to TEXT\_COLOR and cursor is moved back. \\
 \end{enumerate}
 
 %%%% Code Snippets %%%%
@@ -302,29 +324,29 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 \paragraph{Code snippet lengths of valid character and line length}
 \begin{enumerate}
 \item{\textbf{test-CS1}: Snippet Line Length Test\\}
-\textbf{Type:} Functional, Static \\
-\textbf{Initial State:} Code snippet database is fully loaded with all lpm code snippets\\
-\textbf{Input:} a. Code snippet of valid length, b. Code snipped of length over MAX\_LINE\_LENGTH\\
-\textbf{Output:} a. Pass, b. ExceededLineLengthException, Overall number of failed tests\\
-\textbf{Description:} This test will go through every code snippet in the data base and will output any snippets that throw a ExceededLineLengthException.\\
+\textbf{Type:} Functional, Automated \\
+\textbf{Initial State:} Snippets object is fully loaded with all lpm code snippets \textcolor{red}{from pickle}\\
+\textbf{Input:} Snippets object loaded with every single Snippet. \\
+\textbf{Output:} \textcolor{red}{Pass or assertion error if any snippet length is larger than MAX\_LENGTH}\\
+\textbf{Description:} This test will go through every \textcolor{red}{Snippet} \sout{code snippet} in the \textcolor{red}{Snippets object} \sout{data base} and will output \textcolor{red}{if any snippet is larger than MAX\_LENGTH.}\\
 
 \item{\textbf{test-CS2:} Snippet Character Length Test\\}
-\textbf{Type:} Functional, Static \\
-\textbf{Initial State:} Code snippet database is fully loaded with all lpm code snippets\\
-\textbf{Input:} Code snippet of valid length, Code snipped of length over MAX\_CHARACTER\_LENGTH\\
-\textbf{Output:} a. Pass, b. ExceededCharLengthException, Overall number of failed tests\\
-\textbf{Description:} This test will go through every code snippet in the data base and will output any snippets that throw a ExceededCharLengthException.\\
+\textbf{Type:} Functional, Automated \\
+\textbf{Initial State:} Snippets object is fully loaded with all lpm code snippets \textcolor{red}{from pickle}\\
+\textbf{Input:} Snippets object loaded with every single Snippet. \\
+\textbf{Output:} \textcolor{red}{Pass or assertion error if any snippet length is larger than MAX\_COLS}\\
+\textbf{Description:} This test will go through every \textcolor{red}{Snippet} \sout{code snippet} in the \textcolor{red}{Snippets object} \sout{data base} and will output \textcolor{red}{if any snippet is larger than MAX\_COLS.}\\
 \end{enumerate}
 
 \paragraph{Sufficient Code snippets available in Python, Java and Javascript}
 \begin{enumerate}
 
-\item{\textbf{test-CS3}: MIN\_NUM\_SNIPPETS Snippets Per Language}
-\textbf{Type:} Functional, Static \\
-\textbf{Initial State:}  Code snippet database is fully loaded with all lpm code snippets that explicit language identifiers\\
-\textbf{Input:} Python Snippets, Java Snippets, Javascript snippets \\
-\textbf{Output:} Number of snippets per language\\
-\textbf{Description:} This test will take in the snippets for the every single language and will count to ensure that there are at least MIN\_NUM\_SNIPPETS for each language.\\
+\item{\textbf{test-CS3}: Snippets Per Language}
+\textbf{Type:} Functional, Automated \\
+\textbf{Initial State:} Snippets object is fully loaded with all lpm code snippets \textcolor{red}{from pickle}\\
+\textbf{Input:} Snippets object loaded with every single Snippet. \\
+\textbf{Output:} \textcolor{red}{Pass or assertion error if any language has less than MAX\_SNIPPETS snippets}\\
+\textbf{Description:} This test will go through every \textcolor{red}{Snippet} \sout{code snippet} in the \textcolor{red}{Snippets object} \sout{data base} and will output \textcolor{red}{if Python, Java or Javascript have less than  MIN\_SNIPPETS snippets.}\\
 
 \end{enumerate}
 
@@ -335,52 +357,50 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 \begin{enumerate}
 \item{\textbf{test-S1}: Test lines per minute speed\\}
 \textbf{Type:} Functional, Dynamic, Automated \\
-\textbf{Initial State:} lpm environment properly setup, run lpm\\
-\textbf{Input:} Type one line in 10 seconds, Type 2 lines in 10 seconds, No typing\\
+\textbf{Initial State:} lpm environment properly setup, \textcolor{red}{Empty stats History}\\
+\textbf{Input:} Type one line in 10 seconsd, Type 2 lines in 10 seconds, \textcolor{red}{Type zero lines in 10 seconds} \sout{No typing}\\
 \textbf{Output:} 6 lines/min, 12 lines/min, 0 lines/min \\
 \textbf{Description:} Will test if the statistics by providing an input for typing an individual code, and checking if the lines/min statistics match the the expected duration.\\
 
 \item{\textbf{test-S2}: Test characters per minute speed \\}
 \textbf{Type:} Functional, Dynamic, Automated \\
-\textbf{Initial State:} lpm environment properly setup, run lpm\\
-\textbf{Input:} Type 20 characters 5 seconds, No typing\\
+\textbf{Initial State:} lpm environment properly setup, \textcolor{red}{Empty stats History}\\
+\textbf{Input:} Type 20 characters 5 seconds, \textcolor{red}{Type zero characters in 10 seconds} \sout{No typing}\\
 \textbf{Output:} 240 char/min, 0 char/min \\
 \textbf{Description:} Will test if the statistics by providing an input for typing an individual code, and checking if the char/min statistics match the the expected duration.\\
 
 \item{\textbf{test-S3}: Test words per minute speed\\}
 \textbf{Type:} Functional, Dynamic, Automated \\
-\textbf{Initial State:} lpm environment properly setup, run lpm\\
-\textbf{Input:} Type 10 words in 10 seconds, No typing\\
+\textbf{Initial State:} lpm environment properly setup, \textcolor{red}{Empty stats History}\\
+\textbf{Input:} Type 10 words in 10 seconds, \textcolor{red}{Type zero lines in 10 seconds} \sout{No typing}\\
 \textbf{Output:} 60 words/min, 0 words/min \\
 \textbf{Description:} Will test if the statistics by providing an input for typing an individual code, and checking if the words/min statistics match the the expected duration.\\
 
 \item{\textbf{test-S4}: Test errors rate\\}
 \textbf{Type:} Functional, Dynamic, Automated \\
-\textbf{Initial State:} lpm environment properly setup, run lpm\\
-\textbf{Input:} Match code statement perfectly, Make one char mistake when typing a 100 char line, Make a mistake on every character, No typing\\
-\textbf{Output:} 100\%, 99\%, 0\%, 0\% \\
+\textbf{Initial State:} lpm environment properly setup, \textcolor{red}{Empty stats History}\\
+\textbf{Input:} Match code statement perfectly, Make one char mistake when typing a 100 char line, Make a mistake on every character\\
+\textbf{Output:} 100\%, 99\%, 0\%\\
 \textbf{Description:} Will test if the statistics by providing imperfect input, and checking the output accuracy
-
 \end{enumerate}
 
-\paragraph{Track statistics per typing session}
-\begin{enumerate}
-
-\item{\textbf{test-S5}: Test lines per minute session speed\\}
-\textbf{Type:} Functional, Dynamic, Automated\\
-\textbf{Initial State:} lpm environment properly setup, run lpm\\
-\textbf{Input:} Type 3 lines in 10 seconds then 4 lines in 10 seconds \\
-\textbf{Output:} 21 words per minute \\
-\textbf{Description:} Will test if the statistics by providing an input for typing multiple code snippets in a session, and checking if the lines/min statistics match the the expected duration.\\
-\end{enumerate}
+\paragraph{\sout{Track statistics per typing session}}
+% \begin{enumerate}
+% \item{\textbf{test-S5}: Test lines per minute session speed\\}
+% \textbf{Type:} Functional, Dynamic, Automated\\
+% \textbf{Initial State:} lpm environment properly setup, run lpm\\
+% \textbf{Input:} Type 3 lines in 10 seconds then 4 lines in 10 seconds\\
+% \textbf{Output:} 21 words per minute \\
+% \textbf{Description:} Will test if the statistics by providing an input for typing multiple code snippets in a session, and checking if the lines/min statistics match the the expected duration.\\
+% \end{enumerate}
 
 \paragraph{Track statistics per program lifetime}
 \begin{enumerate}
-\item{\textbf{test-S6}: Test lines per minute lifetime speed\\}
+\item{\textbf{test-S5: Test lines per minute lifetime speed\\}}
 \textbf{Type:} Functional, Dynamic, Automated\\
 \textbf{Initial State:} lpm environment properly setup, clean slate with newly installed program \\
 \textbf{Input:} Type 3 lines in 10 seconds, close session, type 4 lines in 10 seconds \\
-\textbf{Output:} 21 words per minute \\
+\textbf{Output:} 21 lines per minute \\
 \textbf{Description:} Will test if the statistics by providing an input for typing multiple code snippets throughout multiple sessions, and checking if the lines/min statistics match the the expected duration.\\
 \end{enumerate}
 
@@ -389,11 +409,10 @@ Also, feel free to see the \textbf{testplanGantt.png} image at the same location
 %%%%%%%%%%%%%%%%%%%
 \subsection{Tests for Nonfunctional Requirements}
 
-
 %%%% Look and Feel %%%%
 \subsubsection{Look and Feel}
 
-\paragraph{The typing interface shall respond to a user input within 0.1ms.}
+\paragraph{The typing interface shall respond to a user input within 10ms.}
 \begin{enumerate}
     \item{\textbf{test-LF1: User input latency $\leq$ 10ms testing}\\}
     \textbf{Type:} Manual\\
@@ -431,8 +450,7 @@ specification in terms of colour choice.}
     \textbf{Description:}  The colours of lpm will be extracted using a windows tool to extract hex values, and input into a WCAG AA contrast checker to see if it complies or not. The WCAG number gives information about the contrast ratio of the colours. Above 4.5 indicates WCAG AA compliant. \\
 \end{enumerate}
 
-\paragraph{The code snippets chosen should be diverse, and representative of the languages’
-syntax}
+\paragraph{The code snippets chosen should be diverse, and representative of the languages’ syntax}
 \begin{enumerate}
     \item{\textbf{test-LF5: Code snippet diversity testing}\\}
     \textbf{Type:} Manual\\
@@ -442,14 +460,13 @@ syntax}
     \textbf{Description:}  The purpose of this test is to ensure the tool is useful for our users, as repeating the same type of text snippets will serve no real purpose, as programming is not typing the same thing over and over again every time. This qualitative analysis will help us determine that we have enough diversity in our code snippet library, or recognize that we must expand our library to provide the user with relevant benefits.\\
 \end{enumerate}
 
-\paragraph{ The entirety of the user interface should fit within a terminal window sized
-640x480 pixels or larger, and scale up according on the current terminal window size.}
+\paragraph{The entirety of the user interface should fit within a terminal window sized \textcolor{red}{MAX\_COLS (width) x MAX\_LINES (length) or greater} \sout{640x480 pixels or larger, and scale up according on the current terminal window size.}}
 \begin{enumerate}
     \item{\textbf{test-LF6: lpm resoultion testing}\\}
     \textbf{Type:} Manual\\
-    \textbf{Initial State:}  lpm is loaded in a terminal of size 640x480\\
+    \textbf{Initial State:}  lpm is loaded in a terminal of size \textcolor{red}{MAX\_COLS (width) x MAX\_LINES} \sout{640x480}\\
     \textbf{Input:} The user will type a code snippet\\
-    \textbf{Output:} The user will have seen the entirety of the lpm screen, including their code snippet and statistics. Through this process, they will be able to inform us if the package was usable in a window with a resolution of 640x480 \\
+    \textbf{Output:} The user will have seen the entirety of the lpm screen, including their code snippet and statistics. Through this process, they will be able to inform us if the package was usable in a window with a resolution of \textcolor{red}{MAX\_COLS (width) x MAX\_LINES} \sout{640x480} \\
     \textbf{Description:}  The purpose of this test is to ensure the tool is useful at small resolutions, and also set a cap for the minimum resolution we officially support. If the user is able to recieve a full-featured experience at this level, we have satisfied the NFR. \\
 \end{enumerate}
 
@@ -467,8 +484,7 @@ The instructions will be easily comprehensible by anyone with basic understandin
     \textbf{Description: } The three associated NFRs can all be tackled in one large manual user test with (potentially) multiple users all testing the package. In the process of testing, the users are able to give relevant qualitative feedback on their experience and the usability of the package. \\
 \end{enumerate}
 
-\paragraph{The user will only require the keys on a typical 60\% keyboard to correctly type
-all given code.}
+\paragraph{The user will only require the keys on a typical 60\% keyboard to correctly type all given code.}
 \begin{enumerate}
     \item{\textbf{test-UH2: 60\% keyboard testing}\\}
     \textbf{Type:} Manual\\
@@ -480,12 +496,11 @@ all given code.}
 
 %%%% Performance %%%%
 \subsubsection{Performance}
-\paragraph{When the user loads the package, the time it takes for the package to be ready
-to accept user input shall not exceed 1 second.}
+\paragraph{When the user loads the package, \textcolor{red}{excluding the first time loading,} the time it takes for the package to be ready to accept user input shall not exceed 1 second.}
 \begin{enumerate}
     \item{\textbf{test-PF1}\\}
     \textbf{Type:} Manual\\
-    \textbf{Initial State: } Command line is open\\
+    \textbf{Initial State: } Command line is open, \textcolor{red}{lpm package previous loaded}\\
     \textbf{Input:} lpm command is entered\\
     \textbf{Output:} the lpm package is interactive \\
     \textbf{Description:} This is run by a user running the lpm command and testing how long until the package is ready to output. While this could be a dynamic test through use of time libraries, we believe it is easier to implement by manual testing, and slightly more practical too - if a system has changes but they have not propagated to the user's view, it does not matter if technically the program can accept input. \\
@@ -505,28 +520,28 @@ as well as unforeseen circumstances in the CI/CD Pipeline.}
 
 %%%% Operational and Environmental %%%%
 \subsubsection{Operational and Environmental}
-\paragraph{The system shall work on Python 2 and Python 3.}
+\paragraph{The system shall work on \textcolor{red}{Python 3.6 and up} \sout{Python 2 and Python 3}.}
 \begin{enumerate}
     \item{\textbf{test-OE1}\\}
-    \textbf{Type:} Automated\\
-    \textbf{Initial State:} lpm repo untouched, with a change merged into master\\
-    \textbf{Input:}  lpm repo is updated, CI/CD test suite is run\\
+    \textbf{Type:} Manual\\
+    \textbf{Initial State:} \textcolor{red}{Python 3.6 or above}, lpm repository installed\\
+    \textbf{Input:} \textcolor{red}{run lpm, run CI/CD test suite}\\
     \textbf{Output:} Success of test suite (no errors)\\
-    \textbf{Description:} A test suite meant for both Python 2 and 3 will be created and run in their respective environments, with any differences being clear and represented through error in output or exceptions caught.\\
+    \textbf{Description:} A test suite meant for \textcolor{red}{Python 3.6 +} \sout{both Python 2 and 3} will be created and run. Any errors in output or exceptions caught.\\
 \end{enumerate}
 
 \paragraph{The system shall work on Linux, macOS, and Windows operating systems.}
 \begin{enumerate}
     \item{\textbf{test-OE2}\\}
-    \textbf{Type:} Automated\\
-    \textbf{Initial State:} lpm repo untouched\\
-    \textbf{Input:} lpm repo is updated, or CI/CD testing is manually started\\
+    \textbf{Type:} Manual\\
+    \textbf{Initial State:} lpm repository installed\\
+    \textbf{Input:} \textcolor{red}{run lpm, run CI/CD test suite}\\
     \textbf{Output:} Success of test suite, which tests in different virtual environments\\
-    \textbf{Description:} This test suite ensures that our package is platform-agnostic, assuming the platform can have a valid version of Python 2 or 3 and Pip installed on their platform.\\
+    \textbf{Description:} This test suite ensures that our package is platform-agnostic, assuming the platform can have a valid version of Python \sout{2 or} 3 and Pip installed on their platform.\\
 \end{enumerate}
 
 \paragraph{In terms of computer specs, the package shall run on any computer that is
-able to run Python 2 and Python 3 based on their respective minimum requirements (i.e.
+able to run \sout{Python 2 and} Python 3 based on their respective minimum requirements (i.e.
 if running on Python 3, the user’s computer shall at least have Python 3’s minimum
 requirements to be supported officially by the lpm package).}
 \begin{enumerate}
@@ -540,8 +555,8 @@ requirements to be supported officially by the lpm package).}
 
 \paragraph{Application should be installable via the pip package manager.}
 \begin{enumerate}
-    \item{\textbf{test-OE3}\\}
-    \textbf{Type:} Automated\\
+    \item{\textbf{test-OE4}\\}
+    \textbf{Type:} Manual\\
     \textbf{Initial State:} Environment without lpm package installed\\
     \textbf{Input:} pip install --upgrade lpm\\
     \textbf{Output:} lpm package successfully updated.\\
@@ -553,22 +568,23 @@ requirements to be supported officially by the lpm package).}
 \paragraph{Application should be easy to update (via pip)}
 \begin{enumerate}
     \item{\textbf{test-MS1}\\}
-    \textbf{Type:} Automated\\
+    \textbf{Type:} Manual\\
     \textbf{Initial State:} Environment with non-current version of lpm installed\\
     \textbf{Input:} Changes are committed, and a pull request is made for an issue.\\
     \textbf{Output:} Pull request is accepted, and changes are merged into the master branch. The lpm package now has the changes\\
-    \textbf{Description:}\\
+    \textbf{Description:} This test ensures that the package is easy to update for users.\\
 \end{enumerate}
 
 \paragraph{ It should be easy to add additional code snippets.}
 \begin{enumerate}
     \item{\textbf{test-MS2}\\}
     \textbf{Type:} Manual\\
-    \textbf{Initial State:} lpm repo newly pulled from the repository. \\
-    \textbf{Input:} A new code snippet is added to the snippets file and the file is saved. A pull request is made requesting addition of the snippet.\\
-    \textbf{Output:} The code snippet is added to the lpm repository and shipped to users in the next release of lpm. \\
+    \textbf{Initial State:} lpm installed\\
+    \textbf{Input:} \textcolor{red}{New code snippet can be added with a permalink} \sout{A new code snippet is added to the snippets file and the file is saved}. A pull request is made requesting addition of the snippet.\\
+    \textbf{Output:} The code snippet is added to the lpm repository and shipped to users in the next release of lpm. \textcolor{red}{Users will get new snippets when they reset snippets}\\
     \textbf{Description:} This is an essential test to have, because part of the success of the project we are building ours off of, wpm, is that other people can contribute texts to the package. We want to ensure this process is as easy as possible for developers, as it ensures that we can have people feel more empowered to add to the package. \\
 \end{enumerate}
+
 %%%% Security %%%%
 \subsubsection{Security}
 \paragraph{External systems shall not have access to the system.}
@@ -596,16 +612,15 @@ content shall not be displayed in lpm}
 
 %%%% Legal %%%%
 \subsubsection{Legal}
-\paragraph{Code snippets shall have a valid open source license to be displayed in lpm}
+\paragraph{Code snippets shall have a valid open source license \textcolor{red}{or the developers have given explicit permission} to be displayed in lpm}
 \begin{enumerate}
     \item{\textbf{test-LG1}\\}
     \textbf{Type:} Manual\\
-    \textbf{Initial State:} Someone is attempting to add a snippet to the git repository. \\
-    \textbf{Input:} A code snippet is added to the repository with reference to the license it uses in a comment. \\
-    \textbf{Output:} The code snippet is added to the repository, provided reference to the license is given and it is a valid open source license.\\
+    \textbf{Initial State:} lpm repository \\
+    \textbf{Input:} A code snippet is added to the repository with \textcolor{red}{with link to code snippet} \sout{reference to the license it uses in a comment.} \\
+    \textbf{Output:} The code snippet will provide a link to a source repository. If the link is a part of a repository with a valid open source licence, or lpm has explicit permissions from the developers, it will be accepted to the code base.\\
     \textbf{Description:} This is an important addition to ensure that we are not legally responsible for the display and /or modification of any code snippets developers have uploaded.\\
 \end{enumerate}
-
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%% Traceability %%%%
@@ -624,28 +639,28 @@ FR3 & test-CLI2 \\ \hline
 FR4 & test-CLI3 \\ \hline
 FR5 & test-CLI4 \\ \hline
 FR6 & test-CLI5 \\ \hline
-FR7 & test-TE1 \\ \hline
+FR7 & test-TE1, {\color{red}test-CLI2} \\ \hline
 FR8 & test-TE1 \\ \hline
 FR9 & test-TE5 \\ \hline
-FR10 & test-TE5 \\ \hline
-FR11 & test-TE5 \\ \hline
+\sout{FR10} & \sout{test-TE5} \\ \hline
+FR11 & test-TE7 \\ \hline
 FR12 & test-TE2 \\ \hline
 FR13 & test-TE2 \\ \hline
 FR14 & test-TE3 \\ \hline
-FR15 & test-TE3 \\ \hline
+FR15 & {\color{red}test-TE8} \\ \hline
 FR16 & test-TE6 \\ \hline
 FR17 & test-TE6 \\ \hline
 FR18 & test-TE6 \\ \hline
-FR19 & test-TE6 \\ \hline
+FR19 & test-TE6, {\color{red}test-TE9} \\ \hline
 FR20 & test-TE4 \\ \hline
 FR21 & test-CS1 \\ \hline
 FR22 & test-CS2 \\ \hline
 FR23 & test-CS3 \\ \hline
 FR24 & test-CS3 \\ \hline
-FR25 & test-S1, test-S5, test-S6 \\ \hline
-FR26 & test-S1, test-S5, test-S6 \\ \hline
-FR27 & test-S1, test-S5, test-S6 \\ \hline
-FR28 & test-S1, test-S5, test-S6 \\ \hline
+FR25 & test-S1, test-S5 \sout{test-S6}\\ \hline
+FR26 & test-S3, test-S5 \sout{test-S6}\\ \hline
+FR27 & test-S2, test-S5 \sout{test-S6} \\ \hline
+FR28 & test-S4, test-S5 \sout{test-S6}\\ \hline
 \end{tabular}
     \caption{Functional Requirements Traceability Matrix}
     \label{tab:frtrace}
@@ -658,7 +673,7 @@ FR28 & test-S1, test-S5, test-S6 \\ \hline
 \multicolumn{2}{|c|}{Non-Functional Requirements Traceability Matrix} \\ \hline
 Non-Functional Requirement \# & Test ID \\ \hline
 NFR1 & test-LF1 \\ \hline
-NFR2 & test-LF2, test-FL3 \\ \hline
+NFR2 & test-LF2, test-LF3 \\ \hline
 NFR3 & test-LF4 \\ \hline
 NFR4 & test-LF5 \\ \hline
 NFR5 & test-LF6 \\ \hline
@@ -707,14 +722,14 @@ To test the code snippets, rather than running the tests on the entire test data
 \item{\textbf{test-poc1}: POC Snippet Line Length Test\\}
 \textbf{Type:} Functional, Static \\
 \textbf{Initial State:} Code snippets stored in working lpm program\\
-\textbf{Input:} a. Code snippet of valid length, b. Code snipped of length over MAX\_LINE\_LENGTH\\
+\textbf{Input:} a. Code snippet of valid length, b. Code snipped of length over \textcolor{red}{MAX\_LINES} \sout{MAX\_LINE\_LENGTH}\\
 \textbf{Output:} a. Pass, b. ExceededLineLengthException \\
 \textbf{Description:} This test will take in a code snippet and will output if the snippet throws an ExceededLineLengthException.\\
 
 \item{\textbf{test-poc2}: POC Snippet Character Length Test\\}
 \textbf{Type:} Functional, Static \\
 \textbf{Initial State:} Code snippets stored in working lpm program\\
-\textbf{Input:} Code snippet of valid length, Code snipped of length over MAX\_CHARACTER\_LENGTH\\
+\textbf{Input:} Code snippet of valid length, Code snipped of length over \textcolor{red}{MAX\_COL} \sout{MAX\_CHARACTER\_LENGTH}\\
 \textbf{Output:} a. Pass, b. ExceededCharLengthException \\
 \textbf{Description:} This test will take in a code snippet and will output if the snippet throws an ExceededCharLengthException.\\
 
@@ -774,17 +789,17 @@ Their values are defined in this section for easy maintenance.
     \hline
     Constant & Value & Definition \\
     \hline
-    MAX\_LINE\_LENGTH & 30 & Longest allowed length of code snippet, with respect to number of lines \\
+    \textcolor{red}{MAX\_LINES} \sout{MAX\_LINE\_LENGTH} & \textcolor{red}{20} & Longest allowed length of code snippet, with respect to number of lines \\
     \hline
-    MAX\_CHARACTER\_LENGTH & 88 & Longest character length of any line of a code snippet \\
+    \textcolor{red}{MAX\_COL} \sout{MAX\_CHARACTER\_LENGTH} & \textcolor{red}{80} & Longest character length of any line of a code snippet \\
     \hline
-    MIN\_NUM\_SNIPPET & 20 & Minimum of code snippets required for every required language \\
+    MIN\_NUM\_SNIPPETS & \textcolor{red}{10} & Minimum of code snippets required for every required language \\
     \hline
-    TEXT\_COLOR & \#FFFFFF & Main text colour for UI interface \\
+    TEXT\_COLOR & \textcolor{red}{Terminal Color [252, 235]} \sout{\#FFFFFF} & Main text colour for UI interface \\
     \hline
-    CORRECT\_COLOR & \#00BFFFF & Default text colour for correctly typed characters in UI interface \\
+    CORRECT\_COLOR & \textcolor{red}{Terminal Color [243, 235]} \sout{\#00BFFFF} & Default text colour for correctly typed characters in UI interface \\
     \hline
-    INCORRECT\_COLOR & \#F9BF3B & Default text colour for incorrectly typed characters in UI interface \\
+    INCORRECT\_COLOR & \textcolor{red}{Terminal Color [9, 88]}\sout{\#F9BF3B} & Default text colour for incorrectly typed characters in UI interface \\
     \hline
     \end{tabular}
 
