@@ -3,6 +3,7 @@ data/
 /labs/
 __latexindent_temp.tex
 _autosummary/
+/coverage_data/
 
 
 ### Python ###

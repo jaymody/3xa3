@@ -52,12 +52,14 @@ make clean && make html && make latexpdf
 Code coverage:
 ```
 # automated testing coverage
-coverage run --source lpm -m pytest tests
-coverage html
-open htmlcov/index.html
+coverage run -m pytest tests
 
 # manual testing coverage
 coverage run -m lpm
+
+# create report
+cd coverage_data
+coverage combine
 coverage html
 open htmlcov/index.html
 ```
