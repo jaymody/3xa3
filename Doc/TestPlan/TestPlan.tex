@@ -258,8 +258,8 @@ See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.
 \item{\textbf{test-TE2}: Next/Prev\\}
 \textbf{Type:} Functional, Manual \\
 \textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
-\textbf{Input:} lpm \\
-\textbf{Output:} Typing interface  \\
+\textbf{Input:} lpm, then the following combination of arrow keys is pressed: $\rightarrow$, $\leftarrow$, $\leftarrow$, $\rightarrow$\\
+\textbf{Output:} The initial code snippet, the next code snippet, the initial code snippet, the previous code snippet, the initial code snippet\\
 \textbf{Description:} The test member runs the input command lpm, and verifies that the user is able to move to the next and previous code snippets using the arrow keys. \\
 
 \item{\textbf{test-TE3}: Start \sout{/Stop}\\}
@@ -291,8 +291,8 @@ See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.
 \item{\textbf{test-TE5}: Typing Interface Link\\}
 \textbf{Type:} Functional, Manual \\
 \textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
-\textbf{Input:} lpm \\
-\textbf{Output:} Typing interface \\
+\textbf{Input:} lpm, then the top link is clicked. \\
+\textbf{Output:}  Typing interface, as well as a link to the hyperlink opened up in the user's browser \\
 \textbf{Description:} The test member runs the input command lpm \textcolor{red}{and verifies the given hyperlink references the source code for the snippet, by clicking on the hyperlink} \sout{verifies that for the given code snippet the correct author, title, and time is displayed.} \\
 
 \item{\textbf{test-TE6}: Keystroke Information\\}
@@ -305,8 +305,8 @@ See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.
 \item{\textbf{test-TE7}: Typing Interface Statistics\\}
 \textbf{Type:} Functional, Manual \\
 \textbf{Initial State:} \textcolor{red}{Terminal session with lpm installed} \sout{Newly started terminal session.} \\
-\textbf{Input:} lpm \\
-\textbf{Output:} Typing interface \\
+\textbf{Input:} lpm, then the user presses a character \\
+\textbf{Output:} Typing interface, with stats information showing \\
 \textbf{Description:} The test member runs the input command lpm \textcolor{red}{and verifies that the code snippet accuracy, lpm, cpm and wpm are present on the screen.} \\
 
 \color{red}
@@ -341,11 +341,11 @@ See Gantt Chart with the testing plan at the following \href{https://gitlab.cas.
 \paragraph{Sufficient Code snippets available in Python, Java and Javascript}
 \begin{enumerate}
 
-\item{\textbf{test-CS3}: Snippets Per Language}
+\item{\textbf{test-CS3}: Snippets Per Language} \\
 \textbf{Type:} Functional, Automated \\
 \textbf{Initial State:} Snippets object is fully loaded with all lpm code snippets \textcolor{red}{from pickle}\\
 \textbf{Input:} Snippets object loaded with every single Snippet. \\
-\textbf{Output:} \textcolor{red}{Pass or assertion error if any language has less than MAX\_SNIPPETS snippets}\\
+\textbf{Output:} \textcolor{red}{Pass or assertion error if any language has less than MIN\_SNIPPETS snippets}\\
 \textbf{Description:} This test will go through every \textcolor{red}{Snippet} \sout{code snippet} in the \textcolor{red}{Snippets object} \sout{data base} and will output \textcolor{red}{if Python, Java or Javascript have less than  MIN\_SNIPPETS snippets.}\\
 
 \end{enumerate}
@@ -525,8 +525,8 @@ as well as unforeseen circumstances in the CI/CD Pipeline.}
     \item{\textbf{test-OE1}\\}
     \textbf{Type:} Manual\\
     \textbf{Initial State:} \textcolor{red}{Python 3.6 or above}, lpm repository installed\\
-    \textbf{Input:} \textcolor{red}{run lpm, run CI/CD test suite}\\
-    \textbf{Output:} Success of test suite (no errors)\\
+    \textbf{Input:} \textcolor{red}{run lpm}\\
+    \textbf{Output:} Package is successfully run on multiple versions of Python. \\
     \textbf{Description:} A test suite meant for \textcolor{red}{Python 3.6 +} \sout{both Python 2 and 3} will be created and run. Any errors in output or exceptions caught.\\
 \end{enumerate}
 
@@ -536,7 +536,7 @@ as well as unforeseen circumstances in the CI/CD Pipeline.}
     \textbf{Type:} Manual\\
     \textbf{Initial State:} lpm repository installed\\
     \textbf{Input:} \textcolor{red}{run lpm, run CI/CD test suite}\\
-    \textbf{Output:} Success of test suite, which tests in different virtual environments\\
+    \textbf{Output:} lpm can be installed and run on all 3 platforms. \\
     \textbf{Description:} This test suite ensures that our package is platform-agnostic, assuming the platform can have a valid version of Python \sout{2 or} 3 and Pip installed on their platform.\\
 \end{enumerate}
 
@@ -602,7 +602,7 @@ requirements to be supported officially by the lpm package).}
 \paragraph{Code snippets that include harmful, vulgar, controversial, political, or offensive
 content shall not be displayed in lpm}
 \begin{enumerate}
-    \item{\textbf{test-CL1}\\}
+    \item{\textbf{test-CT1}\\}
     \textbf{Type:} Manual\\
     \textbf{Initial State:} lpm is installed and running.\\
     \textbf{Input:} A third party will page through all of the quotes in the lpm tool.\\
@@ -690,7 +690,7 @@ NFR15 & test-OE4 \\ \hline
 NFR16 & test-MS1 \\ \hline
 NFR17 & test-MS2 \\ \hline
 NFR18 & test-SC1 \\ \hline
-NFR19 & test-CL1 \\ \hline
+NFR19 & test-CT1 \\ \hline
 NFR20 & test-LG1 \\ \hline
 \end{tabular}
     \caption{Non-Functional Requirements Traceability Matrix}
