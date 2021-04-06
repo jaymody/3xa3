@@ -43,10 +43,20 @@ class Screen:
         # TODO: add this to config? maybe we shouldn't let resize even do this?
         if self.lines < min_lines:
             curses.endwin()
-            raise IOError("lpm requires at least %d lines in your display" % min_lines)
+            self.deinit()
+            print(
+                "lpm requires at least %d lines in your display, please expand your terminal size"
+                % min_lines
+            )
+            sys.exit()
         if self.columns < min_cols:
             curses.endwin()
-            raise IOError("lpm requires at least %d columns in your display" % min_cols)
+            self.deinit()
+            print(
+                "lpm requires at least %d columns in your display, please expand your terminal size"
+                % min_cols
+            )
+            sys.exit()
 
         # screen configurations
         self.screen.keypad(True)  # makes curses return keys in form curses.KEY_
