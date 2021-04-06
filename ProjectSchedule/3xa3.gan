@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-28" view-index="0" gantt-divider-location="745" resource-divider-location="657" version="3.0.3004" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-11" view-index="0" gantt-divider-location="573" resource-divider-location="657" version="3.0.3004" locale="en_US">
     <description/>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Name" width="353" order="0"/>
-        <field id="tpd4" name="Begin date" width="167" order="1"/>
-        <field id="tpd5" name="End date" width="206" order="2"/>
+        <field id="tpd3" name="Name" width="267" order="0"/>
+        <field id="tpd4" name="Begin date" width="129" order="1"/>
+        <field id="tpd5" name="End date" width="158" order="2"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Name" width="377" order="0"/>
-        <field id="1" name="Default role" width="261" order="1"/>
+        <field id="0" name="Name" width="382" order="0"/>
+        <field id="1" name="Default role" width="271" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -113,14 +113,21 @@
             <task id="175" name="Demo Presentation Practice" color="#8cb6ce" meeting="false" start="2021-03-23" duration="1" complete="0" thirdDate="2021-02-04" thirdDate-constraint="0" expand="true"/>
             <task id="196" name="Demonstration R0 Complete" color="#8cb6ce" meeting="true" start="2021-03-23" duration="0" complete="0" thirdDate="2021-02-04" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="12" name="Final Demonstration R1" meeting="false" start="2021-03-24" duration="9" complete="0" expand="true">
+        <task id="12" name="Final Demonstration R1" meeting="false" start="2021-03-24" duration="8" complete="0" expand="true">
             <task id="182" name="Code Tested" color="#8cb6ce" meeting="false" start="2021-03-24" duration="3" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
-            <task id="183" name="Demo Presentation Reviewed" color="#8cb6ce" meeting="false" start="2021-03-31" duration="4" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
-            <task id="200" name="Final Demonstration R1 Complete" color="#8cb6ce" meeting="true" start="2021-04-05" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
+            <task id="183" name="Demo Presentation Reviewed" color="#8cb6ce" meeting="false" start="2021-03-31" duration="3" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
+            <task id="200" name="Final Demonstration R1 Complete" color="#8cb6ce" meeting="true" start="2021-04-02" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="16" name="Final Documentation R1" meeting="false" start="2021-04-05" duration="6" complete="0" expand="true">
-            <task id="193" name="Docs Reviewed" color="#8cb6ce" meeting="false" start="2021-04-05" duration="4" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true"/>
-            <task id="194" name="3rd Party test" color="#8cb6ce" meeting="false" start="2021-04-09" duration="2" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="16" name="Final Documentation R1" meeting="false" start="2021-04-05" duration="5" complete="0" expand="true">
+            <task id="193" name="Docs Reviewed" color="#8cb6ce" meeting="false" start="2021-04-05" duration="4" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true">
+                <task id="298" name="Documents Individually reviewed" color="#8cb6ce" meeting="false" start="2021-04-05" duration="2" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+                    <notes>
+                        <![CDATA[Ensuring all individual documentation is viewed and modified to be accurate with the current state of the project.]]>
+                    </notes>
+                </task>
+                <task id="302" name="Documents Randomly tested against application" color="#8cb6ce" meeting="false" start="2021-04-07" duration="2" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            </task>
+            <task id="194" name="3rd Party test" color="#8cb6ce" meeting="false" start="2021-04-09" duration="1" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true"/>
             <task id="204" name="Final Documentation R1 Complete" color="#8cb6ce" meeting="true" start="2021-04-12" duration="0" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true"/>
         </task>
     </tasks>
@@ -135,7 +142,6 @@
         <allocation task-id="63" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="102" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="131" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="193" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="194" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="182" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="210" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
@@ -153,6 +159,8 @@
         <allocation task-id="264" resource-id="1" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="174" resource-id="1" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="175" resource-id="1" function="Default:0" responsible="false" load="0.0"/>
+        <allocation task-id="298" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="302" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="0" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="60" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="61" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
@@ -162,7 +170,6 @@
         <allocation task-id="131" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="162" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="164" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="193" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="194" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="182" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="210" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
@@ -178,6 +185,8 @@
         <allocation task-id="264" resource-id="2" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="174" resource-id="2" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="175" resource-id="2" function="Default:0" responsible="false" load="0.0"/>
+        <allocation task-id="298" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="302" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="0" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="61" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="66" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
@@ -188,7 +197,6 @@
         <allocation task-id="164" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="166" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="159" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
-        <allocation task-id="193" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="194" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
         <allocation task-id="182" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="210" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
@@ -202,6 +210,8 @@
         <allocation task-id="264" resource-id="0" function="Default:1" responsible="false" load="50.0"/>
         <allocation task-id="174" resource-id="0" function="Default:1" responsible="false" load="50.0"/>
         <allocation task-id="175" resource-id="0" function="Default:1" responsible="false" load="0.0"/>
+        <allocation task-id="298" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="302" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
     </allocations>
     <vacations/>
     <previous/>
