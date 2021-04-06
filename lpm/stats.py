@@ -119,21 +119,30 @@ class Stat:
         """Lines per minute."""
         if self.start_time is None:
             return 0
-        return lines_per_minute(self.num_lines, self.elapsed)
+        try:
+            return lines_per_minute(self.num_lines, self.elapsed)
+        except ZeroDivisionError:
+            return 0
 
     @property
     def wpm(self):
         """Words per minute."""
         if self.start_time is None:
             return 0
-        return words_per_minute(self.num_chars, self.elapsed)
+        try:
+            return words_per_minute(self.num_chars, self.elapsed)
+        except ZeroDivisionError:
+            return 0
 
     @property
     def cpm(self):
         """Characters per minute."""
         if self.start_time is None:
             return 0
-        return characters_per_minute(self.num_chars, self.elapsed)
+        try:
+            return characters_per_minute(self.num_chars, self.elapsed)
+        except ZeroDivisionError:
+            return 0
 
     @property
     def acc(self):
@@ -142,7 +151,10 @@ class Stat:
             return 0
         if not self.num_correct + self.num_wrong > 0:
             return 0
-        return accuracy(self.num_correct, self.num_wrong)
+        try:
+            return accuracy(self.num_correct, self.num_wrong)
+        except ZeroDivisionError:
+            return 0
 
     def __eq__(self, other):
         """Check two Stat objects are equal.
