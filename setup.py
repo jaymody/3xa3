@@ -34,8 +34,11 @@ setup(
     license="https://www.gnu.org/licenses/agpl-3.0.html",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    install_requires=["setuptools"],
-    python_requires=">=3.6.0",
+    install_requires=[
+        "setuptools",
+        'windows-curses >= 2.2.0 ; platform_system=="Windows"',
+    ],
+    # python_requires=">=3.6.0",
     zip_safe=True,
     test_suite="tests",
     keywords=["lpm", "typing", "typist", "code", "keyboard"],
