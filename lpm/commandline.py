@@ -49,8 +49,8 @@ def stats():
         print("--------------")
         print(
             f"{len(statistics)} games | {lifetime.elapsed:.2f}s total elapsed | "
-            "{lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | "
-            "{lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
+            f"{lifetime.lpm:.2f} avg lpm | {lifetime.wpm:.2f} avg wpm | "
+            f"{lifetime.cpm:.2f} avg cpm | {lifetime.acc*100:.2f}% avg acc"
         )
 
 
