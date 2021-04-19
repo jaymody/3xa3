@@ -64,6 +64,7 @@ Upload to [PyPI](https://pypi.org/project/lpm/0.0.1/):
 3. Update `requirements-dev.txt` if needed
 4. Update `setup.py` if needed
 5. Run tests to assure everything is working
+5. Run `lpm --reset` so the data folder is cleared
 6. `python -m build`
 7. `python -m twine upload dist/*`
 

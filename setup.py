@@ -4,7 +4,6 @@ import os
 import runpy
 
 from setuptools import setup
-from lpm import URLS_PATH, SNIPPETS_PATH
 
 
 def get_version():
@@ -29,7 +28,7 @@ setup(
     author_email="jaykmody@gmail.com, jessicalim813@gmail.com, maanavdalal@gmail.com",
     packages=["lpm"],
     package_dir={"lpm": "lpm"},
-    package_data={"lpm": [URLS_PATH, SNIPPETS_PATH]},
+    package_data={"lpm": ["data/*"]},
     include_package_data=True,
     url="https://gitlab.cas.mcmaster.ca/modyj/3xa3.git",
     license="https://www.gnu.org/licenses/agpl-3.0.html",
