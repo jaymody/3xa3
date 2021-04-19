@@ -1,37 +1,11 @@
 """Lines Per Minute."""
 
+import os
+
 __version__ = "0.0.9"
 
-# "https://github.com/jaymody/linkipedia/blob/09f3ca27e1ad858a6a010d2ef3d0768cbb9dda36/src/main/java/com/linkipedia/Graph.java#L9-L31",
-_github_permalink = [
-    "https://github.com/jaymody/seq2seq_polynomial/blob/b3fc25121a1210b98a2fa6efec33af539812cad4/data.py#L76-L80",
-    "https://github.com/jaymody/seq2seq_polynomial/blob/b3fc25121a1210b98a2fa6efec33af539812cad4/tests.py#L4-L14",
-    "https://github.com/jaymody/Brawler64/blob/632b98b61e9ceeb16742926b57cc4a98a364abd3/src/game/KeyInput.java#L1-L18",
-    "https://github.com/jaymody/jaymody.github.io/blob/84598e192475bb2be161994cd1543a83b0737acf/src/components/Deck.js#L1-L18",
-    "https://github.com/MaanavD/Employmint/blob/f77551a2225c67891cc48c1d8014865d3d05d4b4/app/src/main/java/thacks/employmint/jobsearch.java#L79-L87",
-    "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/functions/commands/tldr.js#L24-L33",
-    "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/functions/commands/tldr.js#L77-L87",
-    "https://github.com/cslarsen/wpm/blob/6e48d8b750c7828166b67a532ff03d62584fb953/wpm/histogram.py#L44-L58",
-    "https://github.com/MaanavD/TLDR-Bot/blob/cd026ba24cb3f329bbedb135a9a8c168409b7cea/stdlib/MaanavD/slack-app/utils/format_message.js#L37-L48",
-    "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/models/shoe.model.js#L5-L15",
-    "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/routes/offers.js#L4-L11",
-    "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/client/src/App.js#L14-L23",
-    "https://github.com/MaanavD/SN8KRS/blob/a77b45e7539e5ee00875b2e7f20969a46410e958/client/src/index.js#L9-L14",
-    "https://github.com/JessicaLim8/Linkipedia/blob/8880a1b8e6b08add67cdc4ad827c98d9bf7871f5/src/main/java/com/linkipedia/Node.java#L11-L23",
-    "https://github.com/JessicaLim8/VoicePrep/blob/975092f57365009bc3d4d2c2b78e1a2bd0b2bcca/client/src/pages/Results.js#L26-L34",
-    "https://github.com/JessicaLim8/VoicePrep/blob/975092f57365009bc3d4d2c2b78e1a2bd0b2bcca/client/src/pages/wordcounter.js#L1-L14",
-    "https://github.com/JessicaLim8/BrAsthma/blob/0d00169ee73be77a056dae1dd00e8699d31cb028/dp3.py#L32-L41",
-    "https://github.com/JessicaLim8/BrAsthma/blob/0d00169ee73be77a056dae1dd00e8699d31cb028/practice_mock.py#L1-L11",
-    "https://github.com/JessicaLim8/ThinkTacToe/blob/c54e6a023fcc0c5357d444236b5dcf580b246135/src/thinktactoeGame/GameBoard.java#L10-L19",
-    "https://github.com/parappally/bball_api/blob/fefcc963b38a1d7ba613ee61a1c902cdaa8307d2/app.py#L52-L60",
-    "https://github.com/parappally/Guidin-George/blob/85a017baaaf619696a9898a8101fc3fdec4ce4a7/enghacks/geodistance.py#L3-L10",
-    "https://github.com/JonathanGin52/SudokuSolver/blob/e1533961ca05c52afe439be56f6368f266f227f5/SudokuSolver/src/sudokusolver/SudokuSolver.java#L70-L77",
-    "https://github.com/JessicaLim8/ThinkTacToe/blob/c54e6a023fcc0c5357d444236b5dcf580b246135/src/mathGame/MathGameState.java#L61-L71",
-    "https://github.com/JonathanGin52/SudokuSolver/blob/e1533961ca05c52afe439be56f6368f266f227f5/SudokuSolver/src/sudokusolver/SudokuSolver.java#L135-L144",
-    "https://github.com/SamYu/stylist.ai/blob/d7ab3579d45c79385a6e0a0a2a15b52848090ae1/outfitpicker/outfit_dataset_manual_generator.py#L25-L31",
-    "https://github.com/jaymody/linkipedia/blob/09f3ca27e1ad858a6a010d2ef3d0768cbb9dda36/src/main/java/com/linkipedia/Sort.java#L69-L82",
-    "https://github.com/JessicaLim8/Linkipedia/blob/8880a1b8e6b08add67cdc4ad827c98d9bf7871f5/src/main/java/com/linkipedia/Search.java#L29-L37",
-    "https://github.com/jaymody/Brawler64/blob/632b98b61e9ceeb16742926b57cc4a98a364abd3/src/main/Main.java#L76-L82",
-    "https://github.com/jaymody/bert/blob/a9a3195c248432694fde4133068c75e67ee3756e/optimization.py#L159-L167",
-    "https://github.com/jaymody/bert/blob/a9a3195c248432694fde4133068c75e67ee3756e/run_classifier.py#L197-L204",
-]
+_package_dir = os.path.dirname(os.path.realpath(__file__))
+CONFIG_PATH = os.path.expanduser("~/.lpmrc")
+URLS_PATH = os.path.join(_package_dir, "data", "urls.txt")
+STATS_PATH = os.path.join(_package_dir, "data", "stats.json")
+SNIPPETS_PATH = os.path.join(_package_dir, "data", "snippets.json")

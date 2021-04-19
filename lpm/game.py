@@ -2,7 +2,7 @@
 
 from .screen import Screen
 from .stats import Stat
-from .config import Config
+from . import STATS_PATH
 
 
 class Game:
@@ -37,7 +37,7 @@ class Game:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.screen.deinit()
         if exc_type == KeyboardInterrupt:
-            self.stats.save(Config.STATS_PATH)
+            self.stats.save(STATS_PATH)
             return True  # don't throw KeyboardInterrupt
 
     def run(self):

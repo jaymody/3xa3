@@ -28,7 +28,7 @@ setup(
     author_email="jaykmody@gmail.com, jessicalim813@gmail.com, maanavdalal@gmail.com",
     packages=["lpm"],
     package_dir={"lpm": "lpm"},
-    package_data={"lpm": ["data/examples.json.gz"]},
+    package_data={"lpm": ["data/urls.txt"]},
     include_package_data=True,
     url="https://gitlab.cas.mcmaster.ca/modyj/3xa3.git",
     license="https://www.gnu.org/licenses/agpl-3.0.html",

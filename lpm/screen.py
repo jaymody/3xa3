@@ -110,7 +110,8 @@ class Screen:
         if sys.version_info[0:2] >= (3, 3):
             return self._get_key_py33()
         else:
-            return self._get_key_py27()
+            raise NotImplementedError
+            # return self._get_key_py27()
 
     def _get_key_py33(self):
         """Python 3.3+ implementation of get_key."""

@@ -183,6 +183,11 @@ class Snippets:
             Snippets object with snippets from urls.
         """
         # TODO: add try except if something goes wrong for a given url
-        # get author (ie jaymody/linkipedia)
-        snippets = [Snippet.from_url(i, url) for i, url in enumerate(urls)]
+        snippets = []
+        for i, url in enumerate(urls):
+            try:
+                snippet = Snippet.from_url(i, url)
+                snippets.append(snippet)
+            except:
+                print("Error downloading", url, "- SKIPPED")
         return cls(snippets)

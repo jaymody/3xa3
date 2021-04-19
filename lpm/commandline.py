@@ -6,7 +6,7 @@ Use `lpm -h` for help.
 import os
 import argparse
 
-from . import __version__
+from . import __version__, CONFIG_PATH, STATS_PATH, SNIPPETS_PATH, URLS_PATH
 from .config import Config
 from .snippets import Snippets
 from .stats import Stat, Stats
@@ -20,12 +20,12 @@ def stats():
     """
     # TODO: make this better
     # TODO: only show last N things
-    if not os.path.exists(Config.STATS_PATH):
+    if not os.path.exists(STATS_PATH):
         print("No stats recorded")
     else:
         from datetime import datetime, timedelta
 
-        statistics = Stats.load(Config.STATS_PATH)
+        statistics = Stats.load(STATS_PATH)
 
         lifetime = Stat()
         elapsed = 0
@@ -73,20 +73,20 @@ def start(languages=None):
             return
 
     # load snippets
-    if not os.path.exists(Config.SNIPPETS_PATH):
-        from . import _github_permalink
-
+    if not os.path.exists(SNIPPETS_PATH):
         print("... downloading snippets ...")
 
-        snippets = Snippets.from_urls(_github_permalink)
-        snippets.save(Config.SNIPPETS_PATH)
-    snippets = Snippets.load(Config.SNIPPETS_PATH, languages=languages)
+        with open(URLS_PATH) as fi:
+            urls = fi.readlines()
+        snippets = Snippets.from_urls(urls)
+        snippets.save(SNIPPETS_PATH)
+    snippets = Snippets.load(SNIPPETS_PATH, languages=languages)
 
     # load stats
-    if not os.path.exists(Config.STATS_PATH):
+    if not os.path.exists(STATS_PATH):
         statistics = Stats([])
     else:
-        statistics = Stats.load(Config.STATS_PATH)
+        statistics = Stats.load(STATS_PATH)
 
     with Game(snippets, statistics) as game:
         game.run()
@@ -99,7 +99,7 @@ def settings():
     replacing the command line window.
     """
     editor = os.environ.get("EDITOR", "vim")
-    os.system(f"{editor} {Config.CONFIG_PATH}")
+    os.system(f"{editor} {CONFIG_PATH}")
 
 
 def reset():
@@ -114,20 +114,20 @@ def reset():
 
     stats_reset = input("Do you want to reset your lifetime statistics? (y/n): ")
     if stats_reset.lower() == "y":
-        if os.path.exists(Config.STATS_PATH):
-            os.remove(Config.STATS_PATH)
+        if os.path.exists(STATS_PATH):
+            os.remove(STATS_PATH)
             print("User statistics were reset.\n")
         else:
             print("User statistics do not exist.\n")
 
     snippets_reset = input("Do you want to redownload snippets? (y/n): ")
     if snippets_reset.lower() == "y":
-        from . import _github_permalink
-
         print("... downloading snippets ...")
 
-        snippets = Snippets.from_urls(_github_permalink)
-        snippets.save(Config.SNIPPETS_PATH)
+        with open(URLS_PATH) as fi:
+            urls = fi.readlines()
+        snippets = Snippets.from_urls(urls)
+        snippets.save(SNIPPETS_PATH)
 
         print("... done ...")
 
