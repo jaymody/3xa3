@@ -45,18 +45,20 @@ class Screen:
             curses.endwin()
             self.deinit()
             print(
-                "lpm requires at least %d lines in your display, please expand your terminal size"
+                "lpm requires at least %d lines in terminal, please expand "
+                "your terminal size or decrease MAX_LINES/MAX_COLS in the settings"
                 % min_lines
             )
-            sys.exit()
+            sys.exit(1)
         if self.columns < min_cols:
             curses.endwin()
             self.deinit()
             print(
-                "lpm requires at least %d columns in your display, please expand your terminal size"
+                "lpm requires at least %d columns in terminal, please expand "
+                "your terminal size or decrease MAX_LINES/MAX_COLS in the settings"
                 % min_cols
             )
-            sys.exit()
+            sys.exit(1)
 
         # screen configurations
         self.screen.keypad(True)  # makes curses return keys in form curses.KEY_
