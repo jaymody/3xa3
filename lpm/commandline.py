@@ -141,8 +141,6 @@ def reset():
 
 def cli():
     """Main entry point for lpm CLI."""
-    import sys
-
     if sys.version_info < (3, 6):
         print("lpm requires python >= 3.6")
 
