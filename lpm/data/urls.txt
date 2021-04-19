@@ -26,3 +26,6 @@ https://github.com/JessicaLim8/Linkipedia/blob/8880a1b8e6b08add67cdc4ad827c98d9b
 https://github.com/jaymody/Brawler64/blob/632b98b61e9ceeb16742926b57cc4a98a364abd3/src/main/Main.java#L76-L82
 https://github.com/jaymody/bert/blob/a9a3195c248432694fde4133068c75e67ee3756e/optimization.py#L159-L167
 https://github.com/jaymody/bert/blob/a9a3195c248432694fde4133068c75e67ee3756e/run_classifier.py#L197-L204
+https://github.com/jaymody/leetcode/blob/20ca7d6148a9ce66a91d6c147f34097bd681ad4d/java/509%20-%20Fibonacci%20Number.java#L10-L22
+https://github.com/jaymody/leetcode/blob/20ca7d6148a9ce66a91d6c147f34097bd681ad4d/java/62%20-%20Unique%20Paths.java#L13-L25
+https://github.com/jaymody/leetcode/blob/20ca7d6148a9ce66a91d6c147f34097bd681ad4d/python/867%20-%20Transpose%20Matrix.py#L11-L17

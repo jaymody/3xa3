@@ -1,7 +1,7 @@
 """Unit tests for the Snippets.py module."""
 from lpm import SNIPPETS_PATH
 from lpm.config import Config
-from lpm.snippets import Snippets, Snippet
+from lpm.snippets import Snippets
 
 MIN_NUM_SNIPPETS = 10
 

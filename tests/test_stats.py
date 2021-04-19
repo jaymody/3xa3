@@ -4,7 +4,6 @@ from datetime import datetime
 
 import pytest
 
-from lpm.config import Config
 from lpm.stats import (
     Stat,
     Stats,

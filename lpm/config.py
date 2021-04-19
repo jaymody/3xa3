@@ -7,7 +7,6 @@ configuration is loaded from CONFIG_PATH, which the user may edit via:
 
 import os
 import json
-import curses
 from . import CONFIG_PATH
 
 # TODO: either don't load snippets longer than max_lines, or base it off of the

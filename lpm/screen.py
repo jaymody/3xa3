@@ -234,7 +234,7 @@ class Screen:
 
     def resize(self, game):
         """Resizes game interface based on current user terminal size."""
-        # TODO: resize
+        # TODO: implement resize
         # max_y, max_x = self.screen.window.getmaxyx()
         # self.screen.clear()
 

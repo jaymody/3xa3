@@ -1,6 +1,3 @@
-from lpm import CONFIG_PATH
-
-
 def test_reset():
     from lpm.config import Config, DEFAULT_CONFIG
 
@@ -9,7 +6,7 @@ def test_reset():
 
 
 def test_correct_load():
-    from lpm.config import Config, DEFAULT_CONFIG
+    from lpm.config import CONFIG_PATH, DEFAULT_CONFIG
     import json
 
     with open(CONFIG_PATH) as fi:
