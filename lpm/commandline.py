@@ -4,6 +4,7 @@ Use `lpm -h` for help.
 """
 
 import os
+import sys
 import argparse
 
 from . import __version__, CONFIG_PATH, STATS_PATH, SNIPPETS_PATH, URLS_PATH
@@ -81,6 +82,12 @@ def start(languages=None):
         snippets = Snippets.from_urls(urls)
         snippets.save(SNIPPETS_PATH)
     snippets = Snippets.load(SNIPPETS_PATH, languages=languages)
+    if len(snippets) <= 0:
+        print(
+            "ERROR: no snippets were loaded, please modify (or reset) the "
+            "settings to increase MAX_LINES and MAX_COLS"
+        )
+        sys.exit(1)
 
     # load stats
     if not os.path.exists(STATS_PATH):

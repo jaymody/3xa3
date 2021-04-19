@@ -151,7 +151,13 @@ class Snippets:
         with open(filename, "rb") as fi:
             snippets = pickle.load(fi)
 
-        snippets.snippets = [s for s in snippets.snippets if s.language in languages]
+        snippets.snippets = [
+            s
+            for s in snippets.snippets
+            if s.language in languages
+            and len(s.lines) <= Config.MAX_LINES
+            and max(map(len, s.lines)) <= Config.MAX_COLS
+        ]
         snippets.shuffle()
         return snippets
 
