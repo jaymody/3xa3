@@ -1,10 +1,6 @@
 # Lines Per Minute
 
-Team Name: Lines Per Minute (lpm)
-
-Team Members: Jay Mody, Jessica Lim, Maanav Dalal
-
-A typing tool made for programmers. Inspired by [github.com/cslarsen/wpm](https://github.com/cslarsen/wpm).
+A command-line typing tool made for programmers. Inspired by [wpm](https://github.com/cslarsen/wpm).
 
 ## Install
 Requires `python>=3.6`:
@@ -19,7 +15,7 @@ lpm
 ```
 Use `lpm -h` for additional options.
 
-## Dev Setup
+## Dev Notes
 
 Install dev dependencies:
 ```shell
@@ -33,12 +29,12 @@ pytest tests
 
 Code formatting:
 ```shell
-black setup.py lpm/*.py
+black setup.py lpm/*.py tests/*.py
 ```
 
 Code linting:
 ```shell
-pylint setup.py lpm/*.py
+pylint setup.py lpm/*.py tests/*.py
 ```
 
 Create documentation:
